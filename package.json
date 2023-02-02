@@ -1,0 +1,11 @@
+{
+  "name": "bachelors",
+  "version": "1.0.0",
+  "description": "Latvian Novuss Federation system",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Emils Seflers",
+  "license": "ISC"
+}
