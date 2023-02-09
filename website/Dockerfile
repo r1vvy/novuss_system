@@ -14,13 +14,17 @@ COPY src /app/src
 RUN gradle build
 
 # Copy the compiled jar file to the working directory
-COPY build/libs/restful-service.jar /app/restful-service.jar
+COPY build/libs/website.jar /app/website.jar
 
 # Set environment variables
-ENV PORT 8080
+ENV PORT 3000
 
 # Define the start command
-CMD ["java", "-jar", "restful-service.jar"]
+CMD ["java", "-jar", "website.jar"]
 
 # Expose port 8080
-EXPOSE 8080
+EXPOSE 3000
+
+
+# TODO: finish this
+# tutorial: https://medium.com/geekculture/a-reactjs-web-application-with-a-spring-boot-backend-and-containerizing-it-using-docker-3eeaed8cb45a

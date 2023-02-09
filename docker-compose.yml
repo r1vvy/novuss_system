@@ -1,62 +1,47 @@
-version: '3'
+version: '1'
+
 services:
-  db:
-    image: mariadb:10.5
+  database:
+    container_name: database-container
+    build: ./mysql
+    image: "mariadb:10.5.8"
+    restart: always
+    ports:
+      - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: hm!j034
       MYSQL_DATABASE: novuss_db
-    volumes:
-      - /path/on/host:/var/lib/mysql
+      MYSQL_USER: novuss_user
+      MYSQL_PASSWORD: enU03tr&xzC9
+      MYSQL_ROOT_PASSWORD: enU03tr&xzC9
     networks:
-      - backend
+      - project-network
 
-
-  restful-service:
-    build: ./restful-service
-    ports:
-      - 8080:8080
-    links:
-      - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_NAME: database
-      DB_USER: dbuser
-      DB_PASSWORD: password
-    networks:
-      - backend
-
-
-  admin-panel:
-    build: ./admin-panel
-    ports:
-      - 3000:3000
-    links:
-      - restful-service
-    environment:
-      SERVICE_URL: http://restful-service:8080
-    networks:
-      - frontend
-
-
-  public-page:
-    build: ./public-page
-    ports:
-      - 4000:4000
-    links:
-      - restful-service
-    environment:
-      SERVICE_URL: http://restful-service:8080
-    networks:
-      - frontend
-
-      
-  adminer:
+  database-admin:
+    container_name: adminer-container
     image: adminer
     ports:
-      - 8080:8080
+      - 8081:8080
     networks:
-      - backend
+      - project-network
+
+  restful-service:
+    container_name: restful-service-container
+    build: ./restful-service
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - project-network
+    
+  website:
+    container_name: website-container
+    build: ./website
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - project-network
+
+
 networks:
-  backend:
-  frontend:
+  project-network:
