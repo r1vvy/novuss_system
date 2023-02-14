@@ -1,26 +1,22 @@
-# Use gradle 7.2.0-jdk17 as the base image
-FROM gradle:7.2.0-jdk17
+# Example of custom Java runtime using jlink in a multi-stage container build
+FROM eclipse-temurin:17 as jre-build
 
-# Set the working directory
-WORKDIR /app
+# Create a custom Java runtime
+RUN $JAVA_HOME/bin/jlink \
+         --add-modules java.base \
+         --strip-debug \
+         --no-man-pages \
+         --no-header-files \
+         --compress=2 \
+         --output /javaruntime
 
-# Copy the build.gradle file to the working directory
-COPY build.gradle /app/build.gradle
+# Define your base image
+FROM debian:buster-slim
+ENV JAVA_HOME=/opt/java/openjdk
+ENV PATH "${JAVA_HOME}/bin:${PATH}"
+COPY --from=jre-build /javaruntime $JAVA_HOME
 
-# Copy the source code to the working directory
-COPY src /app/src
-
-# Build the application
-RUN gradle build
-
-# Copy the compiled jar file to the working directory
-COPY build/libs/restful-service.jar /app/restful-service.jar
-
-# Set environment variables
-ENV PORT 8080
-
-# Define the start command
-CMD ["java", "-jar", "restful-service.jar"]
-
-# Expose port 8080
-EXPOSE 8080
+# Continue with your application deployment
+RUN mkdir /opt/app
+COPY japp.jar /opt/app
+CMD ["java", "-jar", "/opt/app/japp.jar"]
