@@ -1,0 +1,16 @@
+plugins {
+    id 'java'
+}
+
+group 'com.novuss'
+
+dependencies {
+    implementation project(':service-domain')
+    implementation project(':service-core')
+    implementation project(':service-in')
+    implementation project(':service-repository')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.3'
+    implementation 'org.springframework.data:spring-data-jpa:3.0.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
+}
