@@ -2,46 +2,51 @@ version: '1'
 
 services:
   database:
-    container_name: database-container
-    build: ./mysql
+    container_name: novuss-database-container
     image: "mariadb:10.5.8"
+    volumes:
+      - ./mysql:/var/lib/mysql
     restart: always
     ports:
       - 3306:3306
     environment:
+      # Should be hidden in production environment
       MYSQL_DATABASE: novuss_db
       MYSQL_USER: novuss_user
       MYSQL_PASSWORD: enU03tr&xzC9
       MYSQL_ROOT_PASSWORD: enU03tr&xzC9
     networks:
-      - project-network
+      - bachelor-project-network
 
   database-admin:
-    container_name: adminer-container
+    container_name: novuss-adminer-container
     image: adminer
     ports:
-      - 8081:8080
+      - 8080:8080
     networks:
-      - project-network
-
-  restful-service:
-    container_name: restful-service-container
-    build: ./restful-service
-    restart: always
-    ports:
-      - "8080:8080"
-    networks:
-      - project-network
+      - bachelor-project-network
+  
+  # !!!!!!!!!!!!!!!!!!!Should be built only when the restful service is production ready!!!!!!!!!!!!!
+  # restful-service:
+  #   container_name: novuss-restful-service-container
+  #   build: ./restful-service
+  #   restart: on-failure
+  #   depends_on:
+  #     - database
+  #   ports:
+  #     - "8081:8081"
+  #   networks:
+  #     - bachelor-project-network
     
-  website:
-    container_name: website-container
-    build: ./website
-    restart: always
-    ports:
-      - "3000:3000"
-    networks:
-      - project-network
+  # website:
+  #   container_name: website-container
+  #   build: ./website
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - bachelor-project-network
 
 
 networks:
-  project-network:
+  bachelor-project-network:
