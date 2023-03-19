@@ -14,7 +14,7 @@ dependencies {
     implementation 'jakarta.transaction:jakarta.transaction-api:2.0.1'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
 
-    //implementation 'org.liquibase:liquibase-core:4.19.1'
+    implementation 'org.liquibase:liquibase-core:4.19.1'
 }
 
 test {
