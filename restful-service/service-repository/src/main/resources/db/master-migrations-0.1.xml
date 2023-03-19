@@ -26,6 +26,7 @@
             </column>
         </createTable>
     </changeSet>
+
     <changeSet id="create.contacts.table" author="emils.seflers">
         <createTable tableName="contacts">
             <column name="id" type="UUID" defaultValueComputed="UUID()">
@@ -302,23 +303,18 @@
     </changeSet>
     <changeSet id="create.competition_players.table" author="emils.seflers">
         <createTable tableName="competition_players">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="competition_id" type="UUID">
                 <constraints
                         nullable="false"
-                        foreignKeyName="fk_competition_players_competition_id"
-                        referencedTableName="competitions"
-                        referencedColumnNames="id"
+                        primaryKey="true"
+                        primaryKeyName="PK_COMPETITION_PLAYER_ID"
                 />
             </column>
             <column name="player_id" type="UUID">
                 <constraints
                         nullable="false"
-                        foreignKeyName="fk_competition_players_player_id"
-                        referencedTableName="players"
-                        referencedColumnNames="id"
+                        primaryKey="true"
+                        primaryKeyName="PK_COMPETITION_PLAYER_ID"
                 />
             </column>
             <column name="placement" type="INTEGER">
@@ -367,23 +363,19 @@
     </changeSet>
     <changeSet id="create.competition_referees.table" author="emils.seflers">
         <createTable tableName="competition_referees">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
             <column name="competition_id" type="UUID">
                 <constraints
                         nullable="false"
-                        foreignKeyName="fk_competition_referees_competition_id"
-                        referencedTableName="competitions"
-                        referencedColumnNames="id"
+                        primaryKey="true"
+                        primaryKeyName="PK_COMPETITION_REFEREE_ID"
                 />
             </column>
             <column name="referee_id" type="UUID">
                 <constraints
                         nullable="false"
-                        foreignKeyName="fk_competition_referees_referee_id"
-                        referencedTableName="referees"
-                        referencedColumnNames="id"
+                        primaryKey="true"
+                        primaryKeyName="PK_COMPETITION_REFEREE_ID"
+
                 />
             </column>
             <column name="role" type="VARCHAR(500)">

@@ -8,8 +8,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -17,29 +18,31 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "people")
-public class Person {
+@Table(name = "clubs")
+public class ClubEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
     @JdbcTypeCode(SqlTypes.CHAR)
-    UUID id;
-    @Column(name = "first_name")
-    String firstName;
-    @Column(name = "last_name")
-    String lastName;
-    @Column(name = "birth_day")
-    LocalDate birthDay;
+    private UUID id;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "image")
+    private String image;
     @Column(name = "created_at", updatable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "updated_at")
-    LocalDateTime updatedAt;
+    private LocalDateTime updatedAt;
+    @OneToOne
+    @JoinColumn(name = "contact_id")
+    private ContactInfoEntity contactInfo;
+    @OneToMany(mappedBy = "club")
+    private Set<PlayerEntity> players = new HashSet<>();
     @PrePersist
-    public void prePersist() {
+    private void prePersist() {
         createdAt = LocalDateTime.now();
     }
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
-
 }

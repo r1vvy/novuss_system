@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -17,33 +16,30 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "referees")
-public class Referee {
+@Table(name = "users")
+public class UserEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
     @JdbcTypeCode(SqlTypes.CHAR)
-    UUID id;
-    @Column(name = "city")
-    String city;
-    @Column(name = "category")
-    String category;
-    @Column(name = "commission_number")
-    String commissionNumber;
+    private UUID id;
+    @Column(name = "username")
+    private String username;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "password")
+    private String password;
+    @Column(name = "role")
+    private String role;
     @Column(name = "created_at", updatable = false)
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
     @Column(name = "updated_at")
-    LocalDateTime updatedAt;
-    @OneToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    Person person;
-
-
+    private LocalDateTime updatedAt;
     @PrePersist
-    public void prePersist() {
+    private void prePersist() {
         createdAt = LocalDateTime.now();
     }
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         updatedAt = LocalDateTime.now();
     }
 }

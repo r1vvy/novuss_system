@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd"
+        context="master">
+
+    <changeSet id="add.contact_id.competitions.table" author="emils.seflers">
+        <addColumn tableName="competitions">
+            <column name="contact_id" type="UUID">
+                <constraints nullable="true"
+                                foreignKeyName="fk_competitions_contact_info_id"
+                                referencedTableName="contacts"
+                                referencedColumnNames="id"/>
+                />
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="add.capacity.column.competitions.table" author="emils.seflers">
+        <addColumn tableName="competitions">
+            <column name="capacity" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>
