@@ -13,7 +13,7 @@ spring:
   jpa:
     hibernate:
       # TODO: production should be update
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: false
 
   liquibase:

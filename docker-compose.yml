@@ -26,7 +26,6 @@ services:
     networks:
       - bachelor-project-network
   
-  # !!!!!!!!!!!!!!!!!!!Should be built only when the restful service is production ready!!!!!!!!!!!!!
   # restful-service:
   #   container_name: novuss-restful-service-container
   #   build: ./restful-service
