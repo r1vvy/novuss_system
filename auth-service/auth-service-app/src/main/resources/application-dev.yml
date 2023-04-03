@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+
+  datasource:
+    username: 39103da9a830
+    password: 33e8a2bf8dc5
+    url: jdbc:mariadb://localhost:3306/novussfederation_db
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+
+  liquibase:
+    user: 39103da9a830
+    password: 33e8a2bf8dc5
+    url: jdbc:mariadb://localhost:3306/novussfederation_db
+    change-log: classpath:db/master.xml
+
+logging:
+  level:
+    com.novuss.authservice: DEBUG
+
+server:
+  error:
+    include-message: always
+  port: 8081

@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(':auth-service-core')
+    implementation project(':auth-service-domain')
+    implementation project(':auth-service-in')
+    implementation project(':auth-service-repository')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.3'
+    implementation 'org.springframework.data:spring-data-jpa:3.0.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.0.4'
+
+    implementation 'org.springframework.boot:spring-boot-actuator:3.0.4'
+}

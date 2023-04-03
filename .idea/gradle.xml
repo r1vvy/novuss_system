@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/auth-service" />
+        <option name="gradleHome" value="C:/Gradle/gradle-7.6" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/auth-service" />
+            <option value="$PROJECT_DIR$/auth-service/auth-service-app" />
+            <option value="$PROJECT_DIR$/auth-service/auth-service-core" />
+            <option value="$PROJECT_DIR$/auth-service/auth-service-domain" />
+            <option value="$PROJECT_DIR$/auth-service/auth-service-in" />
+            <option value="$PROJECT_DIR$/auth-service/auth-service-repository" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/restful-service" />
+        <option name="gradleHome" value="C:/Gradle/gradle-7.6" />
+        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/restful-service" />
+            <option value="$PROJECT_DIR$/restful-service/service-app" />
+            <option value="$PROJECT_DIR$/restful-service/service-core" />
+            <option value="$PROJECT_DIR$/restful-service/service-domain" />
+            <option value="$PROJECT_DIR$/restful-service/service-in" />
+            <option value="$PROJECT_DIR$/restful-service/service-repository" />
+            <option value="$PROJECT_DIR$/restful-service/sportscomp-core" />
+            <option value="$PROJECT_DIR$/restful-service/sportscomp-domain" />
+            <option value="$PROJECT_DIR$/restful-service/sportscomp-in" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
