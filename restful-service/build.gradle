@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'com.novuss'
+group 'com.novuss.restfulservice'
 version '1.0-SNAPSHOT'
 sourceCompatibility = '17'
 
@@ -11,8 +11,11 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-allprojects {
+subprojects {
     apply plugin: 'java'
+
+    group 'com.novuss'
+    version '1.0-SNAPSHOT'
 
     repositories {
         mavenCentral()

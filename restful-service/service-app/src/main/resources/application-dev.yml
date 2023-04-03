@@ -1,0 +1,32 @@
+spring:
+  config:
+    activate:
+      on-profile:
+        - dev
+
+  datasource:
+    username: ${REST_API_DB_USER}
+    password: ${REST_API_DB_USER_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    driver-class-name: ${SPRING_DATASOURCE_DRIVER}
+
+  jpa:
+    hibernate:
+      # TODO: production should be update
+      ddl-auto: validate
+    show-sql: false
+
+  liquibase:
+    user: ${REST_API_DB_USER}
+    password: ${REST_API_DB_USER_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    change-log: classpath:db/master.xml
+
+logging:
+  level:
+    com.novuss: DEBUG
+
+server:
+  error:
+    include-message: always
+  port: ${REST_API_PORT}

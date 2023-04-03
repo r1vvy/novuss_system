@@ -4,47 +4,24 @@
                    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="create.users.table" author="emils.seflers">
-        <createTable tableName="users">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="registered_at" type="DATE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="DATE">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-
     <changeSet id="create.contacts.table" author="emils.seflers">
         <createTable tableName="contacts">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="phone_number" type="VARCHAR(255)" />
             <column name="email" type="VARCHAR(30)" />
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.locations.table" author="emils.seflers">
         <createTable tableName="locations">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="contact_id" type="uuid">
@@ -70,7 +47,7 @@
     </changeSet>
     <changeSet id="create.people.table" author="emils.seflers">
         <createTable tableName="people">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="contact_id" type="uuid">
@@ -92,33 +69,33 @@
             <column name="birth_day" type="DATE">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.sports_classes.table" author="emils.seflers">
         <createTable tableName="sports_classes">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.licences.table" author="emils.seflers">
         <createTable tableName="licences">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="licence_number" type="VARCHAR(30)">
@@ -127,17 +104,17 @@
             <column name="licence_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.clubs.table" author="emils.seflers">
         <createTable tableName="clubs">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(30)">
@@ -152,17 +129,17 @@
                         referencedColumnNames="id"
                 />
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.players.table" author="emils.seflers">
         <createTable tableName="players">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
@@ -197,10 +174,10 @@
             <column name="gender" type="ENUM('MALE', 'FEMALE')">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -221,7 +198,7 @@
     </changeSet>
     <changeSet id="create.categories.table" author="emils.seflers">
         <createTable tableName="categories">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
@@ -234,7 +211,7 @@
     </changeSet>
     <changeSet id="create.competitions.table" author="emils.seflers">
         <createTable tableName="competitions">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
@@ -246,16 +223,16 @@
             <column name="image_location" type="VARCHAR(500)">
                 <constraints nullable="true"/>
             </column>
-            <column name="registration_open_at" type="DATE">
+            <column name="registration_open_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="registration_close_at" type="DATE">
+            <column name="registration_close_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="start_at" type="DATE">
+            <column name="start_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="end_at" type="DATE">
+            <column name="end_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
             <column name="category_id" type="uuid">
@@ -266,17 +243,17 @@
                         referencedColumnNames="id"
                 />
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.attachments.table" author="emils.seflers">
         <createTable tableName="attachments">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
@@ -293,10 +270,10 @@
                         referencedColumnNames="id"
                 />
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -323,17 +300,17 @@
             <column name="rating_change" type="INTEGER">
                 <constraints nullable="true"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
     <changeSet id="create.referees.table" author="emils.seflers">
         <createTable tableName="referees">
-            <column name="id" type="UUID" defaultValueComputed="UUID()">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
@@ -347,16 +324,16 @@
             <column name="city" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="category" type="ENUM('A', 'B', 'C', 'D', 'E')">
+            <column name="category" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="commission_number" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -375,16 +352,15 @@
                         nullable="false"
                         primaryKey="true"
                         primaryKeyName="PK_COMPETITION_REFEREE_ID"
-
                 />
             </column>
             <column name="role" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
-            <column name="registered_at" type="DATE">
+            <column name="registered_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATE">
+            <column name="updated_at" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
         </createTable>
