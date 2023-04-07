@@ -31,19 +31,20 @@ public class RefereeEntity {
     @Column(name = "commission_number")
     private String commissionNumber;
 
-    @Column(name = "date_issued", columnDefinition = "DATE")
-    private LocalDate dateIssued;
-
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity personEntity;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
+    private RefereeCategoryEntity category;
+
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    Instant createdAt;
+    private Instant createdAt;
     @Column(name = "updated_at", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    Instant updatedAt;
+    private Instant updatedAt;
 
     @PrePersist
     private void prePersist() {

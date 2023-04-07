@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.core.port.in;
+package com.novuss.restfulservice.core.port.in.person;
 
 import com.novuss.restfulservice.domain.Person;
 

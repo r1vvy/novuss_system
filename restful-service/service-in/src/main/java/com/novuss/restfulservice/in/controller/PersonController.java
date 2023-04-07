@@ -1,10 +1,6 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.*;
-import com.novuss.restfulservice.core.port.in.person.DeletePersonByIdUseCase;
-import com.novuss.restfulservice.core.port.in.person.GetAllPeopleUseCase;
-import com.novuss.restfulservice.core.port.in.person.GetPersonByIdUseCase;
-import com.novuss.restfulservice.core.port.in.person.SavePersonUseCase;
+import com.novuss.restfulservice.core.port.in.person.*;
 import com.novuss.restfulservice.in.converter.CreatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.PersonDomainToPersonDtoConverter;
 import com.novuss.restfulservice.in.converter.UpdatePersonInRequestToDomainConverter;

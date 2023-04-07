@@ -1,10 +1,7 @@
 package com.novuss.restfulservice.repository.converter;
 
 
-import com.novuss.restfulservice.domain.Person;
-import com.novuss.restfulservice.domain.Player;
-import com.novuss.restfulservice.domain.Referee;
-import com.novuss.restfulservice.domain.User;
+import com.novuss.restfulservice.domain.*;
 import com.novuss.restfulservice.repository.entity.*;
 import org.mapstruct.Mapper;
 
@@ -50,4 +47,6 @@ public interface MapStructMapper {
     PlayerEntity playerDomainToEntity(Player player);
     Referee refereeEntityToDomain(RefereeEntity refereeEntity);
     RefereeEntity refereeDomainToEntity(Referee referee);
+    RefereeCategory refereeCategoryEntityToDomain(RefereeCategoryEntity refereeCategoryEntity);
+    RefereeCategoryEntity refereeCategoryDomainToEntity(RefereeCategory refereeCategory);
 }

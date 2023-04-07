@@ -71,7 +71,7 @@ public class RefereeController {
                                                     @RequestBody UpdateRefereeInRequest request) {
         log.info("Received update referee request: {}", request);
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);
-        var updatedReferee = updateRefereeByIdUseCase.updateById(referee, id);
+        var updatedReferee = updateRefereeByIdUseCase.updateById(id, referee);
         var response = RefereeDomainToRefereeInResponseConverter.convert(updatedReferee);
 
         return ResponseEntity.ok(response);

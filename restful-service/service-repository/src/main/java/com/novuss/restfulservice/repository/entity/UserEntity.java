@@ -37,10 +37,10 @@ public class UserEntity {
     Set<UserRole> roles;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    Instant createdAt;
+    private Instant createdAt;
     @Column(name = "updated_at", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
-    Instant updatedAt;
+    private Instant updatedAt;
 
     @PrePersist
     private void prePersist() {

@@ -1,12 +1,10 @@
 package com.novuss.restfulservice.repository.adapter.referee;
 
-import com.novuss.restfulservice.core.port.in.referee.SaveRefereeUseCase;
-import com.novuss.restfulservice.core.port.out.person.SavePersonPort;
 import com.novuss.restfulservice.core.port.out.referee.SaveRefereePort;
-import com.novuss.restfulservice.domain.Person;
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.converter.MapStructMapper;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
+import com.novuss.restfulservice.repository.repository.jpa.RefereeCategoryJpaRepository;
 import com.novuss.restfulservice.repository.repository.jpa.RefereeJpaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ import org.springframework.stereotype.Component;
 public class SaveRefereeAdapter implements SaveRefereePort {
     private final RefereeJpaRepository refereeJpaRepository;
     private final PersonJpaRepository personJpaRepository;
+    private final RefereeCategoryJpaRepository refereeCategoryJpaRepository;
     private final MapStructMapper mapStructMapper;
 
     @Override
@@ -30,8 +29,19 @@ public class SaveRefereeAdapter implements SaveRefereePort {
                     var newPerson = mapStructMapper.personDomainToEntity(person);
                     return personJpaRepository.save(newPerson);
                 });
+
+        var refereeCategory = referee.refereeCategory();
+        var refereeCategoryEntity = refereeCategoryJpaRepository.findByTitle(refereeCategory.title())
+                .orElseGet(() -> {
+                    var newRefereeCategory = mapStructMapper.refereeCategoryDomainToEntity(refereeCategory);
+                    return refereeCategoryJpaRepository.save(newRefereeCategory);
+                });
+
         var refereeEntity = mapStructMapper.refereeDomainToEntity(referee);
         refereeEntity.setPersonEntity(personEntity);
+        refereeEntity.setCategory(refereeCategoryEntity);
+
+        refereeCategoryEntity.getReferees().add(refereeEntity);
 
         return mapStructMapper.refereeEntityToDomain(refereeJpaRepository.save(refereeEntity));
     }
