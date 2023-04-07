@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.repository.converter;
 
-import com.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.domain.UserRole;
 import jakarta.persistence.AttributeConverter;
 import org.springframework.stereotype.Component;
 

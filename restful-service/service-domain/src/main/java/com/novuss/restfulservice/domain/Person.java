@@ -1,4 +1,4 @@
-package com.restfulservice.domain;
+package com.novuss.restfulservice.domain;
 
 import lombok.Builder;
 import org.springframework.cglib.core.Local;

@@ -3,7 +3,7 @@ package com.novuss.restfulservice.core.service.person;
 import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.in.person.GetPersonByIdUseCase;
 import com.novuss.restfulservice.core.port.out.person.FindPersonByIdPort;
-import com.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Person;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

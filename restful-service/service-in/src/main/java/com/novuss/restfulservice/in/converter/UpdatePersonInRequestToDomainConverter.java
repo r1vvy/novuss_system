@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.in.converter;
 
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
-import com.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Person;
 import lombok.Builder;
 
 @Builder

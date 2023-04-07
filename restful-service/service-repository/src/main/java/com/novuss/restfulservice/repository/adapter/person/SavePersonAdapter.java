@@ -1,12 +1,9 @@
 package com.novuss.restfulservice.repository.adapter.person;
 
-import com.novuss.restfulservice.core.port.out.SavePlayerPort;
 import com.novuss.restfulservice.core.port.out.person.SavePersonPort;
 import com.novuss.restfulservice.repository.converter.MapStructMapper;
-import com.novuss.restfulservice.repository.entity.PersonEntity;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
-import com.restfulservice.domain.Person;
-import com.restfulservice.domain.Player;
+import com.novuss.restfulservice.domain.Person;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

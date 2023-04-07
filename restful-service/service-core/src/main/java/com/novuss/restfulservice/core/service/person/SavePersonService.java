@@ -4,7 +4,7 @@ import com.novuss.restfulservice.core.exception.EntityExistsException;
 import com.novuss.restfulservice.core.port.in.person.SavePersonUseCase;
 import com.novuss.restfulservice.core.port.out.person.FindPersonByFirstnameAndLastnamePort;
 import com.novuss.restfulservice.core.port.out.person.SavePersonPort;
-import com.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Person;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

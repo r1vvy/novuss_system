@@ -35,6 +35,7 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<PersonResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestBody CreatePersonInRequest request) {
+        log.info("Received create person request: {}", request);
 
         var person = CreatePersonInRequestToDomainConverter.convert(request);
         var createdPerson = savePersonUseCase.save(person);
@@ -52,14 +53,16 @@ public class PersonController {
     @GetMapping("/{id}")
     public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                               @PathVariable("id") String id) {
+        log.info("Received get person request: {}", id);
         var person = getPersonByIdUseCase.getById(id);
         var response = PersonDomainToPersonDtoConverter.convert(person);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<PersonResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+        log.info("Received get all people request");
         var people = getAllPeople.getAll();
 
         return ResponseEntity.ok(people.stream()
@@ -72,6 +75,7 @@ public class PersonController {
     public ResponseEntity<PersonResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                  @PathVariable("id") String id,
                                                  @RequestBody UpdatePersonInRequest request) {
+        log.info("Received update person request: {}", request);
         var person = UpdatePersonInRequestToDomainConverter.convert(request);
         var updatedPerson = updatePersonByIdUseCase.updateById(id, person);
         var response = PersonDomainToPersonDtoConverter.convert(updatedPerson);
@@ -83,6 +87,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @PathVariable("id") String id) {
+        log.info("Received delete person request: {}", id);
         deletePersonByIdUseCase.deleteById(id);
     }
 }

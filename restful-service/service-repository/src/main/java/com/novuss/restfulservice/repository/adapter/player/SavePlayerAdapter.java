@@ -3,7 +3,7 @@ package com.novuss.restfulservice.repository.adapter.player;
 import com.novuss.restfulservice.core.port.out.SavePlayerPort;
 import com.novuss.restfulservice.repository.converter.MapStructMapper;
 import com.novuss.restfulservice.repository.repository.jpa.PlayerJpaRepository;
-import com.restfulservice.domain.Player;
+import com.novuss.restfulservice.domain.Player;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package com.restfulservice.domain;
+package com.novuss.restfulservice.domain;
 
 public enum Gender {
     MALE,

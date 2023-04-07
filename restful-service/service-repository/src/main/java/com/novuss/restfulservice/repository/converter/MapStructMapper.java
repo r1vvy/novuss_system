@@ -1,8 +1,11 @@
 package com.novuss.restfulservice.repository.converter;
 
 
+import com.novuss.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Player;
+import com.novuss.restfulservice.domain.Referee;
+import com.novuss.restfulservice.domain.User;
 import com.novuss.restfulservice.repository.entity.*;
-import com.restfulservice.domain.*;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
@@ -35,11 +38,6 @@ public interface MapStructMapper {
 //    Location locationEntityToDomain(LocationEntity locationEntity);
 //    LocationEntity locationDomainToEntity(Location location);
 
-    Player playerEntityToDomain(PlayerEntity playerEntity);
-    PlayerEntity playerDomainToEntity(Player player);
-
-//    Referee refereeEntityToDomain(RefereeEntity refereeEntity);
-//    RefereeEntity refereeDomainToEntity(Referee referee);
 //
 //    SportsClass sportsClassEntityToDomain(SportsClassEntity sportsClassEntity);
 //    SportsClassEntity sportsClassDomainToEntity(SportsClass sportsClass);
@@ -48,4 +46,8 @@ public interface MapStructMapper {
     UserEntity userDomainToEntity(User user);
     Person personEntityToDomain(PersonEntity personEntity);
     PersonEntity personDomainToEntity(Person person);
+    Player playerEntityToDomain(PlayerEntity playerEntity);
+    PlayerEntity playerDomainToEntity(Player player);
+    Referee refereeEntityToDomain(RefereeEntity refereeEntity);
+    RefereeEntity refereeDomainToEntity(Referee referee);
 }

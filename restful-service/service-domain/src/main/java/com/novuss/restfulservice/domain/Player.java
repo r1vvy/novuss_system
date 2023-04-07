@@ -1,10 +1,8 @@
-package com.restfulservice.domain;
+package com.novuss.restfulservice.domain;
 
 import lombok.Builder;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Builder

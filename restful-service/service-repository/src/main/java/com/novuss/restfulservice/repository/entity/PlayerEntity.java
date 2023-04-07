@@ -1,19 +1,16 @@
 package com.novuss.restfulservice.repository.entity;
 
 import com.novuss.restfulservice.repository.converter.GenderConverter;
-import com.restfulservice.domain.Gender;
+import com.novuss.restfulservice.domain.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data

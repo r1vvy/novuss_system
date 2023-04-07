@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.in.converter;
 
 import com.novuss.restfulservice.in.dto.request.CreatePlayerInRequest;
-import com.restfulservice.domain.Player;
+import com.novuss.restfulservice.domain.Player;
 import org.springframework.stereotype.Component;
 
 @Component

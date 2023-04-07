@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.in.converter;
 
 import com.novuss.restfulservice.in.dto.request.CreatePersonInRequest;
-import com.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Person;
 import org.springframework.stereotype.Component;
 
 @Component

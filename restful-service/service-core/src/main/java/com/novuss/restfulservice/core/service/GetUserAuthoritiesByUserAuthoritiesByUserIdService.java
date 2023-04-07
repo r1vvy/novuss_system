@@ -2,7 +2,7 @@ package com.novuss.restfulservice.core.service;
 
 import com.novuss.restfulservice.core.port.in.GetUserAuthoritiesByUserIdUseCase;
 import com.novuss.restfulservice.core.port.out.GetUserAuthoritiesByUserIdPort;
-import com.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.domain.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

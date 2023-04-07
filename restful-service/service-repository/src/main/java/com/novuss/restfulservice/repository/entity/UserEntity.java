@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.repository.entity;
 
 import com.novuss.restfulservice.repository.converter.UserRoleConverter;
-import com.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.domain.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,9 +11,6 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
 

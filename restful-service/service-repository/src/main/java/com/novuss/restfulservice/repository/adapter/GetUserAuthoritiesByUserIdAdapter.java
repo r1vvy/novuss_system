@@ -2,7 +2,7 @@ package com.novuss.restfulservice.repository.adapter;
 
 import com.novuss.restfulservice.core.port.out.GetUserAuthoritiesByUserIdPort;
 import com.novuss.restfulservice.repository.repository.jpa.UserJpaRepository;
-import com.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.domain.UserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

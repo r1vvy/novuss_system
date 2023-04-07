@@ -1,7 +1,9 @@
 package com.novuss.restfulservice.in.converter;
 
+import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.in.dto.response.PersonResponse;
-import com.restfulservice.domain.Person;
+import com.novuss.restfulservice.domain.Person;
+import com.novuss.restfulservice.in.dto.response.RefereeInResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,5 +20,19 @@ public class PersonDomainToPersonDtoConverter {
                 .createdAt(person.createdAt())
                 .updatedAt(person.updatedAt())
                 .build();
+    }
+
+    @Component
+    public static class RefereeDomainToRefereeInResponseConverter {
+        public static RefereeInResponse convert(Referee referee) {
+            return RefereeInResponse.builder()
+                    .id(referee.id())
+                    .city(referee.city())
+                    .commissionNumber(referee.commissionNumber())
+                    .dateIssued(referee.dateIssued())
+                    .refereeCategory(referee.refereeCategory())
+                    .person(referee.person())
+                    .build();
+        }
     }
 }

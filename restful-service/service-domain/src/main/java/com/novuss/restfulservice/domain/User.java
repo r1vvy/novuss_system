@@ -1,4 +1,4 @@
-package com.restfulservice.domain;
+package com.novuss.restfulservice.domain;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
