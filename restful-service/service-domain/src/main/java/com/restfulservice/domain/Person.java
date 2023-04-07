@@ -1,17 +1,23 @@
 package com.restfulservice.domain;
 
+import lombok.Builder;
+import org.springframework.cglib.core.Local;
+
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Builder
 public record Person(
       UUID id,
       String firstName,
       String lastName,
-      String personCode,
+      String email,
+      String phoneNumber,
       LocalDate birthDay,
-      ZonedDateTime createdAt,
-      ZonedDateTime updatedAt,
-      ContactInfo contactInfo
+      Instant createdAt,
+      Instant updatedAt
 ) {
 }

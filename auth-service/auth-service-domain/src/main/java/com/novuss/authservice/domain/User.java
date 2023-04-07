@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Set;
@@ -21,8 +22,8 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Set<UserRole> roles;
-    private ZonedDateTime createdAt;
-    private ZonedDateTime updatedAt;
+    private Instant createdAt;
+    private Instant updatedAt;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

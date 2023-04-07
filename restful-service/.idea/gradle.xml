@@ -15,9 +15,6 @@
             <option value="$PROJECT_DIR$/service-domain" />
             <option value="$PROJECT_DIR$/service-in" />
             <option value="$PROJECT_DIR$/service-repository" />
-            <option value="$PROJECT_DIR$/sportscomp-core" />
-            <option value="$PROJECT_DIR$/sportscomp-domain" />
-            <option value="$PROJECT_DIR$/sportscomp-in" />
           </set>
         </option>
       </GradleProjectSettings>

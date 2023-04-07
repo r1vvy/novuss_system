@@ -11,13 +11,6 @@ configurations {
         extendsFrom annotationProcessor
     }
 }
-
-jar {
-    manifest {
-        attributes 'Main-Class': 'com.novuss.authservice.app.AuthorizationApp'
-    }
-}
-
 subprojects {
     apply plugin: 'java'
 
@@ -26,6 +19,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        gradlePluginPortal()
     }
 
     dependencies {

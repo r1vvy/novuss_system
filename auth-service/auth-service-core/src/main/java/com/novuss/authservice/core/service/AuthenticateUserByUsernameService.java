@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticateUserByUsernameService implements AuthenticateUserByUsernameUseCase {
@@ -27,8 +29,12 @@ public class AuthenticateUserByUsernameService implements AuthenticateUserByUser
         );
         var user = findUserByUsernamePort.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username = " + username));
-        var token = jwtService.generateToken(user);
 
-        return token;
+        var claims = Map.of(
+                "id", user.getId(),
+                "roles", user.getRoles()
+        );
+
+        return jwtService.generateToken(claims, user);
     }
 }

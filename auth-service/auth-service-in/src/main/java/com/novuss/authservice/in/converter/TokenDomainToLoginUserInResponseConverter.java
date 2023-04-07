@@ -1,12 +1,12 @@
 package com.novuss.authservice.in.converter;
+import com.novuss.authservice.in.dto.response.AuthResponse;
+import org.springframework.stereotype.Component;
 
-import com.novuss.authservice.domain.Token;
-import com.novuss.authservice.in.dto.response.AuthenticationResponse;
-
+@Component
 public class TokenDomainToLoginUserInResponseConverter {
 
-    public static AuthenticationResponse convert(String token) {
-        return AuthenticationResponse.builder()
+    public static AuthResponse convert(String token) {
+        return AuthResponse.builder()
                 .token(token)
                 .build();
     }

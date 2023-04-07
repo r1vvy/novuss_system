@@ -22,10 +22,10 @@
             <column name = "roles" type="SET('ADMIN', 'USER', 'EVENT_MANAGER')">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="DATETIME">
+            <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATETIME">
+            <column name="updated_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -1,5 +1,6 @@
 package com.novuss.restfulservice.repository.entity;
 
+import com.novuss.restfulservice.repository.converter.GenderConverter;
 import com.restfulservice.domain.Gender;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -24,40 +26,33 @@ public class PlayerEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
     @JdbcTypeCode(SqlTypes.CHAR)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(name = "image")
     private String image;
     @Column(name = "rating")
     private Integer rating;
     @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE')")
-    private Enum<Gender> genderEnum;
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Convert(converter = GenderConverter.class)
+    private Gender gender;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity personEntity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "club_id", referencedColumnName = "id", nullable = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private ClubEntity club;
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "licence_id", referencedColumnName = "id", nullable = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private LicenceEntity licenceEntity;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sports_class_id", referencedColumnName = "id", nullable = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private SportsClassEntity sportsClassEntity;
+    @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant createdAt;
+    @Column(name = "updated_at", columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant updatedAt;
 
     @PrePersist
     private void prePersist() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
     }
+
     @PreUpdate
     private void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
     }
 
 }

@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-app/auth-service.auth-service-app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-app/auth-service.auth-service-app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-core/auth-service.auth-service-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-core/auth-service.auth-service-core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-domain/auth-service.auth-service-domain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-domain/auth-service.auth-service-domain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-in/auth-service.auth-service-in.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-in/auth-service.auth-service-in.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-in/auth-service.auth-service-in.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-in/auth-service.auth-service-in.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/auth-service-repository/auth-service.auth-service-repository.main.iml" filepath="$PROJECT_DIR$/.idea/modules/auth-service-repository/auth-service.auth-service-repository.main.iml" />
     </modules>

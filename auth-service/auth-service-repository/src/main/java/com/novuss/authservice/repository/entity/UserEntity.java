@@ -5,8 +5,13 @@ import com.novuss.authservice.repository.converter.UserRoleConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.TimeZoneStorage;
+import org.hibernate.annotations.TimeZoneStorageType;
 import org.hibernate.type.SqlTypes;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Set;
@@ -33,18 +38,20 @@ public class UserEntity {
     @Column(name = "roles", columnDefinition = "SET('ADMIN', 'USER', 'EVENT_MANAGER')")
     @Convert(converter = UserRoleConverter.class)
     Set<UserRole> roles;
-    @Column(name = "created_at", updatable = false)
-    ZonedDateTime createdAt;
-    @Column(name = "updated_at")
-    ZonedDateTime updatedAt;
+    @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant createdAt;
+    @Column(name = "updated_at", columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant updatedAt;
 
     @PrePersist
     private void prePersist() {
-        createdAt = ZonedDateTime.now(ZoneOffset.UTC);
+        createdAt = Instant.now();
     }
 
     @PreUpdate
     private void preUpdate() {
-        updatedAt = ZonedDateTime.now(ZoneOffset.UTC);
+        updatedAt = Instant.now();
     }
 }

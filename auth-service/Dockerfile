@@ -2,8 +2,8 @@ FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-COPY build/libs/auth-service-1.0-SNAPSHOT.jar /app/auth-service-app.jar
+COPY auth-service-app/build/libs/auth-service-app-1.0-SNAPSHOT-all.jar auth-service-app.jar
 
 EXPOSE ${AUTH_SERVICE_PORT}
 
-ENTRYPOINT ["java", "-cp", "/app/auth-service-app.jar", "com.novuss.authservice.app.AuthorizationApp"]
+ENTRYPOINT ["java","-jar", "/app/auth-service-app.jar"]

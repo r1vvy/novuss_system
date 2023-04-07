@@ -1,8 +1,5 @@
 rootProject.name = 'restful-service'
 include 'service-app'
-include 'sportscomp-core'
-include 'sportscomp-domain'
-include 'sportscomp-in'
 include 'service-core'
 include 'service-domain'
 include 'service-in'

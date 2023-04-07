@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class PersonEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
     @JdbcTypeCode(SqlTypes.CHAR)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @Column(name = "first_name")
     private String firstName;
@@ -29,16 +31,24 @@ public class PersonEntity {
     private String lastName;
     @Column(name = "birth_day")
     private LocalDate birthDay;
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant createdAt;
+    @Column(name = "updated_at", columnDefinition = "DATETIME")
+    @Temporal(TemporalType.TIMESTAMP)
+    Instant updatedAt;
+
     @PrePersist
     private void prePersist() {
-        createdAt = LocalDateTime.now();
+        createdAt = Instant.now();
     }
+
     @PreUpdate
     private void preUpdate() {
-        updatedAt = LocalDateTime.now();
+        updatedAt = Instant.now();
     }
 }
