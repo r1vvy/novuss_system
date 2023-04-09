@@ -2,6 +2,7 @@ package com.novuss.restfulservice.core.service.person;
 
 import com.novuss.restfulservice.core.exception.EntityExistsException;
 import com.novuss.restfulservice.core.port.in.person.SavePersonUseCase;
+import com.novuss.restfulservice.core.port.out.person.FindPersonByFirstnameAndLastnameAndPhonenumberPort;
 import com.novuss.restfulservice.core.port.out.person.FindPersonByFirstnameAndLastnamePort;
 import com.novuss.restfulservice.core.port.out.person.SavePersonPort;
 import com.novuss.restfulservice.domain.Person;
@@ -13,20 +14,21 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class SavePersonService implements SavePersonUseCase {
-    private final FindPersonByFirstnameAndLastnamePort findPersonByFirstnameAndLastnamePort;
     private final SavePersonPort savePersonPort;
+    private final FindPersonByFirstnameAndLastnameAndPhonenumberPort findPersonByFirstnameAndLastnameAndPhonenumberPort;
 
     @Override
     public Person save(Person person) {
-        var firstName = person.firstName();
-        var lastName = person.lastName();
-
-        findPersonByFirstnameAndLastnamePort.findByFirstnameAndLastname(firstName, lastName)
-                .ifPresent(p ->
-                {
-                    log.error("Person with name {} and lastname {} already exists", firstName, lastName);
-                    throw new EntityExistsException("Person with name " + firstName + " and lastname " + lastName + " already exists");
-                });
+        findPersonByFirstnameAndLastnameAndPhonenumberPort.findByFirstnameAndLastnameAndPhonenumber(
+                person.firstName(),
+                person.lastName(),
+                person.phoneNumber()
+        ).ifPresent(p -> {
+            throw new EntityExistsException("Person with firstname = " + person.firstName() +
+                    " and lastname = " + person.lastName() +
+                    " and phonenumber = " + person.phoneNumber()
+                    + " already exists");
+        });
 
         return savePersonPort.save(person);
     }

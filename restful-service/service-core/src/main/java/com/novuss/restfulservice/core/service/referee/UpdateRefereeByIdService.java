@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -17,6 +19,7 @@ public class UpdateRefereeByIdService implements UpdateRefereeByIdUseCase {
 
     @Override
     public Referee updateById(String id, Referee referee) {
+        log.info("Updating referee with id = {}", id);
 
         return updateRefereeByIdPort.updateById(id, referee);
     }

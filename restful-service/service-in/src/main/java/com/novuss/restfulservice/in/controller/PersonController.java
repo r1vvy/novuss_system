@@ -2,11 +2,11 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.person.*;
 import com.novuss.restfulservice.in.converter.CreatePersonInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.PersonDomainToPersonDtoConverter;
 import com.novuss.restfulservice.in.converter.UpdatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreatePersonInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
-import com.novuss.restfulservice.in.dto.response.PersonResponse;
+import com.novuss.restfulservice.in.converter.PersonDomainToPersonInResponseConverter;
+import com.novuss.restfulservice.in.dto.response.PersonInResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/players")
+@RequestMapping("/api/v1/people")
 @AllArgsConstructor
 @Slf4j
 public class PersonController {
@@ -29,13 +29,13 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
-    public ResponseEntity<PersonResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @RequestBody CreatePersonInRequest request) {
+    public ResponseEntity<PersonInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
+                                                   @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);
 
         var person = CreatePersonInRequestToDomainConverter.convert(request);
         var createdPerson = savePersonUseCase.save(person);
-        var response = PersonDomainToPersonDtoConverter.convert(createdPerson);
+        var response = PersonDomainToPersonInResponseConverter.convert(createdPerson);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -46,43 +46,43 @@ public class PersonController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                              @PathVariable("id") String id) {
-        log.info("Received get person request: {}", id);
+    @GetMapping("")
+    public ResponseEntity<PersonInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
+                                                @RequestParam("id") String id) {
+        log.info("Received get person by id request: {}", id);
         var person = getPersonByIdUseCase.getById(id);
-        var response = PersonDomainToPersonDtoConverter.convert(person);
+        var response = PersonDomainToPersonInResponseConverter.convert(person);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PersonResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping("/all")
+    public ResponseEntity<List<PersonInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all people request");
         var people = getAllPeople.getAll();
 
         return ResponseEntity.ok(people.stream()
-                .map(PersonDomainToPersonDtoConverter::convert)
+                .map(PersonDomainToPersonInResponseConverter::convert)
                 .collect(Collectors.toList())
         );
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PersonResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @PathVariable("id") String id,
-                                                 @RequestBody UpdatePersonInRequest request) {
+    @PutMapping("")
+    public ResponseEntity<PersonInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
+                                                   @RequestParam("id") String id,
+                                                   @RequestBody UpdatePersonInRequest request) {
         log.info("Received update person request: {}", request);
         var person = UpdatePersonInRequestToDomainConverter.convert(request);
         var updatedPerson = updatePersonByIdUseCase.updateById(id, person);
-        var response = PersonDomainToPersonDtoConverter.convert(updatedPerson);
+        var response = PersonDomainToPersonInResponseConverter.convert(updatedPerson);
 
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @PathVariable("id") String id) {
+                                       @RequestParam("id") String id) {
         log.info("Received delete person request: {}", id);
         deletePersonByIdUseCase.deleteById(id);
     }

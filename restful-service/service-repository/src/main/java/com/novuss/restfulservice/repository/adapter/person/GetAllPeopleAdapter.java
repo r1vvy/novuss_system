@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.repository.adapter.person;
 
 import com.novuss.restfulservice.core.port.out.person.GetAllPeoplePort;
-import com.novuss.restfulservice.repository.converter.MapStructMapper;
+import com.novuss.restfulservice.repository.converter.PersonEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
 import com.novuss.restfulservice.domain.Person;
 import lombok.RequiredArgsConstructor;
@@ -16,13 +16,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class GetAllPeopleAdapter implements GetAllPeoplePort {
     private final PersonJpaRepository personJpaRepository;
-    private final MapStructMapper mapStructMapper;
 
     @Override
     public List<Person> getAllPeople() {
         return personJpaRepository.findAll()
                 .stream()
-                .map(mapStructMapper::personEntityToDomain)
+                .map(PersonEntityToDomainConverter::convert)
                 .collect(Collectors.toList());
     }
 }

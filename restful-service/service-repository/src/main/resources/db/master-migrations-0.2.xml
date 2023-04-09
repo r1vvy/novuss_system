@@ -24,6 +24,12 @@
             <column name="birth_day" type="DATE">
                 <constraints nullable="false"/>
             </column>
+            <column name="is_referee" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_player" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
             <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>
@@ -84,7 +90,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -103,7 +109,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -126,7 +132,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </createTable>
     </changeSet>
@@ -148,7 +154,7 @@
         <addForeignKeyConstraint baseTableName="referees"
                                  baseColumnNames="category_id"
                                  constraintName="fk_referees_category_id"
-                                 referencedTableName="referees"
+                                 referencedTableName="referee_categories"
                                  referencedColumnNames="id"
         />
     </changeSet>

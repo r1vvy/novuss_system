@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SavePlayerService implements SavePlayerUseCase {
     private final SavePlayerPort savePlayerPort;
-
     @Override
     public Player save(Player player) {
         return savePlayerPort.save(player);

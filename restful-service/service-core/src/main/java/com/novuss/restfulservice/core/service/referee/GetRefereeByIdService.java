@@ -19,7 +19,7 @@ public class GetRefereeByIdService implements GetRefereeByIdUseCase {
 
     @Override
     public Referee getById(String id) {
-        log.info("Searching for person with id = {}", id);
+        log.info("Searching for referee with id = {}", id);
         return findRefereeByIdPort.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Person with id = " + id + " not found"));
     }

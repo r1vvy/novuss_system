@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.repository.adapter.person;
 
 import com.novuss.restfulservice.core.port.out.person.FindPersonByFirstnameAndLastnamePort;
-import com.novuss.restfulservice.repository.converter.MapStructMapper;
+import com.novuss.restfulservice.repository.converter.PersonEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
 import com.novuss.restfulservice.domain.Person;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,12 @@ import java.util.Optional;
 @Slf4j
 public class FindPersonByFirstnameAndLastnameAdapter implements FindPersonByFirstnameAndLastnamePort {
     private final PersonJpaRepository personJpaRepository;
-    private final MapStructMapper mapStructMapper;
 
     @Override
     public Optional<Person> findByFirstnameAndLastname(String name, String lastname) {
-        return personJpaRepository.findByFirstNameAndLastName(name, lastname)
-                .map(mapStructMapper::personEntityToDomain);
+        var personEntity = personJpaRepository.findByFirstNameAndLastName(name, lastname);
+        log.info("Person with name {} and lastname {} found", name, lastname);
+
+        return personEntity.map(PersonEntityToDomainConverter::convert);
     }
 }

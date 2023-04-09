@@ -18,7 +18,7 @@ public class DeleteRefereeByIdAdapter implements DeleteRefereeByIdPort {
 
     @Override
     public void deleteById(String id) {
-        log.info("Deleting person with id = {}", id);
         refereeJpaRepository.deleteById(UUID.fromString(id));
+        log.info("Referee with id {} deleted", id);
     }
 }

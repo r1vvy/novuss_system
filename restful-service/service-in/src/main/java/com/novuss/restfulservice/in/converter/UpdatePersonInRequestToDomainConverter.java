@@ -9,11 +9,11 @@ public class UpdatePersonInRequestToDomainConverter {
 
     public static Person convert(UpdatePersonInRequest updatePersonInRequest) {
         return Person.builder()
-                .firstName(updatePersonInRequest.firstName())
-                .lastName(updatePersonInRequest.lastName())
-                .birthDay(updatePersonInRequest.birthDay())
-                .phoneNumber(updatePersonInRequest.phoneNumber())
-                .email(updatePersonInRequest.email())
-                .build();
+            .firstName(updatePersonInRequest.firstName())
+            .lastName(updatePersonInRequest.lastName())
+            .birthDay(updatePersonInRequest.birthDay())
+            .phoneNumber(updatePersonInRequest.phoneNumber())
+            .email(updatePersonInRequest.email())
+            .build();
     }
 }

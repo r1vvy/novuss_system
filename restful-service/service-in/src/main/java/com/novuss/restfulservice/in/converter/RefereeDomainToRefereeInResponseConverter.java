@@ -9,12 +9,13 @@ public class RefereeDomainToRefereeInResponseConverter {
 
     public static RefereeInResponse convert(Referee referee) {
         return RefereeInResponse.builder()
-                .id(referee.id())
-                .city(referee.city())
-                .commissionNumber(referee.commissionNumber())
-                .dateIssued(referee.dateIssued())
-                .refereeCategory(referee.refereeCategory())
-                .person(referee.person())
-                .build();
+            .id(referee.id())
+            .city(referee.city())
+            .commissionNumber(referee.commissionNumber())
+            .refereeCategory(referee.category())
+            .person(referee.person())
+            .createdAt(referee.createdAt())
+            .updatedAt(referee.updatedAt())
+            .build();
     }
 }

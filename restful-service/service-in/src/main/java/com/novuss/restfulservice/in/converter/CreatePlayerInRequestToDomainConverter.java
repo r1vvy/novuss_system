@@ -7,13 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class CreatePlayerInRequestToDomainConverter {
     public static Player convert(CreatePlayerInRequest createPlayerInRequest) {
-        var person = PersonDtoToDomainConverter.convert(createPlayerInRequest.person());
 
         return Player.builder()
-                .image(createPlayerInRequest.image())
-                .rating(createPlayerInRequest.rating())
-                .person(person)
-                .gender(createPlayerInRequest.gender())
-                .build();
+            .image(createPlayerInRequest.image())
+            .rating(createPlayerInRequest.rating())
+            .person(createPlayerInRequest.person())
+            .gender(createPlayerInRequest.gender())
+            .build();
     }
 }

@@ -33,7 +33,7 @@ public class RefereeController {
 
         var referee = CreateRefereeInRequestToDomainConverter.convert(request);
         var createdReferee = saveRefereeUseCase.save(referee);
-        var response = com.novuss.restfulservice.in.converter.RefereeDomainToRefereeInResponseConverter.convert(createdReferee);
+        var response = RefereeDomainToRefereeInResponseConverter.convert(createdReferee);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -44,30 +44,30 @@ public class RefereeController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping()
     public ResponseEntity<RefereeInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @PathVariable("id") String id) {
-        log.info("Received get referee request: {}", id);
+                                                 @RequestParam("id") String id) {
+        log.info("Received get referee by id request: {}", id);
         var referee = getRefereeByIdUseCase.getById(id);
-        var response = com.novuss.restfulservice.in.converter.RefereeDomainToRefereeInResponseConverter.convert(referee);
+        var response = RefereeDomainToRefereeInResponseConverter.convert(referee);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<RefereeInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referees request");
         var referee = getAllRefereesUseCase.getAll();
 
         return ResponseEntity.ok(referee.stream()
-                .map(com.novuss.restfulservice.in.converter.RefereeDomainToRefereeInResponseConverter::convert)
+                .map(RefereeDomainToRefereeInResponseConverter::convert)
                 .collect(Collectors.toList())
         );
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     public ResponseEntity<RefereeInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                    @PathVariable("id") String id,
+                                                    @RequestParam("id") String id,
                                                     @RequestBody UpdateRefereeInRequest request) {
         log.info("Received update referee request: {}", request);
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);
@@ -81,7 +81,7 @@ public class RefereeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @PathVariable("id") String id) {
-        log.info("Received delete referee request: {}", id);
+        log.info("Received delete referee by id request: {}", id);
         deleteRefereeByIdUseCase.deleteById(id);
     }
 }

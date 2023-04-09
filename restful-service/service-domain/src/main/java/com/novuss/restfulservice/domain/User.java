@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Builder(toBuilder = true)
 @Data
 public class User implements UserDetails {
-    private UUID id;
+    private String id;
     private String username;
     private String email;
     private String password;

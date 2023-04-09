@@ -8,12 +8,11 @@ import org.springframework.stereotype.Component;
 public class CreateRefereeInRequestToDomainConverter {
     public static Referee convert(CreateRefereeInRequest createRefereeInRequest) {
         return Referee.builder()
-                .city(createRefereeInRequest.city())
-                .commissionNumber(createRefereeInRequest.commissionNumber())
-                .commissionNumber(createRefereeInRequest.commissionNumber())
-                .dateIssued(createRefereeInRequest.dateIssued())
-                .refereeCategory(createRefereeInRequest.refereeCategory())
-                .person(createRefereeInRequest.person())
-                .build();
+            .city(createRefereeInRequest.city())
+            .commissionNumber(createRefereeInRequest.commissionNumber())
+            .commissionNumber(createRefereeInRequest.commissionNumber())
+            .category(createRefereeInRequest.refereeCategory())
+            .person(createRefereeInRequest.person())
+            .build();
     }
 }

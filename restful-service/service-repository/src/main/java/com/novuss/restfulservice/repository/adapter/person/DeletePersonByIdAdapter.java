@@ -16,7 +16,7 @@ public class DeletePersonByIdAdapter implements DeletePersonByIdPort {
 
     @Override
     public void deleteById(String id) {
-        log.info("Deleting person with id = {}", id);
         personJpaRepository.deleteById(UUID.fromString(id));
+        log.info("Person with id {} deleted", id);
     }
 }

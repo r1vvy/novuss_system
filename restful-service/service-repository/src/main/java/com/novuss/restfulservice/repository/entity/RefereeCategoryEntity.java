@@ -10,7 +10,9 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -33,7 +35,8 @@ public class RefereeCategoryEntity {
     private LocalDate dateIssued;
 
     @OneToMany(mappedBy = "category")
-    private List<RefereeEntity> referees;
+    @Builder.Default
+    private Set<RefereeEntity> referees = new HashSet<>();
 
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
