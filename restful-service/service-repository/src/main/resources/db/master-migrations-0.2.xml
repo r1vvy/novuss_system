@@ -102,9 +102,6 @@
             <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date_issued" type="DATE">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>
@@ -156,6 +153,16 @@
                                  constraintName="fk_referees_category_id"
                                  referencedTableName="referee_categories"
                                  referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.unique.foreign.key.cosntraints.to.people.relations" author="emils.seflers">
+        <addUniqueConstraint tableName="referees"
+                             columnNames="person_id"
+                             constraintName="uk_referees_person_id"
+        />
+        <addUniqueConstraint tableName="players"
+                             columnNames="person_id"
+                             constraintName="uk_players_person_id"
         />
     </changeSet>
 </databaseChangeLog>

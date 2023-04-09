@@ -12,16 +12,15 @@ import java.util.stream.Collectors;
 public class RefereeCategoryDomainToEntityConverter {
 
     public static RefereeCategoryEntity convert(RefereeCategory refereeCategory) {
-        var referees = refereeCategory.referees() == null
-                ? new HashSet<RefereeEntity>()
-                : refereeCategory.referees()
-                .stream()
-                .map(RefereeDomainToEntityConverter::convert)
-                .collect(Collectors.toSet());
+        var referees = refereeCategory.referees() == null ?
+                new HashSet<RefereeEntity>() :
+                refereeCategory.referees().stream()
+                        .map(RefereeDomainToEntityConverter::convert)
+                        .collect(Collectors.toSet());
 
         return RefereeCategoryEntity.builder()
+                .id(refereeCategory.id())
                 .title(refereeCategory.title())
-                .dateIssued(refereeCategory.dateIssued())
                 .referees(referees)
                 .createdAt(refereeCategory.createdAt())
                 .updatedAt(refereeCategory.updatedAt())

@@ -4,24 +4,26 @@ import com.novuss.restfulservice.domain.RefereeCategory;
 import com.novuss.restfulservice.repository.entity.RefereeCategoryEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class RefereeCategoryEntityToDomainConverter {
 
-        public static RefereeCategory convert(RefereeCategoryEntity entity) {
+    public static RefereeCategory convert(RefereeCategoryEntity entity) {
+        var builder = RefereeCategory.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt());
 
-            return RefereeCategory.builder()
-                    .id(entity.getId().toString())
-                    .createdAt(entity.getCreatedAt())
-                    .updatedAt(entity.getUpdatedAt())
-                    .title(entity.getTitle())
-                    .dateIssued(entity.getDateIssued())
-                    .referees(entity.getReferees()
-                            .stream()
-                            .map(RefereeEntityToDomainConverter::convert)
-                            .collect(Collectors.toSet())
-                    )
-                    .build();
-        }
+        Optional.ofNullable(entity.getReferees())
+                .ifPresent(referees -> builder.referees(
+                        referees.stream()
+                                .map(RefereeEntityToDomainConverter::convert)
+                                .collect(Collectors.toSet())
+                ));
+
+        return builder.build();
+    }
 }

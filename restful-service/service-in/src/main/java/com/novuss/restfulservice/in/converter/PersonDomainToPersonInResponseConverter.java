@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class PersonDomainToPersonInResponseConverter {
     public static PersonInResponse convert (Person person) {
         return PersonInResponse.builder()
-            .id(person.id())
+            .id(person.id().toString())
             .firstName(person.firstName())
             .lastName(person.lastName())
             .email(person.email())

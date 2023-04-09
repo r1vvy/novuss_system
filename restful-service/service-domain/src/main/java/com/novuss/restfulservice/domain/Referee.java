@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Builder
 public record Referee(
-    String id,
+    UUID id,
     String city,
     String commissionNumber,
     Instant createdAt,

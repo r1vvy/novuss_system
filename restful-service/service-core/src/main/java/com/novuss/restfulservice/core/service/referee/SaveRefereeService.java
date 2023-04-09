@@ -19,10 +19,6 @@ public class SaveRefereeService implements SaveRefereeUseCase {
 
     @Override
     public Referee save(Referee referee) {
-        log.info("Saving referee with firstname = {} and lastname = {}",
-                referee.person().firstName(),
-                referee.person().lastName()
-        );
 
         return saveRefereePort.save(referee);
     }

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Builder
 public record Person(
-      String id,
+      UUID id,
       String firstName,
       String lastName,
       String email,

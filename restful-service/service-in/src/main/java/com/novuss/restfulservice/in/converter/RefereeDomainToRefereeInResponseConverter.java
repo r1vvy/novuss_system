@@ -9,7 +9,7 @@ public class RefereeDomainToRefereeInResponseConverter {
 
     public static RefereeInResponse convert(Referee referee) {
         return RefereeInResponse.builder()
-            .id(referee.id())
+            .id(referee.id().toString())
             .city(referee.city())
             .commissionNumber(referee.commissionNumber())
             .refereeCategory(referee.category())

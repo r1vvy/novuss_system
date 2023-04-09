@@ -31,9 +31,6 @@ public class RefereeCategoryEntity {
     @Column(name = "title")
     private String title;
 
-    @Column(name = "date_issued", columnDefinition = "DATE")
-    private LocalDate dateIssued;
-
     @OneToMany(mappedBy = "category")
     @Builder.Default
     private Set<RefereeEntity> referees = new HashSet<>();

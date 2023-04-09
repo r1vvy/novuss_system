@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Builder
 public record CreatePlayerResponse(
-        UUID id,
+        String id,
         String image,
         Integer rating,
         @JsonDeserialize(using = GenderDeserializer.class)

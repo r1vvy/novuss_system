@@ -19,8 +19,6 @@ public class UpdateRefereeByIdService implements UpdateRefereeByIdUseCase {
 
     @Override
     public Referee updateById(String id, Referee referee) {
-        log.info("Updating referee with id = {}", id);
-
         return updateRefereeByIdPort.updateById(id, referee);
     }
 }

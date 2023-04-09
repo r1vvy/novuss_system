@@ -10,13 +10,14 @@ import java.util.UUID;
 public class PersonDomainToEntityConverter {
     public static PersonEntity convert(Person person) {
         return PersonEntity.builder()
+                .id(person.id())
                 .birthDay(person.birthDay())
-                .createdAt(person.createdAt())
-                .updatedAt(person.updatedAt())
                 .email(person.email())
                 .lastName(person.lastName())
                 .firstName(person.firstName())
                 .phoneNumber(person.phoneNumber())
+                .createdAt(person.createdAt())
+                .updatedAt(person.updatedAt())
                 .build();
     }
 }

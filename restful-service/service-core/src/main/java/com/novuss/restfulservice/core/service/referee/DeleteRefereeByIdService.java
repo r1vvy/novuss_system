@@ -16,9 +16,9 @@ public class DeleteRefereeByIdService implements DeleteRefereeByIdUseCase {
     private final FindRefereeByIdPort findRefereeByIdPort;
 
     public void deleteById(String id) {
-        log.info("Deleting person with id = {}", id);
+        log.info("Trying to delete referee with id = {}", id);
         findRefereeByIdPort.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Person with id = " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Referee not found"));
 
         deleteRefereeByIdPort.deleteById(id);
     }

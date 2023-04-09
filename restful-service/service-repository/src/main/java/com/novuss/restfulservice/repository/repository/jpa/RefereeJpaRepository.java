@@ -13,4 +13,7 @@ import java.util.UUID;
 public interface RefereeJpaRepository extends JpaRepository<RefereeEntity, UUID> {
     @Query("SELECT r FROM RefereeEntity r WHERE r.personEntity.firstName = :firstName AND r.personEntity.lastName = :lastName")
     Optional<RefereeEntity> findByPersonFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
+    @Query("SELECT r FROM RefereeEntity r WHERE r.personEntity.id = :personId")
+    Optional<RefereeEntity> findByPersonId(@Param("personId") UUID personId);
 }

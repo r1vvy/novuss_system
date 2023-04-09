@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class RefereeDomainToEntityConverter {
     public static RefereeEntity convert(Referee referee) {
         return RefereeEntity.builder()
+                .id(referee.id())
                 .personEntity(PersonDomainToEntityConverter.convert(referee.person()))
                 .category(RefereeCategoryDomainToEntityConverter.convert(referee.category()))
                 .commissionNumber(referee.commissionNumber())

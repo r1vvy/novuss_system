@@ -35,10 +35,6 @@ public class PersonEntity {
     private String phoneNumber;
     @Column(name = "email")
     private String email;
-    @Column(name = "is_referee", columnDefinition = "BOOLEAN")
-    private Boolean isReferee;
-    @Column(name = "is_player", columnDefinition = "BOOLEAN")
-    private Boolean isPlayer;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     Instant createdAt;

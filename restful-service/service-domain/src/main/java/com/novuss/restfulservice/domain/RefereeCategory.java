@@ -10,9 +10,8 @@ import java.util.UUID;
 
 @Builder
 public record RefereeCategory(
-        String id,
+        UUID id,
         String title,
-        LocalDate dateIssued,
         Instant createdAt,
         Instant updatedAt,
         Set<Referee> referees
