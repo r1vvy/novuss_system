@@ -2,6 +2,7 @@ package com.novuss.restfulservice.repository.adapter.referee;
 
 import com.novuss.restfulservice.core.exception.EntityExistsException;
 import com.novuss.restfulservice.core.exception.EntityNotFoundException;
+import com.novuss.restfulservice.core.port.out.referee.FindRefereeByIdPort;
 import com.novuss.restfulservice.core.port.out.referee.SaveRefereePort;
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.domain.RefereeCategory;

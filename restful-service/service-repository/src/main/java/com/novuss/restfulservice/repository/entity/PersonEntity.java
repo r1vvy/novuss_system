@@ -37,9 +37,11 @@ public class PersonEntity {
     private String email;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
+    @Basic(fetch = FetchType.EAGER)
     Instant createdAt;
     @Column(name = "updated_at", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
+    @Basic(fetch = FetchType.EAGER)
     Instant updatedAt;
 
     @PrePersist
