@@ -18,8 +18,8 @@ public class FindRefereeByPersonFirstnameAndLastnameAdapter implements FindRefer
 
     @Override
     public Optional<Referee> find(String name, String lastname) {
+        log.info("Trying to find referee by name {} and lastname {}", name, lastname);
         var refereeEntity = refereeJpaRepository.findByPersonFirstNameAndLastName(name, lastname);
-        log.info("Referee with name {} and lastname {} found", name, lastname);
 
         return refereeEntity.map(RefereeEntityToDomainConverter::convert);
     }

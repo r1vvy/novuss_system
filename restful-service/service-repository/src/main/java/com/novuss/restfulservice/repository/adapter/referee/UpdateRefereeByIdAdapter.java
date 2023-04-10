@@ -26,6 +26,11 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
     private final PersonJpaRepository personJpaRepository;
     private final RefereeCategoryJpaRepository refereeCategoryJpaRepository;
 
+
+    // TODO: should check if a category with the title exists before updating. If exists, change the
+    //  category of the referee to the updated category.
+    // TODO: should check if a person with name, surname and date of birth exists before updating.
+
     @Override
     public Referee updateById(String id, Referee referee) {
         log.info("Updating referee with id {}", id);

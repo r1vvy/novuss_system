@@ -1,7 +1,9 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.referee.*;
-import com.novuss.restfulservice.in.converter.*;
+import com.novuss.restfulservice.in.converter.referee.CreateRefereeInRequestToDomainConverter;
+import com.novuss.restfulservice.in.converter.referee.RefereeDomainToRefereeInResponseConverter;
+import com.novuss.restfulservice.in.converter.referee.UpdateRefereeInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.response.RefereeInResponse;
@@ -43,8 +45,7 @@ public class RefereeController {
 
         return ResponseEntity.created(location).body(response);
     }
-
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<RefereeInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestParam("id") String id) {
         log.info("Received get referee by id request: {}", id);
@@ -53,7 +54,6 @@ public class RefereeController {
 
         return ResponseEntity.ok(response);
     }
-
     @GetMapping("/all")
     public ResponseEntity<List<RefereeInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referees request");
@@ -64,7 +64,6 @@ public class RefereeController {
                 .collect(Collectors.toList())
         );
     }
-
     @PutMapping
     public ResponseEntity<RefereeInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                     @RequestParam("id") String id,
@@ -76,12 +75,12 @@ public class RefereeController {
 
         return ResponseEntity.ok(response);
     }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @RequestParam("id") String id) {
         log.info("Received delete referee by id request: {}", id);
         deleteRefereeByIdUseCase.deleteById(id);
     }
+
 }

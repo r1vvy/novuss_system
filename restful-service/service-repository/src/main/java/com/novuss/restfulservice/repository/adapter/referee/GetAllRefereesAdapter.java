@@ -19,6 +19,7 @@ public class GetAllRefereesAdapter implements GetAllRefereesPort {
 
     @Override
     public List<Referee> getAllReferees() {
+
         return refereeJpaRepository.findAll()
                 .stream()
                 .map(RefereeEntityToDomainConverter::convert)

@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.in.converter;
+package com.novuss.restfulservice.in.converter.player;
 
 import com.novuss.restfulservice.in.dto.response.CreatePlayerResponse;
 import com.novuss.restfulservice.domain.Player;

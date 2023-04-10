@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.in.converter;
+package com.novuss.restfulservice.in.converter.referee;
 
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.in.dto.response.RefereeInResponse;

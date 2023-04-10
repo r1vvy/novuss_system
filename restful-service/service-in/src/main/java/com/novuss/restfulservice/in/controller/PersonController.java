@@ -1,11 +1,11 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.person.*;
-import com.novuss.restfulservice.in.converter.CreatePersonInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.UpdatePersonInRequestToDomainConverter;
+import com.novuss.restfulservice.in.converter.person.CreatePersonInRequestToDomainConverter;
+import com.novuss.restfulservice.in.converter.person.UpdatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreatePersonInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
-import com.novuss.restfulservice.in.converter.PersonDomainToPersonInResponseConverter;
+import com.novuss.restfulservice.in.converter.person.PersonDomainToPersonInResponseConverter;
 import com.novuss.restfulservice.in.dto.response.PersonInResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class PersonController {
         return ResponseEntity.created(location).body(response);
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<PersonInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                 @RequestParam("id") String id) {
         log.info("Received get person by id request: {}", id);
@@ -67,7 +67,7 @@ public class PersonController {
         );
     }
 
-    @PutMapping("")
+    @PutMapping
     public ResponseEntity<PersonInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestParam("id") String id,
                                                    @RequestBody UpdatePersonInRequest request) {
@@ -79,7 +79,7 @@ public class PersonController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @RequestParam("id") String id) {

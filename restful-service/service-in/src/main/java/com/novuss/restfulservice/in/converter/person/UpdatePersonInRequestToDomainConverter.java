@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.in.converter;
+package com.novuss.restfulservice.in.converter.person;
 
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
 import com.novuss.restfulservice.domain.Person;

@@ -31,8 +31,7 @@ public class RefereeCategoryEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "category")
-    @Builder.Default
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<RefereeEntity> referees = new HashSet<>();
 
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)

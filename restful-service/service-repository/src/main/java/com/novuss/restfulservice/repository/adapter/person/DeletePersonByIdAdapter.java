@@ -16,6 +16,12 @@ public class DeletePersonByIdAdapter implements DeletePersonByIdPort {
 
     @Override
     public void deleteById(String id) {
+        personJpaRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> {
+                    log.error("Person with id {} not found", id);
+                    throw new RuntimeException("Person not found");
+                });
+
         personJpaRepository.deleteById(UUID.fromString(id));
         log.info("Person with id {} deleted", id);
     }

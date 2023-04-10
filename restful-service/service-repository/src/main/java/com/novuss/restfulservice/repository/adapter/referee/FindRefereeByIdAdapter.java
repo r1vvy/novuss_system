@@ -20,7 +20,6 @@ public class FindRefereeByIdAdapter implements FindRefereeByIdPort {
     @Override
     public Optional<Referee> findById(String id) {
         var refereeEntity = refereeJpaRepository.findById(UUID.fromString(id));
-        log.info("Referee with id {} found", id);
 
         return refereeEntity.map(RefereeEntityToDomainConverter::convert);
     }

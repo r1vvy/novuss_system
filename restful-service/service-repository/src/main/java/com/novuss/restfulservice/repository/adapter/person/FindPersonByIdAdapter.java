@@ -20,7 +20,7 @@ public class FindPersonByIdAdapter implements FindPersonByIdPort {
     @Override
     public Optional<Person> findById(String id) {
         var personEntity = personJpaRepository.findById(UUID.fromString(id));
-        log.info("Person with id {} found", id);
+
         return personEntity.map(PersonEntityToDomainConverter::convert);
     }
 }

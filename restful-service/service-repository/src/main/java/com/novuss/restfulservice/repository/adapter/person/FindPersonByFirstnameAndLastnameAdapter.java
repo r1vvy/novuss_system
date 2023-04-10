@@ -19,7 +19,6 @@ public class FindPersonByFirstnameAndLastnameAdapter implements FindPersonByFirs
     @Override
     public Optional<Person> findByFirstnameAndLastname(String name, String lastname) {
         var personEntity = personJpaRepository.findByFirstNameAndLastName(name, lastname);
-        log.info("Person with name {} and lastname {} found", name, lastname);
 
         return personEntity.map(PersonEntityToDomainConverter::convert);
     }
