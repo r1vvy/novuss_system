@@ -33,9 +33,12 @@ public class UpdateRefereeCategoryByIdAdapter implements UpdateRefereeCategoryBy
         var updatedRefereeCategoryEntity = RefereeCategoryDomainToEntityConverter.convert(category);
         updatedRefereeCategoryEntity.setId(categoryId);
         updatedRefereeCategoryEntity.setCreatedAt(existingRefereeCategory.getCreatedAt());
+        updatedRefereeCategoryEntity.setUpdatedAt(existingRefereeCategory.getUpdatedAt());
+        updatedRefereeCategoryEntity.setReferees(existingRefereeCategory.getReferees());
 
-        return RefereeCategoryEntityToDomainConverter.convert(
-                refereeCategoryJpaRepository.saveAndFlush(updatedRefereeCategoryEntity)
-        );
+        var updatedRefereeCategoryEntityFromRepo = refereeCategoryJpaRepository.save(updatedRefereeCategoryEntity);
+        log.info("Referee category with id {} updated", id);
+
+        return RefereeCategoryEntityToDomainConverter.convert(updatedRefereeCategoryEntityFromRepo);
     }
 }

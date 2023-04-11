@@ -10,10 +10,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Builder
@@ -21,6 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @Table(name = "referee_categories")
+@NamedEntityGraph(name = "RefereeCategoryEntity.referees", attributeNodes = @NamedAttributeNode("referees"))
 public class RefereeCategoryEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
@@ -41,6 +39,12 @@ public class RefereeCategoryEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
+
+    public void addReferee(RefereeEntity referee) {
+        referee.setCategory(this);
+        referees.add(referee);
+    }
+
     @PrePersist
     private void prePersist() {
         createdAt = Instant.now();
@@ -49,5 +53,29 @@ public class RefereeCategoryEntity {
     @PreUpdate
     private void preUpdate() {
         updatedAt = Instant.now();
+    }
+
+    @Override
+    public String toString() {
+        return "RefereeCategoryEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", referees=" + referees.size() +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RefereeCategoryEntity)) return false;
+        RefereeCategoryEntity that = (RefereeCategoryEntity) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
     }
 }

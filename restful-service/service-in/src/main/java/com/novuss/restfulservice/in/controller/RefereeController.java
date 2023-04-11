@@ -6,7 +6,7 @@ import com.novuss.restfulservice.in.converter.referee.RefereeDomainToRefereeInRe
 import com.novuss.restfulservice.in.converter.referee.UpdateRefereeInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeInRequest;
-import com.novuss.restfulservice.in.dto.response.RefereeInResponse;
+import com.novuss.restfulservice.in.dto.response.RefereeResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,8 +29,8 @@ public class RefereeController {
     private final DeleteRefereeByIdUseCase deleteRefereeByIdUseCase;
 
     @PostMapping
-    public ResponseEntity<RefereeInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                    @RequestBody CreateRefereeInRequest request) {
+    public ResponseEntity<RefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
+                                                  @RequestBody CreateRefereeInRequest request) {
         log.info("Received create referee request: {}", request);
 
         var referee = CreateRefereeInRequestToDomainConverter.convert(request);
@@ -46,8 +46,8 @@ public class RefereeController {
         return ResponseEntity.created(location).body(response);
     }
     @GetMapping
-    public ResponseEntity<RefereeInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @RequestParam("id") String id) {
+    public ResponseEntity<RefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
+                                               @RequestParam("id") String id) {
         log.info("Received get referee by id request: {}", id);
         var referee = getRefereeByIdUseCase.getById(id);
         var response = RefereeDomainToRefereeInResponseConverter.convert(referee);
@@ -55,7 +55,7 @@ public class RefereeController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/all")
-    public ResponseEntity<List<RefereeInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<List<RefereeResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referees request");
         var referee = getAllRefereesUseCase.getAll();
 
@@ -65,9 +65,9 @@ public class RefereeController {
         );
     }
     @PutMapping
-    public ResponseEntity<RefereeInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                    @RequestParam("id") String id,
-                                                    @RequestBody UpdateRefereeInRequest request) {
+    public ResponseEntity<RefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
+                                                  @RequestParam("id") String id,
+                                                  @RequestBody UpdateRefereeInRequest request) {
         log.info("Received update referee request: {}", request);
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);
         var updatedReferee = updateRefereeByIdUseCase.updateById(id, referee);

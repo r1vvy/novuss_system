@@ -1,21 +1,19 @@
 package com.novuss.restfulservice.in.dto.response;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.novuss.restfulservice.domain.Person;
-import com.novuss.restfulservice.domain.RefereeCategory;
+import com.novuss.restfulservice.in.dto.RefereeCategoryDto;
 import lombok.Builder;
 import java.time.Instant;
-import java.util.UUID;
 
 @Builder
-public record RefereeInResponse(
+public record RefereeResponse(
         String id,
         String city,
         String commissionNumber,
         Instant createdAt,
         Instant updatedAt,
-        RefereeCategory refereeCategory,
+        RefereeCategoryDto category,
         Person person
 ) {
 

@@ -2,6 +2,7 @@ package com.novuss.restfulservice.repository.converter;
 
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.entity.RefereeEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component

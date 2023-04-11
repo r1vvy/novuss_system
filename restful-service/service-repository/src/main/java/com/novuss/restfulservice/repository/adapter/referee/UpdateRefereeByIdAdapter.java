@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Component
@@ -29,7 +30,6 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
 
     // TODO: should check if a category with the title exists before updating. If exists, change the
     //  category of the referee to the updated category.
-    // TODO: should check if a person with name, surname and date of birth exists before updating.
 
     @Override
     public Referee updateById(String id, Referee referee) {
@@ -39,21 +39,22 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
         var existingPerson = existingReferee.getPersonEntity();
         var existingRefereeCategory = existingReferee.getCategory();
 
+        var updatedRefereeCategoryEntity = changeRefereeCategory(existingReferee, existingRefereeCategory, referee);
         var updatedPersonEntity = PersonDomainToEntityConverter.convert(referee.person());
-        var updatedRefereeCategoryEntity = RefereeCategoryDomainToEntityConverter.convert(referee.category());
-
         updatedPersonEntity.setId(existingPerson.getId());
-        updatedRefereeCategoryEntity.setId(existingRefereeCategory.getId());
-
         updatedPersonEntity.setCreatedAt(existingPerson.getCreatedAt());
-        updatedRefereeCategoryEntity.setCreatedAt(existingRefereeCategory.getCreatedAt());
 
-        var updatedRefereeEntity = existingReferee.toBuilder()
-                .personEntity(updatedPersonEntity)
-                .category(updatedRefereeCategoryEntity)
-                .build();
+        personJpaRepository.save(updatedPersonEntity);
+        refereeCategoryJpaRepository.save(updatedRefereeCategoryEntity);
 
-        var newRefereeEntity = refereeJpaRepository.save(updatedRefereeEntity);
+        var updatedRefereeEntity = RefereeDomainToEntityConverter.convert(referee);
+        updatedRefereeEntity.setId(existingReferee.getId());
+        updatedRefereeEntity.setCreatedAt(existingReferee.getCreatedAt());
+
+        updatedRefereeEntity.setPersonEntity(updatedPersonEntity);
+        updatedRefereeEntity.setCategory(updatedRefereeCategoryEntity);
+
+        var newRefereeEntity = refereeJpaRepository.saveAndFlush(updatedRefereeEntity);
         log.info("Referee with id {} updated", id);
 
         return RefereeEntityToDomainConverter.convert(newRefereeEntity);
@@ -64,5 +65,21 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
             log.error("Referee with id {} not found", id);
             return new EntityNotFoundException("Referee with id " + id + " not found");
         });
+    }
+    private RefereeCategoryEntity changeRefereeCategory(RefereeEntity existingReferee, RefereeCategoryEntity existingRefereeCategory, Referee updatedReferee) {
+        var updatedCategoryForReferee = refereeCategoryJpaRepository.findByTitle(updatedReferee.category().title());
+
+        if(!updatedCategoryForReferee.isPresent()) {
+            log.error("Referee category with title {} not found", updatedReferee.category().title());
+            throw new EntityNotFoundException("Referee category with title " + updatedReferee.category().title() + " not found");
+        }
+
+        var updatedCategory = updatedCategoryForReferee.get();
+        existingRefereeCategory.getReferees().remove(existingReferee);
+        updatedCategory.addReferee(existingReferee);
+        updatedCategory.setUpdatedAt(Instant.now());
+        log.info("Changed referee category to {}", updatedReferee.category().title());
+
+        return updatedCategory;
     }
 }

@@ -10,6 +10,7 @@ import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @Data
@@ -46,6 +47,10 @@ public class RefereeEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
 
+    public void setCategory(RefereeCategoryEntity category) {
+        this.category = category;
+    }
+
     @PrePersist
     private void prePersist() {
         createdAt = Instant.now();
@@ -56,5 +61,29 @@ public class RefereeEntity {
         updatedAt = Instant.now();
     }
 
+    @Override
+    public String toString() {
+        return "RefereeEntity{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", commissionNumber='" + commissionNumber + '\'' +
+                ", personEntity=" + personEntity +
+                ", category=" + category.getId() +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RefereeEntity)) return false;
+        RefereeEntity that = (RefereeEntity) o;
+        return Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }
