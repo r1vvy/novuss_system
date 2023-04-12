@@ -10,6 +10,7 @@
         </processorPath>
         <module name="restful-service.service-app.main" />
         <module name="restful-service.service-in.main" />
+        <module name="restful-service.service-out.main" />
         <module name="restful-service.service-domain.main" />
         <module name="restful-service.service-core.main" />
       </profile>

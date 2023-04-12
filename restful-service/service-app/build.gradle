@@ -2,6 +2,7 @@ dependencies {
     implementation project(':service-domain')
     implementation project(':service-core')
     implementation project(':service-in')
+    implementation project(':service-out')
     implementation project(':service-repository')
 
     implementation 'org.springframework.boot:spring-boot-starter-web:3.0.3'

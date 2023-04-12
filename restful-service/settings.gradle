@@ -4,4 +4,5 @@ include 'service-core'
 include 'service-domain'
 include 'service-in'
 include 'service-repository'
+include 'service-out'
 

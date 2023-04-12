@@ -1,0 +1,6 @@
+dependencies {
+    implementation project(':service-domain')
+    implementation project(':service-core')
+
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.0.3'
+}

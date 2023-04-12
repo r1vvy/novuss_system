@@ -27,10 +27,6 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
     private final PersonJpaRepository personJpaRepository;
     private final RefereeCategoryJpaRepository refereeCategoryJpaRepository;
 
-
-    // TODO: should check if a category with the title exists before updating. If exists, change the
-    //  category of the referee to the updated category.
-
     @Override
     public Referee updateById(String id, Referee referee) {
         log.info("Updating referee with id {}", id);
@@ -63,7 +59,7 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
     private RefereeEntity findRefereeFromRepoById(UUID id) {
         return refereeJpaRepository.findById(id).orElseThrow(() -> {
             log.error("Referee with id {} not found", id);
-            return new EntityNotFoundException("Referee with id " + id + " not found");
+            throw new EntityNotFoundException("Referee with id " + id + " not found");
         });
     }
     private RefereeCategoryEntity changeRefereeCategory(RefereeEntity existingReferee, RefereeCategoryEntity existingRefereeCategory, Referee updatedReferee) {

@@ -36,11 +36,12 @@ public class JwtAuthenticationFilterService extends OncePerRequestFilter {
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
-            log.error("Missing or invalid Authorization header");
+            log.warn("Missing or invalid Authorization header");
             return;
         }
 
-        jwt = authHeader.substring(7);
+        jwt = authHeader.replace("Bearer ", "");
+        log.debug("JWT token: {}", jwt);
         username = jwtService.getUsernameFromToken(jwt);
         if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             log.info("Checking authentication for user " + username);

@@ -1,12 +1,14 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.person.*;
+import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.converter.person.CreatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.person.UpdatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreatePersonInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
 import com.novuss.restfulservice.in.converter.person.PersonDomainToPersonInResponseConverter;
 import com.novuss.restfulservice.in.dto.response.PersonInResponse;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,6 +31,7 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PersonInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);

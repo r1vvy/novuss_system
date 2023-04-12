@@ -4,12 +4,14 @@ import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCa
 import com.novuss.authservice.core.port.out.FindUserByUsernamePort;
 import com.novuss.authservice.core.security.JwtService;
 import com.novuss.authservice.domain.User;
+import com.novuss.authservice.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Map;
 
 @Service
@@ -29,10 +31,12 @@ public class AuthenticateUserByUsernameService implements AuthenticateUserByUser
         );
         var user = findUserByUsernamePort.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username = " + username));
-
+        var roles = user.getRoles().stream()
+                .map(UserRole::name)
+                .toArray(String[]::new);
         var claims = Map.of(
                 "id", user.getId(),
-                "roles", user.getRoles()
+                "roles", (Object) roles
         );
 
         return jwtService.generateToken(claims, user);

@@ -30,8 +30,8 @@ public class UserController {
         return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<GetUserInResponse> getUser(@PathVariable String id) {
+    @GetMapping
+    public ResponseEntity<GetUserInResponse> getUser(@RequestParam String id) {
         log.debug("Recieved get user request: {}", id);
 
         var user = findUserByIdUseCase.findUserById(id);
