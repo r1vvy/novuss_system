@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.core.service;
+package com.novuss.restfulservice.core.service.player;
 
 import com.novuss.restfulservice.core.port.in.player.SavePlayerUseCase;
 import com.novuss.restfulservice.core.port.out.SavePlayerPort;

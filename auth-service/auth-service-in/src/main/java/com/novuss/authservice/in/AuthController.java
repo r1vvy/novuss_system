@@ -1,9 +1,9 @@
 package com.novuss.authservice.in;
 
-import com.novuss.authservice.core.port.in.AuthorizeRequestByTokenUseCase;
-import com.novuss.authservice.core.port.in.ExtendTokenExpiryUseCase;
+import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
+import com.novuss.authservice.core.port.in.token.ExtendTokenExpiryUseCase;
 import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCase;
-import com.novuss.authservice.in.converter.StringToAuthenticationResponseConverter;
+import com.novuss.authservice.in.converter.TokenInStringToAuthenticationResponseConverter;
 import com.novuss.authservice.in.dto.request.AuthenticationRequest;
 import com.novuss.authservice.in.dto.request.AuthorizationRequest;
 import com.novuss.authservice.in.dto.response.AuthResponse;
@@ -24,7 +24,7 @@ public class AuthController {
     public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthenticationRequest request) {
         log.info("Recieved authentication request from: {}", request.username());
         var token = AuthenticateUserByUsernameUseCase.authenticateUserByUsername(request.username(), request.password());
-        var response = StringToAuthenticationResponseConverter.convert(token);
+        var response = TokenInStringToAuthenticationResponseConverter.convert(token);
 
         return ResponseEntity.ok(response);
     }
@@ -33,12 +33,14 @@ public class AuthController {
             @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody AuthorizationRequest request) {
         log.info("Recieved authorization request");
-        authorizeRequestByTokenUseCase.authorize(authorizationHeader, request.requiredAuthorities());
 
-        var newToken = extendTokenExpiryUseCase.extendTokenExpiry(authorizationHeader);
+        var token = authorizationHeader.replace("Bearer ", "");
+        authorizeRequestByTokenUseCase.authorize(token, request.requiredAuthorities());
+        var newToken = extendTokenExpiryUseCase.extendTokenExpiry(token);
         log.info("Extended token expiry");
 
-        var response = StringToAuthenticationResponseConverter.convert(newToken);
+        var response = TokenInStringToAuthenticationResponseConverter.convert(newToken);
+        log.info("Converted token to response: {}", response);
 
         return ResponseEntity.ok(response);
     }

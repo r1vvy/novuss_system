@@ -1,4 +1,4 @@
-package com.novuss.restfulservice.in.converter;
+package com.novuss.restfulservice.in.converter.refereeCategory;
 
 import com.novuss.restfulservice.domain.RefereeCategory;
 import com.novuss.restfulservice.in.dto.RefereeCategoryDto;

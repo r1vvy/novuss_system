@@ -42,11 +42,12 @@ public class PersonController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response)
+                .path("?id={id}")
+                .buildAndExpand(response.id())
                 .toUri();
 
-        return ResponseEntity.created(location).body(response);
+        return ResponseEntity.created(location)
+                .body(response);
     }
 
     @GetMapping

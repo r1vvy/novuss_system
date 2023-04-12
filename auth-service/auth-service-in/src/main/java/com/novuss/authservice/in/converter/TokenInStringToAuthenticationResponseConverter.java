@@ -4,7 +4,7 @@ import com.novuss.authservice.in.dto.response.AuthResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StringToAuthenticationResponseConverter {
+public class TokenInStringToAuthenticationResponseConverter {
 
     public static AuthResponse convert (String token) {
         return AuthResponse.builder()

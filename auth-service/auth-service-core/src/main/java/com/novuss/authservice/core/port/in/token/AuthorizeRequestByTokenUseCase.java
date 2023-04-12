@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.port.in;
+package com.novuss.authservice.core.port.in.token;
 
 import com.novuss.authservice.domain.UserRole;
 

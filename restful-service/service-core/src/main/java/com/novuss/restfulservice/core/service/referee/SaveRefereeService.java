@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class SaveRefereeService implements SaveRefereeUseCase {
     private final SaveRefereePort saveRefereePort;
-    private final FindPersonByFirstnameAndLastnameAndPhonenumberPort findPersonByFirstnameAndLastnameAndPhonenumberPort;
 
     @Override
     public Referee save(Referee referee) {

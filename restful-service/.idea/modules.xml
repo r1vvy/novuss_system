@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-in/restful-service.service-in.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service-in/restful-service.service-in.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-out/restful-service.service-out.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service-out/restful-service.service-out.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-repository/restful-service.service-repository.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service-repository/restful-service.service-repository.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service-repository/restful-service.service-repository.test.iml" filepath="$PROJECT_DIR$/.idea/modules/service-repository/restful-service.service-repository.test.iml" />
     </modules>
   </component>
 </project>

@@ -1,21 +1,15 @@
 package com.novuss.restfulservice.in.util;
 
-import com.novuss.restfulservice.core.port.in.AuthorizeUserUseCase;
-import com.novuss.restfulservice.core.port.in.GetUserIdFromTokenUseCase;
-import com.novuss.restfulservice.core.port.in.GetUserAuthoritiesByUserIdUseCase;
-import com.novuss.restfulservice.core.port.in.TokenValidationUseCase;
+import com.novuss.restfulservice.core.port.in.token.AuthorizeTokenUseCase;
 import com.novuss.restfulservice.domain.UserRole;
-import com.novuss.restfulservice.in.converter.StringToAuthResponse;
-import com.novuss.restfulservice.in.dto.response.AuthResponse;
+import com.novuss.restfulservice.in.converter.StringTokenToAuthResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -25,16 +19,22 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
+@Slf4j
 public class AuthorizationInterceptor implements HandlerInterceptor {
-    private final AuthorizeUserUseCase authorizeUserUseCase;
+    private final AuthorizeTokenUseCase authorizeTokenUseCase;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String authorizationHeader = request.getHeader("Authorization");
+        log.info("Intercepting request");
+        var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new RuntimeException("Missing or invalid Authorization header");
+            log.error("Missing or invalid Authorization header for request: {}, {}",
+                    request.getRequestURI(),
+                    request.getMethod()
+            );
+            throw new AuthorizationServiceException("Missing or invalid Authorization header");
         }
-
+        log.debug("Authorization header: {}", authorizationHeader);
         var token = authorizationHeader.substring(7);
         var endpoint = request.getRequestURI();
         var method = HttpMethod.valueOf(request.getMethod());
@@ -43,15 +43,16 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
         if (requiredAuthorities.isEmpty()) {
             return true;
         }
-        var authResponse = StringToAuthResponse.convert(
-                authorizeUserUseCase.authorize(token, requiredAuthorities)
+        log.debug("Required authorities: {}", requiredAuthorities);
+
+        var authResponse = StringTokenToAuthResponse.convert(
+                authorizeTokenUseCase.authorize(token, requiredAuthorities)
         );
 
         if (authResponse == null || authResponse.token() == null) {
-            throw new RuntimeException("Invalid authorization response");
+            log.error("Invalid authorization response: {}", authResponse);
+            throw new AuthorizationServiceException("Invalid authorization response");
         }
-
-        // Add the new token to the response headers
         response.setHeader("Authorization", "Bearer " + authResponse.token());
 
         return true;
@@ -59,8 +60,9 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
 
     private List<UserRole> getRequiredAuthoritiesForEndpoint(Object handler, String endpoint, HttpMethod method) {
         if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            RequiresAuthority requiresAuthority = handlerMethod.getMethodAnnotation(RequiresAuthority.class);
+            var handlerMethod = (HandlerMethod) handler;
+            var requiresAuthority = handlerMethod.getMethodAnnotation(RequiresAuthority.class);
+
             if (requiresAuthority != null) {
                 return Arrays.asList(requiresAuthority.value());
             }

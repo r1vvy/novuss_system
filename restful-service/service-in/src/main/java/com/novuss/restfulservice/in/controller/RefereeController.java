@@ -39,8 +39,8 @@ public class RefereeController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(response)
+                .path("?id={id}")
+                .buildAndExpand(response.id())
                 .toUri();
 
         return ResponseEntity.created(location).body(response);
@@ -72,6 +72,7 @@ public class RefereeController {
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);
         var updatedReferee = updateRefereeByIdUseCase.updateById(id, referee);
         var response = RefereeDomainToRefereeInResponseConverter.convert(updatedReferee);
+
 
         return ResponseEntity.ok(response);
     }
