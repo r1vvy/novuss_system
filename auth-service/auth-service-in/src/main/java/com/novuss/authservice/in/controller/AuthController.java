@@ -1,15 +1,18 @@
-package com.novuss.authservice.in;
+package com.novuss.authservice.in.controller;
 
 import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
 import com.novuss.authservice.core.port.in.token.ExtendTokenExpiryUseCase;
 import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCase;
-import com.novuss.authservice.in.converter.TokenInStringToAuthenticationResponseConverter;
+import com.novuss.authservice.in.util.converter.TokenInStringToAuthenticationResponseConverter;
 import com.novuss.authservice.in.dto.request.AuthenticationRequest;
 import com.novuss.authservice.in.dto.request.AuthorizationRequest;
 import com.novuss.authservice.in.dto.response.AuthResponse;
+import jakarta.validation.Valid;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,7 +24,7 @@ public class AuthController {
     private final AuthorizeRequestByTokenUseCase authorizeRequestByTokenUseCase;
     private final ExtendTokenExpiryUseCase extendTokenExpiryUseCase;
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         log.info("Recieved authentication request from: {}", request.username());
         var token = AuthenticateUserByUsernameUseCase.authenticateUserByUsername(request.username(), request.password());
         var response = TokenInStringToAuthenticationResponseConverter.convert(token);

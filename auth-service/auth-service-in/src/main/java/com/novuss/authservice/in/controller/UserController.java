@@ -1,7 +1,7 @@
-package com.novuss.authservice.in;
+package com.novuss.authservice.in.controller;
 
-import com.novuss.authservice.in.converter.CreateUserInRequestToUserDomainConverter;
-import com.novuss.authservice.in.converter.UserDomainToGetUserInResponseConverter;
+import com.novuss.authservice.in.util.converter.CreateUserInRequestToUserDomainConverter;
+import com.novuss.authservice.in.util.converter.UserDomainToGetUserInResponseConverter;
 import com.novuss.authservice.core.port.in.user.CreateUserUseCase;
 import com.novuss.authservice.core.port.in.user.FindUserByIdUseCase;
 import com.novuss.authservice.in.dto.request.CreateUserInRequest;

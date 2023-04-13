@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.exception;
+package com.novuss.authservice.security.exception;
 
 import io.jsonwebtoken.JwtException;
 

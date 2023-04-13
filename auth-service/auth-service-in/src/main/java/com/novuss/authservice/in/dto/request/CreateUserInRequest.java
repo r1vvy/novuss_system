@@ -10,15 +10,15 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 import java.util.Set;
 
 public record CreateUserInRequest(
-        @NotBlank(message = "username cannot be blank")
+        @NotBlank(message = "Username cannot be blank")
         String username,
-        @NotBlank(message = "email cannot be blank")
-        @Email(message = "email must be valid")
+        @NotBlank(message = "Email cannot be blank")
+        @Email(message = "Email must be valid")
         String email,
-        @NotBlank(message = "password cannot be blank")
+        @NotBlank(message = "Password cannot be blank")
         String password,
 
-        @NotNull(message = "roles cannot be null")
+        @NotNull(message = "Roles cannot be null")
         Set<UserRole> roles
 ) {
 }

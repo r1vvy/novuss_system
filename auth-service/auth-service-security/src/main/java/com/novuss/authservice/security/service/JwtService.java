@@ -1,21 +1,24 @@
-package com.novuss.authservice.core.security;
+package com.novuss.authservice.security.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.novuss.authservice.core.exception.InvalidTokenException;
-import com.novuss.authservice.core.util.UserRoleDeserializer;
+import com.novuss.authservice.core.port.in.token.JwtUseCase;
 import com.novuss.authservice.domain.UserRole;
+import com.novuss.authservice.security.exception.InvalidTokenException;
+import com.novuss.authservice.security.util.UserRoleDeserializer;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.DecodingException;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.security.Key;
 import java.util.Date;
@@ -26,7 +29,7 @@ import java.util.function.Function;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class JwtService {
+public class JwtService implements JwtUseCase {
     // TODO: Move to config
     private static final String SECRET_KEY = "4D6251655468576D5A7134743777217A25432A46294A404E635266556A586E32";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
@@ -111,26 +114,31 @@ public class JwtService {
 
     public Claims getAllClaimsFromToken(String token) {
         try {
+
             return Jwts.parserBuilder()
                     .setSigningKey(getSignInKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+
         } catch(SignatureException e) {
-            log.error("Invalid JWT signature: {}", e.getMessage());
+            log.warn("Invalid JWT signature: {}", e.getMessage());
             throw new InvalidTokenException("Invalid JWT signature");
         } catch(MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
-            throw new InvalidTokenException("Malformed Jwt token ");
+            log.warn("Invalid JWT token: {}", e.getMessage());
+            throw new InvalidTokenException("Malformed JWT token ");
         } catch(ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
+            log.warn("JWT token is expired: {}", e.getMessage());
             throw new InvalidTokenException("JWT token is expired");
         } catch(UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
+            log.warn("JWT token is unsupported: {}", e.getMessage());
             throw new InvalidTokenException("JWT token is unsupported");
         } catch(IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+            log.warn("JWT claims string is empty: {}", e.getMessage());
             throw new InvalidTokenException("JWT claims string is empty");
+        } catch (DecodingException e) {
+            log.warn("Failed to decode JWT claims: {}", e.getMessage());
+            throw new InvalidTokenException("JWT claims could not be decoded");
         }
     }
 
@@ -144,20 +152,20 @@ public class JwtService {
 
             log.info("Claims: {}", claims);
             return objectMapper.convertValue(claims.get("roles"), new TypeReference<List<UserRole>>() {});
-        } catch(SignatureException e) {
-            log.error("Invalid JWT signature: {}", e.getMessage());
+        } catch(io.jsonwebtoken.security.SignatureException e) {
+            log.warn("Invalid JWT signature: {}", e.getMessage());
             throw new InvalidTokenException("Invalid JWT signature");
         } catch(MalformedJwtException e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
+            log.warn("Invalid JWT token: {}", e.getMessage());
             throw new InvalidTokenException("Malformed Jwt token ");
         } catch(ExpiredJwtException e) {
-            log.error("JWT token is expired: {}", e.getMessage());
+            log.warn("JWT token is expired: {}", e.getMessage());
             throw new InvalidTokenException("JWT token is expired");
         } catch(UnsupportedJwtException e) {
-            log.error("JWT token is unsupported: {}", e.getMessage());
+            log.warn("JWT token is unsupported: {}", e.getMessage());
             throw new InvalidTokenException("JWT token is unsupported");
         } catch(IllegalArgumentException e) {
-            log.error("JWT claims string is empty: {}", e.getMessage());
+            log.warn("JWT claims string is empty: {}", e.getMessage());
             throw new InvalidTokenException("JWT claims string is empty");
         }
     }
@@ -168,7 +176,7 @@ public class JwtService {
 
             return Keys.hmacShaKeyFor(keyBytes);
         } catch(DecodingException e) {
-            log.error("Could not decode secret key: {}", e.getMessage());
+            log.warn("Could not decode secret key: {}", e.getMessage());
 
             throw new InvalidTokenException("Could not decode secret key for JWT");
         }

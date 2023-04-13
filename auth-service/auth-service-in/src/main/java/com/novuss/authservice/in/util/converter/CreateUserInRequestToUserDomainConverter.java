@@ -1,4 +1,4 @@
-package com.novuss.authservice.in.converter;
+package com.novuss.authservice.in.util.converter;
 
 import com.novuss.authservice.domain.User;
 import com.novuss.authservice.in.dto.request.CreateUserInRequest;

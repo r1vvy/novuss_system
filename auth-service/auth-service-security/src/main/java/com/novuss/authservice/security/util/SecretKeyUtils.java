@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.util;
+package com.novuss.authservice.security.util;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

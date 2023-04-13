@@ -4,4 +4,5 @@ include 'auth-service-repository'
 include 'auth-service-core'
 include 'auth-service-app'
 include 'auth-service-domain'
+include 'auth-service-security'
 

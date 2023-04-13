@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/auth-service-domain" />
             <option value="$PROJECT_DIR$/auth-service-in" />
             <option value="$PROJECT_DIR$/auth-service-repository" />
+            <option value="$PROJECT_DIR$/auth-service-security" />
           </set>
         </option>
       </GradleProjectSettings>

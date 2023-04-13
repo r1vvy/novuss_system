@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.security.config;
+package com.novuss.authservice.security.config;
 
 import com.novuss.authservice.core.port.out.FindUserByUsernamePort;
 import lombok.RequiredArgsConstructor;

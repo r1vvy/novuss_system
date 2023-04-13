@@ -31,7 +31,7 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PersonInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);

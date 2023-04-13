@@ -1,9 +1,8 @@
 package com.novuss.authservice.core.service;
 
 import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCase;
+import com.novuss.authservice.core.port.in.token.JwtUseCase;
 import com.novuss.authservice.core.port.out.FindUserByUsernamePort;
-import com.novuss.authservice.core.security.JwtService;
-import com.novuss.authservice.domain.User;
 import com.novuss.authservice.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,15 +10,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Map;
 
+
+// TODO: change this to security module and use FindUserByUsernameUseCase
 @Service
 @RequiredArgsConstructor
 public class AuthenticateUserByUsernameService implements AuthenticateUserByUsernameUseCase {
     private final AuthenticationManager authenticationManager;
     private final FindUserByUsernamePort findUserByUsernamePort;
-    private final JwtService jwtService;
+    private final JwtUseCase jwtService;
 
     @Override
     public String authenticateUserByUsername(String username, String password) {
