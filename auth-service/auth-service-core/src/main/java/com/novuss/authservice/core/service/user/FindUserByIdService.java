@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class FindUserByIdByIdService implements FindUserByIdUseCase {
+public class FindUserByIdService implements FindUserByIdUseCase {
     private final FindUserByIdPort findUserByIdPort;
 
     @Override
-    public User findUserById(String id) {
+    public User findById(String id) {
         var user = findUserByIdPort.findUserById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id = "+ id));
 

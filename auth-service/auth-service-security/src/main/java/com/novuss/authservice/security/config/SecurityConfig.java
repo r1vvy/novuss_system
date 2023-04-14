@@ -28,11 +28,7 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(request -> {
                                     AntPathMatcher pathMatcher = new AntPathMatcher();
-                                    return pathMatcher.match("/api/v1/users/**", request.getServletPath());
-                                }).permitAll()
-                                .requestMatchers(request -> {
-                                    AntPathMatcher pathMatcher = new AntPathMatcher();
-                                    return pathMatcher.match("/api/v1/auth/authenticate", request.getServletPath());
+                                    return pathMatcher.match("/api/v1/**", request.getServletPath());
                                 }).permitAll()
                                 .anyRequest()
                                 .authenticated()

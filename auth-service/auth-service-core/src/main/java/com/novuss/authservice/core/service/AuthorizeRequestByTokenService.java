@@ -14,11 +14,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class AuthorizeUserRequestByTokenService implements AuthorizeRequestByTokenUseCase {
+public class AuthorizeRequestByTokenService implements AuthorizeRequestByTokenUseCase {
     private final JwtUseCase jwtService;
 
     @Override
-    public boolean authorize(String token, List<UserRole> requiredAuthorities) {
+    public boolean authorizeByRequiredAuthorities(String token, List<UserRole> requiredAuthorities) {
+        token = token.replace("Bearer ", "");
+
         log.info("Required authorities: {}", requiredAuthorities);
         log.info("Authorizing request with token: {}", token);
         var userRoles = jwtService.getUserRolesFromToken(token);
@@ -34,5 +36,22 @@ public class AuthorizeUserRequestByTokenService implements AuthorizeRequestByTok
         log.info("User is authorized to perform this action");
 
         return isAuthorized;
+    }
+
+    @Override
+    public boolean authorizeByUserId(String token, String userId) {
+        token = token.replace("Bearer ", "");
+
+        log.info("Authorizing request with token: {}", token);
+        var userIdFromToken = jwtService.getUserIdFromToken(token);
+        log.info("Extracted user id from token: {}", userIdFromToken);
+
+        if (!userIdFromToken.equals(userId)) {
+            log.warn("User is not authorized to perform this action");
+            throw new AccessDeniedException("User is not authorized to perform this action");
+        }
+        log.info("User is authorized to perform this action");
+
+        return true;
     }
 }

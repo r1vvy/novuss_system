@@ -19,6 +19,7 @@ spring:
 logging:
   level:
     com.novuss.authservice: DEBUG
+    org.springframework.web: DEBUG
 
 server:
   error:

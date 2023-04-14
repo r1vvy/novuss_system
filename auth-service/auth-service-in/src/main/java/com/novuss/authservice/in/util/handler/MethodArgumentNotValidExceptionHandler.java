@@ -2,15 +2,15 @@ package com.novuss.authservice.in.util.handler;
 
 import com.novuss.authservice.domain.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -18,29 +18,40 @@ import java.time.ZoneOffset;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-@Slf4j
 @ControllerAdvice
-public class MethodArgumentTypeMismatchExceptionHandler extends ResponseEntityExceptionHandler {
+@Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
+public class MethodArgumentNotValidExceptionHandler {
     private Map<String, Object> responseBody = new LinkedHashMap<>();
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e, WebRequest request) {
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentNotValidException e, WebRequest request) {
         var status = HttpStatus.BAD_REQUEST;
-        var parameterName = e.getParameter().getParameterName();
-        var message = "Invalid value for the field: " + parameterName + " value:" + e.getValue();
+        var message = e.getFieldErrors()
+                 .stream()
+                 .map(FieldError::getDefaultMessage)
+                 .collect(Collectors.toList());
         var requestURI = request.getDescription(false).substring(4);
+
+//        responseBody.put("timestamp", LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
+//        responseBody.put("type", ex.getClass().getSimpleName());
+//        responseBody.put("title", status.getReasonPhrase());
+//        responseBody.put("status", status.value());
+//        responseBody.put("detail", message);
+//        responseBody.put("instance", requestURI);
 
         var errorResponse = ErrorResponse.builder()
                 .type(e.getClass().getSimpleName())
                 .title(status.getReasonPhrase())
                 .status(status.value())
-                .detail(List.of(message))
+                .detail(message)
                 .instance(requestURI)
                 .build();
 
         log.debug("Request failed because method argument type mismatch: {}, {}", request, e.getMessage());
 
-        return handleExceptionInternal(e, errorResponse, new HttpHeaders(), status, request);
+        return new ResponseEntity<>(errorResponse, status);
     }
 }

@@ -61,6 +61,7 @@ public class PersonController {
     }
 
     @GetMapping("/all")
+    @RequiresAuthority(UserRole.USER)
     public ResponseEntity<List<PersonInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all people request");
         var people = getAllPeople.getAll();

@@ -4,7 +4,6 @@ import com.novuss.authservice.domain.UserRole;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -18,4 +17,5 @@ public interface JwtUseCase {
     boolean isTokenValid(String token, UserDetails userDetails);
     Claims getAllClaimsFromToken(String token);
     List<UserRole> getUserRolesFromToken(String token);
+    String getUserIdFromToken(String token);
 }

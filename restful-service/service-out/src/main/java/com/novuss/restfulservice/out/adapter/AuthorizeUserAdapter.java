@@ -19,6 +19,8 @@ import java.util.Objects;
 @Slf4j
 public class AuthorizeUserAdapter implements AuthorizeUserPort {
     private final RestTemplate restTemplate;
+
+    // TODO: move this to config
     private static final String AUTH_URL = "http://localhost:8000/api/v1/auth/authorize";
 
     @Override
@@ -36,9 +38,9 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
 
             return Objects.requireNonNull(response.getBody())
                     .token();
-        } catch (RestClientException | NullPointerException restClientException) {
-            log.error("Error authorizing user: {}", restClientException.getMessage());
-            throw new OutgoingAuthorizationServiceException("Failed to authorize user in auth service");
+        } catch (RestClientException | NullPointerException e) {
+            log.error("Error authorizing user: {}", e.getMessage());
+            throw new OutgoingAuthorizationServiceException("Failed to authorize user in auth service: " + e.getMessage());
         }
     }
 }

@@ -6,10 +6,11 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
@@ -19,16 +20,15 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @ControllerAdvice
-public class MethodArgumentTypeMismatchExceptionHandler extends ResponseEntityExceptionHandler {
+@Slf4j
+public class BadCredentialsExceptionHandler extends ResponseEntityExceptionHandler {
     private Map<String, Object> responseBody = new LinkedHashMap<>();
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e, WebRequest request) {
-        var status = HttpStatus.BAD_REQUEST;
-        var parameterName = e.getParameter().getParameterName();
-        var message = "Invalid value for the field: " + parameterName + " value:" + e.getValue();
+    @ExceptionHandler({BadCredentialsException.class})
+    protected ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException e, WebRequest request) {
+        var status = HttpStatus.UNAUTHORIZED;
+        var message = "Authentication failed: " + e.getMessage();
         var requestURI = request.getDescription(false).substring(4);
 
         var errorResponse = ErrorResponse.builder()
@@ -39,8 +39,8 @@ public class MethodArgumentTypeMismatchExceptionHandler extends ResponseEntityEx
                 .instance(requestURI)
                 .build();
 
-        log.debug("Request failed because method argument type mismatch: {}, {}", request, e.getMessage());
+        log.debug("Request failed due to Bad Credentials Exception: {}, {}", request, e.getMessage());
 
-        return handleExceptionInternal(e, errorResponse, new HttpHeaders(), status, request);
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), status);
     }
 }

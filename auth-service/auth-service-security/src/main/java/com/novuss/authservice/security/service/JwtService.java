@@ -1,5 +1,6 @@
 package com.novuss.authservice.security.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -70,6 +71,10 @@ public class JwtService implements JwtUseCase {
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public String getUserIdFromToken(String token) {
+        return getClaimFromToken(token, claims -> claims.get("id", String.class));
     }
 
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
@@ -167,6 +172,9 @@ public class JwtService implements JwtUseCase {
         } catch(IllegalArgumentException e) {
             log.warn("JWT claims string is empty: {}", e.getMessage());
             throw new InvalidTokenException("JWT claims string is empty");
+        } catch (DecodingException e) {
+            log.warn("Failed to decode JWT claims: {}", e.getMessage());
+            throw new InvalidTokenException("JWT claims could not be decoded");
         }
     }
 

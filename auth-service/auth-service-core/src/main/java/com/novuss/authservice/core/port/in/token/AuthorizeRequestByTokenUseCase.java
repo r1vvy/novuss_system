@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface AuthorizeRequestByTokenUseCase {
 
-    boolean authorize(String token, List<UserRole> requiredAuthorities);
+    boolean authorizeByRequiredAuthorities(String token, List<UserRole> requiredAuthorities);
+    boolean authorizeByUserId(String token, String userId);
 }

@@ -24,7 +24,7 @@ public class AuthorizationInterceptor implements HandlerInterceptor {
     private final AuthorizeTokenUseCase authorizeTokenUseCase;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         log.info("Intercepting request");
         var authorizationHeader = request.getHeader("Authorization");
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {

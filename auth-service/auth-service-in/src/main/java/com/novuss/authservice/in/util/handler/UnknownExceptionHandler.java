@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.server.handler.ResponseStatusExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.Instant;
@@ -19,16 +20,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@Slf4j
 @ControllerAdvice
-public class MethodArgumentTypeMismatchExceptionHandler extends ResponseEntityExceptionHandler {
+@Order
+@Slf4j
+public class UnknownExceptionHandler extends ResponseEntityExceptionHandler {
+
     private Map<String, Object> responseBody = new LinkedHashMap<>();
 
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    protected ResponseEntity<Object> handleMethodArgumentTypeMismatch(MethodArgumentTypeMismatchException e, WebRequest request) {
-        var status = HttpStatus.BAD_REQUEST;
-        var parameterName = e.getParameter().getParameterName();
-        var message = "Invalid value for the field: " + parameterName + " value:" + e.getValue();
+    @ExceptionHandler({Exception.class})
+    protected ResponseEntity<Object> handleUnknownException(Exception e, WebRequest request) {
+        var status = HttpStatus.INTERNAL_SERVER_ERROR;
+        var message = e.getMessage();
         var requestURI = request.getDescription(false).substring(4);
 
         var errorResponse = ErrorResponse.builder()
