@@ -1,5 +1,6 @@
 package com.novuss.authservice.repository.adapter;
 
+import com.novuss.authservice.core.exception.EntityNotFoundException;
 import com.novuss.authservice.core.port.out.DeleteUserByIdPort;
 import com.novuss.authservice.repository.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class DeleteUserByIdAdapter implements DeleteUserByIdPort {
     @Override
     public void deleteUserById(String id) {
         userJpaRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
         userJpaRepository.deleteById(UUID.fromString(id));
     }
 }

@@ -35,7 +35,7 @@ public class AuthorizeRequestByTokenService implements AuthorizeRequestByTokenUs
         }
         log.info("User is authorized to perform this action");
 
-        return isAuthorized;
+        return true;
     }
 
     @Override

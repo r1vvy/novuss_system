@@ -1,5 +1,6 @@
 package com.novuss.authservice.repository.adapter;
 
+import com.novuss.authservice.core.exception.EntityExistsException;
 import com.novuss.authservice.core.port.out.SaveUserPort;
 import com.novuss.authservice.domain.User;
 import com.novuss.authservice.repository.converter.MapStructMapper;
@@ -20,11 +21,11 @@ public class SaveUserAdapter implements SaveUserPort {
     public User saveUser(User user) {
         userJpaRepository.findByUsername(user.getUsername())
                 .ifPresent(u -> {
-                    throw new RuntimeException("User with this username already exists");
+                    throw new EntityExistsException("User with this username already exists");
                 });
         userJpaRepository.findByEmail(user.getEmail())
                 .ifPresent(u -> {
-                    throw new RuntimeException("User with this email already exists");
+                    throw new EntityExistsException("User with this email already exists");
                 });
         try {
             var savedUserEntity = userJpaRepository.save(mapper.userDomainToEntity(user));

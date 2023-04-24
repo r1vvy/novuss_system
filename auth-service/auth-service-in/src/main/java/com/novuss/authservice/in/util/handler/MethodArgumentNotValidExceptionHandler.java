@@ -35,12 +35,6 @@ public class MethodArgumentNotValidExceptionHandler {
                  .collect(Collectors.toList());
         var requestURI = request.getDescription(false).substring(4);
 
-//        responseBody.put("timestamp", LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC));
-//        responseBody.put("type", ex.getClass().getSimpleName());
-//        responseBody.put("title", status.getReasonPhrase());
-//        responseBody.put("status", status.value());
-//        responseBody.put("detail", message);
-//        responseBody.put("instance", requestURI);
 
         var errorResponse = ErrorResponse.builder()
                 .type(e.getClass().getSimpleName())

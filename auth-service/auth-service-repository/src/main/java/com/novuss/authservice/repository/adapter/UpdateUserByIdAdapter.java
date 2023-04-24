@@ -1,5 +1,6 @@
 package com.novuss.authservice.repository.adapter;
 
+import com.novuss.authservice.core.exception.EntityExistsException;
 import com.novuss.authservice.core.port.out.UpdateUserByIdPort;
 import com.novuss.authservice.domain.User;
 import com.novuss.authservice.repository.converter.MapStructMapper;
@@ -31,14 +32,14 @@ public class UpdateUserByIdAdapter implements UpdateUserByIdPort {
                 .ifPresent(userEntity -> {
                     if (!userEntity.getId().equals(existingUserEntity.getId())) {
                         log.warn("User with this username already exists: {}", username);
-                        throw new RuntimeException("User with this username already exists");
+                        throw new EntityExistsException("User with this username already exists");
                     }
                 });
         userJpaRepository.findByEmail(email)
                 .ifPresent(userEntity -> {
                     if (!userEntity.getId().equals(existingUserEntity.getId())) {
                         log.warn("User with this email already exists: {}", email);
-                        throw new RuntimeException("User with this email already exists");
+                        throw new EntityExistsException("User with this email already exists");
                     }
                 });
 

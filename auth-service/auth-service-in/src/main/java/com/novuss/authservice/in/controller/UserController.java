@@ -7,7 +7,6 @@ import com.novuss.authservice.domain.UserRole;
 import com.novuss.authservice.in.dto.request.CreateUserInRequest;
 import com.novuss.authservice.in.dto.request.UpdateUserInRequest;
 import com.novuss.authservice.in.dto.response.GetUserInResponse;
-import com.novuss.authservice.in.util.RequiresAuthority;
 import com.novuss.authservice.in.util.converter.CreateUserInRequestToUserDomainConverter;
 import com.novuss.authservice.in.util.converter.UpdateUserInRequestToDomainConverter;
 import com.novuss.authservice.in.util.converter.UserDomainToGetUserInResponseConverter;

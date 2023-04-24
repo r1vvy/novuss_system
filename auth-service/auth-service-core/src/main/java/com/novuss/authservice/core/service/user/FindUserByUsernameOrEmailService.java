@@ -1,5 +1,6 @@
 package com.novuss.authservice.core.service.user;
 
+import com.novuss.authservice.core.exception.EntityNotFoundException;
 import com.novuss.authservice.core.port.in.user.FindUserByUsernameOrEmailUseCase;
 import com.novuss.authservice.core.port.out.FindUserByEmailPort;
 import com.novuss.authservice.core.port.out.FindUserByUsernamePort;
@@ -19,9 +20,9 @@ public class FindUserByUsernameOrEmailService implements FindUserByUsernameOrEma
     public User findUserByUsernameOrEmail(String username, String email) {
         var user = (username != null) ?
                 findUserByUsernameOrEmailPort.findUserByUsername(username)
-                        .orElseThrow(() -> new RuntimeException("User not found with username = "+ username)) :
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with username = "+ username)) :
                 findUserByEmailPort.findUserByEmail(email)
-                        .orElseThrow(() -> new RuntimeException("User not found with email = "+ email));
+                        .orElseThrow(() -> new EntityNotFoundException("User not found with email = "+ email));
 
         return user;
     }

@@ -1,5 +1,6 @@
 package com.novuss.authservice.core.service.user;
 
+import com.novuss.authservice.core.exception.EntityNotFoundException;
 import com.novuss.authservice.core.port.in.user.FindUserByIdUseCase;
 import com.novuss.authservice.core.port.out.FindUserByIdPort;
 import com.novuss.authservice.domain.User;
@@ -16,7 +17,7 @@ public class FindUserByIdService implements FindUserByIdUseCase {
     @Override
     public User findById(String id) {
         var user = findUserByIdPort.findUserById(id)
-                .orElseThrow(() -> new RuntimeException("User not found with id = "+ id));
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id = "+ id));
 
         return user;
     }

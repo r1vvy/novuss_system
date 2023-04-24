@@ -1,5 +1,6 @@
 package com.novuss.authservice.core.service.user;
 
+import com.novuss.authservice.core.exception.EntityNotFoundException;
 import com.novuss.authservice.core.port.in.user.GetAllUsersUseCase;
 import com.novuss.authservice.core.port.out.GetAllUsersPort;
 import com.novuss.authservice.domain.User;
@@ -19,7 +20,7 @@ public class GetAllUsersService implements GetAllUsersUseCase {
     public List<User> getAllUsers() {
         return getAllUsersPort.getAllUsers()
                 .orElseThrow(
-                        () -> new RuntimeException("No users found")
+                        () -> new EntityNotFoundException("No users found")
                 );
     }
 }

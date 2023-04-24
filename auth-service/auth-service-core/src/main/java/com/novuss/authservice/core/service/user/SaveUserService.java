@@ -1,5 +1,6 @@
 package com.novuss.authservice.core.service.user;
 
+import com.novuss.authservice.core.exception.EntityExistsException;
 import com.novuss.authservice.core.port.in.user.SaveUserUseCase;
 import com.novuss.authservice.core.port.out.FindUserByUsernameAndEmailPort;
 import com.novuss.authservice.core.port.out.SaveUserPort;
@@ -21,7 +22,7 @@ public class SaveUserService implements SaveUserUseCase {
     public User save(User newUser) {
          findUserByUsernameAndEmailPort.findUserByUsernameAndEmail(newUser.getUsername(), newUser.getEmail())
                  .ifPresent(user -> {
-                     throw new RuntimeException("User already exists");
+                     throw new EntityExistsException("User already exists");
                  });
 
          var encodedPassword = passwordEncoder.encode(newUser.getPassword());
