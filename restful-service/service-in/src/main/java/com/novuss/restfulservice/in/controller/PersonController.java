@@ -31,7 +31,7 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PersonInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);
@@ -61,7 +61,7 @@ public class PersonController {
     }
 
     @GetMapping("/all")
-    @RequiresAuthority(UserRole.USER)
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<List<PersonInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all people request");
         var people = getAllPeople.getAll();

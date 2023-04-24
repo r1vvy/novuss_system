@@ -27,7 +27,6 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
     public String authorize(String token, List<UserRole> requiredAuthorities) {
         log.info("Authorizing user");
         var request = AuthorizationOutRequest.builder()
-                .token(token)
                 .requiredAuthorities(requiredAuthorities)
                 .build();
 

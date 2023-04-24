@@ -7,6 +7,6 @@ import java.util.List;
 
 @Builder
 public record AuthorizationOutRequest(
-        String token,
-        List<UserRole> requiredAuthorities) {
+        List<UserRole> requiredAuthorities
+) {
 }

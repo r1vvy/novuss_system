@@ -15,6 +15,7 @@ public class ExtendTokenExpiryService implements ExtendTokenExpiryUseCase {
     private final JwtUseCase jwtService;
     @Override
     public String extendTokenExpiry(String token) {
+        token = token.replace("Bearer ", "");
         return jwtService.extendExpirationTime(token);
     }
 }

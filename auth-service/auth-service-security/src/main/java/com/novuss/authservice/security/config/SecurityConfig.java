@@ -1,6 +1,7 @@
 package com.novuss.authservice.security.config;
 
 import com.novuss.authservice.security.util.JwtAuthFilter;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,10 +38,6 @@ public class SecurityConfig {
                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
                                     response.setStatus(403);
                                     response.getWriter().write("Access Denied");
-                                })
-                                .authenticationEntryPoint((request, response, authException) -> {
-                                    response.setStatus(401);
-                                    response.getWriter().write("Unauthorized");
                                 })
                 )
                 .sessionManagement()

@@ -16,6 +16,7 @@ public class AuthorizeTokenService implements AuthorizeTokenUseCase {
     private final AuthorizeUserPort authorizeUserPort;
     @Override
     public String authorize(String token, List<UserRole> requiredAuthorities) {
+        token = token.replace("Bearer ", "");
         return authorizeUserPort.authorize(token, requiredAuthorities);
     }
 }

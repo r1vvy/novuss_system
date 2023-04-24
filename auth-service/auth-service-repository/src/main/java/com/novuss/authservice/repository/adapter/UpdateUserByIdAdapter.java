@@ -19,6 +19,7 @@ public class UpdateUserByIdAdapter implements UpdateUserByIdPort {
     private final MapStructMapper mapStructMapper;
     @Override
     public User updateById(String id, User user) {
+        log.info("Updating user with id: {}", id);
         var userId = UUID.fromString(id);
         var username = user.getUsername();
         var email = user.getEmail();
@@ -41,13 +42,18 @@ public class UpdateUserByIdAdapter implements UpdateUserByIdPort {
                     }
                 });
 
-        existingUserEntity.setUsername(username);
-        existingUserEntity.setEmail(email);
-        existingUserEntity.setPassword(user.getPassword());
-        existingUserEntity.setRoles(user.getRoles());
+        user.setId(id);
+        user.setCreatedAt(existingUserEntity.getCreatedAt());
+        user.setRoles(existingUserEntity.getRoles());
+        log.debug("Updated user: {}", user);
+
+        var updatedUserEntity = mapStructMapper.userDomainToEntity(user);
+        var saveUserEntity = userJpaRepository.save(updatedUserEntity);
+        log.info("Successfully updated user with id: {}", id);
+        log.debug("Updated user entity: {}", saveUserEntity);
 
         try {
-            return mapStructMapper.userEntityToDomain(userJpaRepository.save(existingUserEntity));
+            return mapStructMapper.userEntityToDomain(saveUserEntity);
         } catch(IllegalArgumentException | OptimisticLockingFailureException e) {
             log.warn("Failed to save user {}, due to: {}", user, e);
             throw new RuntimeException("Failed to save user: " + e.getMessage());
