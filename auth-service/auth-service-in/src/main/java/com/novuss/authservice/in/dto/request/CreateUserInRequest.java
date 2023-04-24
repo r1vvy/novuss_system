@@ -12,13 +12,13 @@ import java.util.Set;
 public record CreateUserInRequest(
         @NotBlank(message = "Username cannot be blank")
         @NotEmpty(message = "Username cannot be empty")
-        @Range(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+        @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
         String username,
         @NotBlank(message = "Email cannot be blank")
         @Email(message = "Email must be valid")
         String email,
         @NotBlank(message = "Password cannot be blank")
-        @Min(value = 8, message = "Password must be at least 8 characters")
+        @Size(min = 8, message = "Password must be at least 8 characters")
         String password,
 
         @NotNull(message = "Roles cannot be null")

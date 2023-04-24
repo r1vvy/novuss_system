@@ -33,12 +33,6 @@ public class SecurityConfig {
                                 }).permitAll()
                                 .anyRequest()
                                 .authenticated()
-                ).exceptionHandling(exceptionHandling ->
-                        exceptionHandling
-                                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                    response.setStatus(403);
-                                    response.getWriter().write("Access Denied");
-                                })
                 )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

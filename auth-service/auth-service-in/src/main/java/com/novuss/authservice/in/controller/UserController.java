@@ -61,12 +61,11 @@ public class UserController {
                 .buildAndExpand(response.id())
                 .toUri();
 
-        var responseDto = UserDomainToGetUserInResponseConverter.convert(user);
         var headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + extendedToken);
         headers.setLocation(location);
 
-        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
+        return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
     @GetMapping
@@ -90,7 +89,6 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<List<GetUserInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all users request");
         authorizeRequestByTokenService.authorizeByRequiredAuthorities(

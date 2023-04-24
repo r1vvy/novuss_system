@@ -1,11 +1,8 @@
 package com.novuss.restfulservice.repository.adapter.refereeCategory;
 
-import com.novuss.restfulservice.core.port.out.referee.FindRefereeByIdPort;
 import com.novuss.restfulservice.core.port.out.refereeCategory.FindRefereeCategoryByIdPort;
-import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.domain.RefereeCategory;
 import com.novuss.restfulservice.repository.converter.RefereeCategoryEntityToDomainConverter;
-import com.novuss.restfulservice.repository.converter.RefereeEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.RefereeCategoryJpaRepository;
 import com.novuss.restfulservice.repository.repository.jpa.RefereeJpaRepository;
 import lombok.RequiredArgsConstructor;

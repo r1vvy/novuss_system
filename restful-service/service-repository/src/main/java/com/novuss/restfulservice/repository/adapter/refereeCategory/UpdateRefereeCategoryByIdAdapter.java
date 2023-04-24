@@ -34,7 +34,6 @@ public class UpdateRefereeCategoryByIdAdapter implements UpdateRefereeCategoryBy
         updatedRefereeCategoryEntity.setId(categoryId);
         updatedRefereeCategoryEntity.setCreatedAt(existingRefereeCategory.getCreatedAt());
         updatedRefereeCategoryEntity.setUpdatedAt(existingRefereeCategory.getUpdatedAt());
-        updatedRefereeCategoryEntity.setReferees(existingRefereeCategory.getReferees());
 
         var updatedRefereeCategoryEntityFromRepo = refereeCategoryJpaRepository.save(updatedRefereeCategoryEntity);
         log.info("Referee category with id {} updated", id);

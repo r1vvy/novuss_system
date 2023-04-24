@@ -15,29 +15,9 @@ import java.util.stream.Collectors;
 public class RefereeCategoryEntityToDomainConverter {
 
     public static RefereeCategory convert(RefereeCategoryEntity entity) {
-        var builder = RefereeCategory.builder()
+        return RefereeCategory.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt());
-
-        if (entity.getReferees() != null) {
-            builder.referees(entity.getReferees()
-                    .stream()
-                    .map(RefereeCategoryEntityToDomainConverter::convertRefereeEntityToDomain)
-                    .collect(Collectors.toSet())
-            );
-        }
-
-        return builder.build();
-    }
-
-    private static Referee convertRefereeEntityToDomain(RefereeEntity entity) {
-        return Referee.builder()
-                .id(entity.getId())
-                .person(PersonEntityToDomainConverter.convert(entity.getPersonEntity()))
-                .commissionNumber(entity.getCommissionNumber())
-                .city(entity.getCity())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .build();

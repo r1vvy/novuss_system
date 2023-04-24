@@ -5,6 +5,7 @@ import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.out.referee.SaveRefereePort;
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.converter.*;
+import com.novuss.restfulservice.repository.entity.PersonEntity;
 import com.novuss.restfulservice.repository.entity.RefereeCategoryEntity;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
 import com.novuss.restfulservice.repository.repository.jpa.RefereeCategoryJpaRepository;
@@ -30,26 +31,33 @@ public class SaveRefereeAdapter implements SaveRefereePort {
                 referee.person().firstName(),
                 referee.person().lastName()
         );
-
         var refereeCategoryEntity = findRefereeCategoryByTitle(referee.category().title());
 
-        var personEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
+        var optionalPersonEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
                 referee.person().firstName(),
                 referee.person().lastName(),
                 referee.person().phoneNumber()
-        ).orElseGet(() -> personJpaRepository.save(PersonDomainToEntityConverter.convert(referee.person())));
+        );
 
-        refereeJpaRepository.findByPersonId(personEntity.getId())
-                .ifPresent(refereeEntity -> {
-                    log.error("Referee already exists {}", refereeEntity);
-                    throw new EntityExistsException("Referee already exists");
-        });
+        PersonEntity personEntity;
+        if(optionalPersonEntity.isPresent()) {
+            personEntity = optionalPersonEntity.get();
+            var refereeEntity = refereeJpaRepository.findByPersonId(personEntity.getId());
+            if(refereeEntity.isPresent()) {
+                throw new EntityExistsException("Referee already exists");
+            } else {
+                personEntity = personJpaRepository.save(personEntity);
+            }
+        } else {
+            personEntity = PersonDomainToEntityConverter.convert(referee.person());
+            personJpaRepository.save(personEntity);
+        }
 
         var refereeEntity = RefereeDomainToEntityConverter.convert(referee);
         refereeEntity.setPersonEntity(personEntity);
-        refereeCategoryEntity.addReferee(refereeEntity);
+        refereeEntity.setCategoryEntity(refereeCategoryEntity);
 
-        var savedRefereeEntity = refereeJpaRepository.save(refereeEntity);
+        var savedRefereeEntity = refereeJpaRepository.saveAndFlush(refereeEntity);
         log.info("Referee saved successfully {}", savedRefereeEntity);
 
         return RefereeEntityToDomainConverter.convert(savedRefereeEntity);

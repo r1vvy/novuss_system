@@ -4,7 +4,6 @@ import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.out.referee.UpdateRefereeByIdPort;
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.converter.*;
-import com.novuss.restfulservice.repository.entity.PersonEntity;
 import com.novuss.restfulservice.repository.entity.RefereeCategoryEntity;
 import com.novuss.restfulservice.repository.entity.RefereeEntity;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
@@ -33,9 +32,9 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
 
         var existingReferee = findRefereeFromRepoById(UUID.fromString(id));
         var existingPerson = existingReferee.getPersonEntity();
-        var existingRefereeCategory = existingReferee.getCategory();
+        var existingRefereeCategory = existingReferee.getCategoryEntity();
 
-        var updatedRefereeCategoryEntity = changeRefereeCategory(existingReferee, existingRefereeCategory, referee);
+        var updatedRefereeCategoryEntity = changeRefereeCategory(referee);
         var updatedPersonEntity = PersonDomainToEntityConverter.convert(referee.person());
         updatedPersonEntity.setId(existingPerson.getId());
         updatedPersonEntity.setCreatedAt(existingPerson.getCreatedAt());
@@ -48,7 +47,7 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
         updatedRefereeEntity.setCreatedAt(existingReferee.getCreatedAt());
 
         updatedRefereeEntity.setPersonEntity(updatedPersonEntity);
-        updatedRefereeEntity.setCategory(updatedRefereeCategoryEntity);
+        updatedRefereeEntity.setCategoryEntity(updatedRefereeCategoryEntity);
 
         var newRefereeEntity = refereeJpaRepository.saveAndFlush(updatedRefereeEntity);
         log.info("Referee with id {} updated", id);
@@ -62,7 +61,7 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
             throw new EntityNotFoundException("Referee with id " + id + " not found");
         });
     }
-    private RefereeCategoryEntity changeRefereeCategory(RefereeEntity existingReferee, RefereeCategoryEntity existingRefereeCategory, Referee updatedReferee) {
+    private RefereeCategoryEntity changeRefereeCategory(Referee updatedReferee) {
         var updatedCategoryForReferee = refereeCategoryJpaRepository.findByTitle(updatedReferee.category().title());
 
         if(!updatedCategoryForReferee.isPresent()) {
@@ -71,8 +70,6 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
         }
 
         var updatedCategory = updatedCategoryForReferee.get();
-        existingRefereeCategory.getReferees().remove(existingReferee);
-        updatedCategory.addReferee(existingReferee);
         updatedCategory.setUpdatedAt(Instant.now());
         log.info("Changed referee category to {}", updatedReferee.category().title());
 

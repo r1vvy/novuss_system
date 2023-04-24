@@ -18,7 +18,6 @@ import java.util.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "referee_categories")
-@NamedEntityGraph(name = "RefereeCategoryEntity.referees", attributeNodes = @NamedAttributeNode("referees"))
 public class RefereeCategoryEntity {
     @Id
     @Column(name = "id", columnDefinition = "char(36)")
@@ -29,21 +28,12 @@ public class RefereeCategoryEntity {
     @Column(name = "title")
     private String title;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private Set<RefereeEntity> referees = new HashSet<>();
-
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;
     @Column(name = "updated_at", columnDefinition = "DATETIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Instant updatedAt;
-
-
-    public void addReferee(RefereeEntity referee) {
-        referee.setCategory(this);
-        referees.add(referee);
-    }
 
     @PrePersist
     private void prePersist() {
@@ -53,29 +43,5 @@ public class RefereeCategoryEntity {
     @PreUpdate
     private void preUpdate() {
         updatedAt = Instant.now();
-    }
-
-    @Override
-    public String toString() {
-        return "RefereeCategoryEntity{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", referees=" + referees.size() +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof RefereeCategoryEntity)) return false;
-        RefereeCategoryEntity that = (RefereeCategoryEntity) o;
-        return Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId());
     }
 }

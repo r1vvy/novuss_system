@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,4 +17,7 @@ public interface RefereeJpaRepository extends JpaRepository<RefereeEntity, UUID>
 
     @Query("SELECT r FROM RefereeEntity r WHERE r.personEntity.id = :personId")
     Optional<RefereeEntity> findByPersonId(@Param("personId") UUID personId);
+
+    @Query("SELECT r FROM RefereeEntity r WHERE r.categoryEntity.id = :categoryId")
+    List<RefereeEntity> findAllByCategoryId(@Param("categoryId") UUID categoryId);
 }

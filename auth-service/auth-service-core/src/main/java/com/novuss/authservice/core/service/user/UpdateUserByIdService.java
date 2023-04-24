@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.service;
+package com.novuss.authservice.core.service.user;
 
 import com.novuss.authservice.core.port.in.user.UpdateUserByIdUseCase;
 import com.novuss.authservice.core.port.out.UpdateUserByIdPort;

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@Builder
+@Builder(toBuilder = true)
 public record RefereeCategory(
         UUID id,
         String title,

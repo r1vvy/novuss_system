@@ -12,6 +12,5 @@ import java.util.UUID;
 @Repository
 public interface RefereeCategoryJpaRepository extends JpaRepository<RefereeCategoryEntity, UUID> {
     Optional<RefereeCategoryEntity> findByTitle(String title);
-    @EntityGraph(value = "RefereeCategoryEntity.referees", type = EntityGraph.EntityGraphType.LOAD)
     Optional<RefereeCategoryEntity> findById(UUID id);
 }

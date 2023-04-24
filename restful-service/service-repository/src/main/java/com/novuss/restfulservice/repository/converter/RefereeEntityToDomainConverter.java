@@ -2,7 +2,6 @@ package com.novuss.restfulservice.repository.converter;
 
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.entity.RefereeEntity;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,7 +10,7 @@ public class RefereeEntityToDomainConverter {
         return Referee.builder()
                 .id(entity.getId())
                 .person(PersonEntityToDomainConverter.convert(entity.getPersonEntity()))
-                .category(RefereeCategoryEntityToDomainConverter.convert(entity.getCategory()))
+                .category(RefereeCategoryEntityToDomainConverter.convert(entity.getCategoryEntity()))
                 .commissionNumber(entity.getCommissionNumber())
                 .city(entity.getCity())
                 .createdAt(entity.getCreatedAt())
