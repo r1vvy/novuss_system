@@ -3,18 +3,14 @@ package com.novuss.restfulservice.domain;
 import lombok.Builder;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Builder
-public record Player(
+public record Club(
         String id,
+        String title,
         String image,
-        Integer rating,
-        Gender gender,
-        Person person,
-        Club club,
-        Licence licence,
-        SportsClass sportsClass,
+        Location location,
+        Person contactPerson,
         Instant createdAt,
         Instant updatedAt
 ) {

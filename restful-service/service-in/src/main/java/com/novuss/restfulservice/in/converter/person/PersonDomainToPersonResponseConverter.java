@@ -1,13 +1,13 @@
 package com.novuss.restfulservice.in.converter.person;
 
 import com.novuss.restfulservice.domain.Person;
-import com.novuss.restfulservice.in.dto.response.PersonInResponse;
+import com.novuss.restfulservice.in.dto.response.PersonResponse;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PersonDomainToPersonInResponseConverter {
-    public static PersonInResponse convert (Person person) {
-        return PersonInResponse.builder()
+public class PersonDomainToPersonResponseConverter {
+    public static PersonResponse convert (Person person) {
+        return PersonResponse.builder()
             .id(person.id().toString())
             .firstName(person.firstName())
             .lastName(person.lastName())

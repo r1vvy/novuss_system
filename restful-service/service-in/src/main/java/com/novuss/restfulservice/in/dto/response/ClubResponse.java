@@ -2,17 +2,14 @@ package com.novuss.restfulservice.in.dto.response;
 
 import lombok.Builder;
 
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Builder
-public record LocationResponse(
+public record ClubResponse(
         String id,
         String title,
-        String city,
-        String address,
-        BigDecimal latitude,
-        BigDecimal longitude,
+        String image,
+        LocationResponse location,
         PersonResponse contactPerson,
         Instant createdAt,
         Instant updatedAt
