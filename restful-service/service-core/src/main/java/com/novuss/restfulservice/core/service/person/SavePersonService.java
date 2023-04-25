@@ -24,6 +24,10 @@ public class SavePersonService implements SavePersonUseCase {
                 person.lastName(),
                 person.phoneNumber()
         ).ifPresent(p -> {
+            log.warn("Person with firstname = {} and lastname = {} and phonenumber = {} already exists",
+                    person.firstName(),
+                    person.lastName(),
+                    person.phoneNumber());
             throw new EntityExistsException("Person with firstname = " + person.firstName() +
                     " and lastname = " + person.lastName() +
                     " and phonenumber = " + person.phoneNumber()

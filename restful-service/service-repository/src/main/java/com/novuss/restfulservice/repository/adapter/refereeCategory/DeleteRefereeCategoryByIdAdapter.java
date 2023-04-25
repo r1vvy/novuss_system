@@ -16,12 +16,13 @@ public class DeleteRefereeCategoryByIdAdapter implements DeleteRefereeCategoryBy
     private final RefereeCategoryJpaRepository refereeCategoryJpaRepository;
     @Override
     public void deleteById(String id) {
-        refereeCategoryJpaRepository.findById(UUID.fromString(id))
+        UUID uuid = UUID.fromString(id);
+        refereeCategoryJpaRepository.findById(uuid)
                 .orElseThrow(() -> {
                     log.error("Referee category with id {} not found", id);
                     throw new EntityNotFoundException("Referee category with id " + id + " not found");
                 });
 
-        refereeCategoryJpaRepository.deleteById(UUID.fromString(id));
+        refereeCategoryJpaRepository.deleteById(uuid);
     }
 }

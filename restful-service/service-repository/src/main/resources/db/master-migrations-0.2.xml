@@ -32,62 +32,6 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet id="create.licences.table" author="emils.seflers">
-        <createTable tableName="licences">
-            <column name="id" type="UUID">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="date_issued" type="DATETIME">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="create.sports_classes.table" author="emils.seflers">
-        <createTable tableName="sports_classes">
-            <column name="id" type="UUID">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name = "title" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="create.players.table" author="emils.seflers">
-        <createTable tableName="players">
-            <column name="id" type="UUID">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="person_id" type="uuid"/>
-            <column name="image" type="VARCHAR(255)" />
-            <column name="rating" type="INTEGER">
-                <constraints nullable="false"/>
-            </column>
-            <column name="gender" type="ENUM('MALE', 'FEMALE')">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_at" type="DATETIME(6)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="updated_at" type="DATETIME(6)">
-                <constraints nullable="true"/>
-            </column>
-        </createTable>
-    </changeSet>
     <changeSet id="create.referee_categories" author="emils.seflers">
         <createTable tableName="referee_categories">
             <column name="id" type="UUID">
@@ -134,12 +78,6 @@
                                  referencedTableName="people"
                                  referencedColumnNames="id"
         />
-        <addForeignKeyConstraint baseTableName="players"
-                                 baseColumnNames="person_id"
-                                 constraintName="fk_players_person_id"
-                                 referencedTableName="people"
-                                 referencedColumnNames="id"
-        />
     </changeSet>
     <changeSet id="create.foreign.key.constraint.to.referee.categories.relationship" author="emils.seflers">
         <addForeignKeyConstraint baseTableName="referees"
@@ -149,14 +87,10 @@
                                  referencedColumnNames="id"
         />
     </changeSet>
-    <changeSet id="create.unique.foreign.key.cosntraints.to.people.relations" author="emils.seflers">
+    <changeSet id="create.unique.foreign.key.constraints.to.people.relations" author="emils.seflers">
         <addUniqueConstraint tableName="referees"
                              columnNames="person_id"
                              constraintName="uk_referees_person_id"
-        />
-        <addUniqueConstraint tableName="players"
-                             columnNames="person_id"
-                             constraintName="uk_players_person_id"
         />
     </changeSet>
 </databaseChangeLog>

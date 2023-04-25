@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="create.licences.table" author="emils.seflers">
+        <createTable tableName="licences">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_issued" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.sports_classes.table" author="emils.seflers">
+        <createTable tableName="sports_classes">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.locations.table" author="emils.seflers">
+        <createTable tableName="locations">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contact_person_id" type="uuid">
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="DECIMAL(7,4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DECIMAL(7,4)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.clubs.table" author="emils.seflers">
+        <createTable tableName="clubs">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="contact_person_id" type="uuid">
+            </column>
+            <column name="location_id" type="uuid">
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.players.table" author="emils.seflers">
+        <createTable tableName="players">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="person_id" type="uuid">
+            </column>
+            <column name="licence_id" type="uuid">
+            </column>
+            <column name="sports_class_id" type="uuid">
+            </column>
+            <column name="image" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rating" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.foreign.key.constraint.to.player.relationships" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="players"
+                                 baseColumnNames="person_id"
+                                 constraintName="fk_players_person_id"
+                                 referencedTableName="people"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="players"
+                                 baseColumnNames="licence_id"
+                                 constraintName="fk_players_licence_id"
+                                 referencedTableName="licences"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="players"
+                                 baseColumnNames="sports_class_id"
+                                 constraintName="fk_players_sports_class_id"
+                                 referencedTableName="sports_classes"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.unique.foreign.key.constraints.to.player.relations" author="emils.seflers">
+        <addUniqueConstraint tableName="players"
+                             columnNames="person_id"
+                             constraintName="uk_players_person_id"
+        />
+        <addUniqueConstraint tableName="players"
+                             columnNames="licence_id"
+                             constraintName="uk_players_licence_id"
+        />
+    </changeSet>
+</databaseChangeLog>
