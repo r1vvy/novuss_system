@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.GetLicenceByIdUseCase;
+import com.novuss.restfulservice.core.port.in.licence.GetLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.in.licence.DeleteLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.in.licence.GetAllLicencesUseCase;
 import com.novuss.restfulservice.core.port.in.licence.SaveLicenceUseCase;
@@ -8,13 +8,9 @@ import com.novuss.restfulservice.core.port.in.licence.UpdateLicenceByIdUseCase;
 import com.novuss.restfulservice.in.converter.licence.CreateLicenceInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.licence.LicenceDomainToLicenceResponseConverter;
 import com.novuss.restfulservice.in.converter.licence.UpdateLicenceInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.person.PersonDomainToPersonInResponseConverter;
-import com.novuss.restfulservice.in.converter.person.UpdatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateLicenceInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateLicenceInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
 import com.novuss.restfulservice.in.dto.response.LicenceResponse;
-import com.novuss.restfulservice.in.dto.response.PersonInResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

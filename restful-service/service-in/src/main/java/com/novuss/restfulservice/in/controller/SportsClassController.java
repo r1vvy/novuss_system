@@ -1,22 +1,11 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.GetLicenceByIdUseCase;
-import com.novuss.restfulservice.core.port.in.licence.DeleteLicenceByIdUseCase;
-import com.novuss.restfulservice.core.port.in.licence.GetAllLicencesUseCase;
-import com.novuss.restfulservice.core.port.in.licence.SaveLicenceUseCase;
-import com.novuss.restfulservice.core.port.in.licence.UpdateLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.in.sportsClass.*;
-import com.novuss.restfulservice.in.converter.licence.CreateLicenceInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.licence.LicenceDomainToLicenceResponseConverter;
-import com.novuss.restfulservice.in.converter.licence.UpdateLicenceInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.sportsClass.CreateSportsClassInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.sportsClass.SportsClassDomainToResponseConverter;
 import com.novuss.restfulservice.in.converter.sportsClass.UpdateSportsClassInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateLicenceInRequest;
 import com.novuss.restfulservice.in.dto.request.CreateSportsClassInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateLicenceInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateSportsClassInRequest;
-import com.novuss.restfulservice.in.dto.response.LicenceResponse;
 import com.novuss.restfulservice.in.dto.response.SportsClassResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

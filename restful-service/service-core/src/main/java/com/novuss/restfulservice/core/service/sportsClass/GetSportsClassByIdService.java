@@ -15,9 +15,6 @@ public class GetSportsClassByIdService implements GetSportsClassByIdUseCase {
     private final FindSportsClassByIdPort findSportsClassByIdPort;
     @Override
     public SportsClass getById(String id) {
-        return findSportsClassByIdPort.getById(id)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("SportsClass with id = " + id + " not found")
-                );
+        return findSportsClassByIdPort.getById(id);
     }
 }

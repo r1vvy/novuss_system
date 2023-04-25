@@ -147,4 +147,11 @@
                              constraintName="uk_players_licence_id"
         />
     </changeSet>
+    <changeSet id="add.title.column.locations.table" author="emils.seflers">
+        <addColumn tableName="locations">
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
 </databaseChangeLog>

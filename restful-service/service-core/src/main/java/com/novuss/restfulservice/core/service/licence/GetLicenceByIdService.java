@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.core.service.licence;
 
 import com.novuss.restfulservice.core.exception.EntityNotFoundException;
-import com.novuss.restfulservice.core.port.in.GetLicenceByIdUseCase;
+import com.novuss.restfulservice.core.port.in.licence.GetLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.out.licence.GetLicenceByIdPort;
 import com.novuss.restfulservice.domain.Licence;
 import lombok.RequiredArgsConstructor;
