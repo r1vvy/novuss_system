@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.licence.GetLicenceByIdUseCase;
+import com.novuss.restfulservice.core.port.in.licence.FindLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.in.licence.DeleteLicenceByIdUseCase;
 import com.novuss.restfulservice.core.port.in.licence.GetAllLicencesUseCase;
 import com.novuss.restfulservice.core.port.in.licence.SaveLicenceUseCase;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class LicenceController {
     private final SaveLicenceUseCase saveLicenceUseCase;
-    private final GetLicenceByIdUseCase getLicenceByIdUseCase;
+    private final FindLicenceByIdUseCase findLicenceByIdUseCase;
     private final GetAllLicencesUseCase getAllLicences;
     private final UpdateLicenceByIdUseCase updateLicenceByIdUseCase;
     private final DeleteLicenceByIdUseCase deleteLicenceByIdUseCase;
@@ -54,7 +54,7 @@ public class LicenceController {
     public ResponseEntity<LicenceResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @RequestParam("id") String id) {
         log.info("Received get licence by id request: {}", id);
-        var licence = getLicenceByIdUseCase.getById(id);
+        var licence = findLicenceByIdUseCase.getById(id);
         var response = LicenceDomainToLicenceResponseConverter.convert(licence);
 
         return ResponseEntity.ok(response);

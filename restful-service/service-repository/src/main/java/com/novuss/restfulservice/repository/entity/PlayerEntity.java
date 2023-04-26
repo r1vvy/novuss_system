@@ -32,7 +32,7 @@ public class PlayerEntity {
     @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE')")
     @Convert(converter = GenderConverter.class)
     private Gender gender;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity personEntity;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)

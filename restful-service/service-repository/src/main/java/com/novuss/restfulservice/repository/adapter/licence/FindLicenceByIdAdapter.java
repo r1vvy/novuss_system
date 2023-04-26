@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.licence;
 
-import com.novuss.restfulservice.core.port.out.licence.GetLicenceByIdPort;
+import com.novuss.restfulservice.core.port.out.licence.FindLicenceByIdPort;
 import com.novuss.restfulservice.domain.Licence;
 import com.novuss.restfulservice.repository.converter.LicenceEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.LicenceJpaRepository;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class GetLicenceByIdAdapter implements GetLicenceByIdPort {
+public class FindLicenceByIdAdapter implements FindLicenceByIdPort {
     private final LicenceJpaRepository licenceJpaRepository;
     @Override
     public Optional<Licence> getById(String id) {

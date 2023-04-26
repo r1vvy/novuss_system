@@ -10,7 +10,7 @@ public class PlayerEntityToDomainConverter {
     public static Player convert(PlayerEntity entity) {
 
         return Player.builder()
-                .id(entity.getId())
+                .id(entity.getId().toString())
                 .createdAt(entity.getCreatedAt())
                 .gender(entity.getGender())
                 .image(entity.getImage())
