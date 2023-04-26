@@ -9,13 +9,21 @@ import java.util.UUID;
 @Component
 public class LocationDomainToEntityConverter {
     public static LocationEntity convert(Location domain) {
-        return LocationEntity.builder()
-                .id(UUID.fromString(domain.id()))
+        var builder = LocationEntity.builder()
+                .id(domain.id())
+                .address(domain.address())
+                .city(domain.city())
                 .title(domain.title())
                 .latitude(domain.latitude())
                 .longitude(domain.longitude())
                 .createdAt(domain.createdAt())
-                .updatedAt(domain.updatedAt())
-                .build();
+                .updatedAt(domain.updatedAt());
+
+        if (domain.contactPerson() != null) {
+            var personEntity = PersonDomainToEntityConverter.convert(domain.contactPerson());
+            builder.personEntity(personEntity);
+        }
+
+        return builder.build();
     }
 }

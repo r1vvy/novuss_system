@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.time.Instant;
 import java.time.LocalDate;
 
-@Builder
+@Builder(toBuilder = true)
 public record PersonResponse(
         String id,
         String firstName,

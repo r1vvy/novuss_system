@@ -10,7 +10,7 @@ import java.util.UUID;
 public class SportsClassDomainToEntityConverter {
     public static SportsClassEntity convert(SportsClass sportsClass) {
         return SportsClassEntity.builder()
-                .id(UUID.fromString(sportsClass.id()))
+                .id(sportsClass.id())
                 .title(sportsClass.title())
                 .createdAt(sportsClass.createdAt())
                 .updatedAt(sportsClass.updatedAt())

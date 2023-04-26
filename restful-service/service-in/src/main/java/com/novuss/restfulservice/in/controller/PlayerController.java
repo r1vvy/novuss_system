@@ -1,18 +1,11 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.licence.*;
 import com.novuss.restfulservice.core.port.in.player.*;
-import com.novuss.restfulservice.in.converter.licence.CreateLicenceInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.licence.LicenceDomainToLicenceResponseConverter;
-import com.novuss.restfulservice.in.converter.licence.UpdateLicenceInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.player.CreatePlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.player.PlayerDomainToPlayerResponseConverter;
 import com.novuss.restfulservice.in.converter.player.UpdatePlayerInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateLicenceInRequest;
 import com.novuss.restfulservice.in.dto.request.CreatePlayerInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateLicenceInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePlayerInRequest;
-import com.novuss.restfulservice.in.dto.response.LicenceResponse;
 import com.novuss.restfulservice.in.dto.response.PlayerResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,12 +18,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/clubs")
+@RequestMapping("/api/v1/players")
 @AllArgsConstructor
 @Slf4j
 public class PlayerController {
     private final SavePlayerUseCase savePlayerUseCase;
-    private final GetPlayerByIdUseCase getPlayerByIdUseCase;
+    private final FindPlayerByIdUseCase findPlayerByIdUseCase;
     private final GetAllPlayersUseCase getAllPlayersUseCase;
     private final UpdatePlayerByIdUseCase updatePlayerByIdUseCase;
     private final DeletePlayerByIdUseCase deletePlayerByIdUseCase;
@@ -57,7 +50,7 @@ public class PlayerController {
     public ResponseEntity<PlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @RequestParam("id") String id) {
         log.info("Received get player by id request: {}", id);
-        var player = getPlayerByIdUseCase.getById(id);
+        var player = findPlayerByIdUseCase.getById(id);
         var response = PlayerDomainToPlayerResponseConverter.convert(player);
 
         return ResponseEntity.ok(response);

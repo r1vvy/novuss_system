@@ -7,7 +7,7 @@ import java.util.UUID;
 
 @Builder
 public record Player(
-        String id,
+        UUID id,
         String image,
         Integer rating,
         Gender gender,

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ClubDomainToClubResponseConverter {
     public static ClubResponse convert(Club domain) {
         return ClubResponse.builder()
-                .id(domain.id())
+                .id(domain.id().toString())
                 .title(domain.title())
                 .image(domain.image())
                 .createdAt(domain.createdAt())

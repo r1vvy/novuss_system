@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.math.BigDecimal;
 import java.time.Instant;
 
-@Builder
+@Builder(toBuilder = true)
 public record LocationResponse(
         String id,
         String title,

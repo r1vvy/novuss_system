@@ -13,7 +13,7 @@ public class PlayerDomainToPlayerResponseConverter {
 
     public static PlayerResponse convert(Player domain) {
         return PlayerResponse.builder()
-                .id(domain.id())
+                .id(domain.id().toString())
                 .gender(domain.gender().toString())
                 .image(domain.image())
                 .rating(domain.rating())

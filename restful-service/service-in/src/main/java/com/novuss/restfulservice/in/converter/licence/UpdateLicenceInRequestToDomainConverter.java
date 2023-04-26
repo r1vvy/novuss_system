@@ -10,7 +10,7 @@ public class UpdateLicenceInRequestToDomainConverter {
     public static Licence convert(UpdateLicenceInRequest request) {
         return Licence.builder()
                 .title(request.title())
-                .issuedDate(request.dateIssued())
+                .issuedDate(request.issuedDate())
                 .build();
     }
 }

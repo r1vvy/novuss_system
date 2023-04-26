@@ -9,7 +9,7 @@ public class LicenceDomainToLicenceResponseConverter {
 
     public static LicenceResponse convert(Licence licence) {
         return LicenceResponse.builder()
-                .id(licence.id())
+                .id(licence.id().toString())
                 .title(licence.title())
                 .issuedDate(licence.issuedDate())
                 .createdAt(licence.createdAt())

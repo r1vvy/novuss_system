@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class SportsClassDomainToResponseConverter {
     public static SportsClassResponse convert(SportsClass domain) {
         return SportsClassResponse.builder()
-                .id(domain.id())
+                .id(domain.id().toString())
                 .title(domain.title())
                 .createdAt(domain.createdAt())
                 .updatedAt(domain.updatedAt())

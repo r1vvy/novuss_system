@@ -9,8 +9,10 @@ public class SportsClassEntityToDomainConverter {
 
     public static SportsClass convert(SportsClassEntity entity) {
         return SportsClass.builder()
-                .id(entity.getId().toString())
+                .id(entity.getId())
                 .title(entity.getTitle())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

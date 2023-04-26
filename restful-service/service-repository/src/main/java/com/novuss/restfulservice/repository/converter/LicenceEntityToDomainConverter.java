@@ -9,7 +9,7 @@ public class LicenceEntityToDomainConverter {
 
     public static Licence convert(LicenceEntity licenceEntity) {
         return Licence.builder()
-                .id(licenceEntity.getId().toString())
+                .id(licenceEntity.getId())
                 .title(licenceEntity.getTitle())
                 .issuedDate(licenceEntity.getIssuedDate())
                 .createdAt(licenceEntity.getCreatedAt())

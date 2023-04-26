@@ -4,10 +4,11 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.UUID;
 
-@Builder
+@Builder(toBuilder = true)
 public record Location(
-        String id,
+        UUID id,
         String title,
         String city,
         String address,

@@ -3,10 +3,11 @@ package com.novuss.restfulservice.domain;
 import lombok.Builder;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Builder
 public record Club(
-        String id,
+        UUID id,
         String title,
         String image,
         Location location,

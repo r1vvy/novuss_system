@@ -11,7 +11,7 @@ public class LicenceDomainToEntityConverter {
 
     public static LicenceEntity convert(Licence licence) {
         return LicenceEntity.builder()
-                .id(UUID.fromString(licence.id()))
+                .id(licence.id())
                 .title(licence.title())
                 .issuedDate(licence.issuedDate())
                 .createdAt(licence.createdAt())

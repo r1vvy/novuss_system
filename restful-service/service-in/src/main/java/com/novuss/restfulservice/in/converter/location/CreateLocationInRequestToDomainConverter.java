@@ -1,6 +1,7 @@
 package com.novuss.restfulservice.in.converter.location;
 
 import com.novuss.restfulservice.domain.Location;
+import com.novuss.restfulservice.in.converter.person.CreatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ public class CreateLocationInRequestToDomainConverter {
                 .address(request.address())
                 .latitude(request.latitude())
                 .longitude(request.longitude())
+                .contactPerson(request.contactPerson())
                 .build();
     }
 }

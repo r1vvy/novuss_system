@@ -4,10 +4,11 @@ import lombok.Builder;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
 @Builder
 public record Licence(
-    String id,
+    UUID id,
     String title,
     Date issuedDate,
     Instant createdAt,

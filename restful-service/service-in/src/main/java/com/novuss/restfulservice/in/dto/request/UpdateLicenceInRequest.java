@@ -7,6 +7,6 @@ import java.util.Date;
 @Builder
 public record UpdateLicenceInRequest(
     String title,
-    Date dateIssued
+    Date issuedDate
 ) {
 }
