@@ -10,7 +10,7 @@ import java.util.UUID;
 public class PlayerDomainToEntityConverter {
     public static PlayerEntity convert(Player player) {
         return PlayerEntity.builder()
-                .id(player.id())
+                .id(UUID.fromString(player.id()))
                 .personEntity(PersonDomainToEntityConverter.convert(player.person()))
                 .image(player.image())
                 .gender(player.gender())
