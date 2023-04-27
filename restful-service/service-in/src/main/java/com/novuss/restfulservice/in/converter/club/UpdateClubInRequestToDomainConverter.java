@@ -11,7 +11,6 @@ public class UpdateClubInRequestToDomainConverter {
             .title(updateClubInRequest.title())
             .image(updateClubInRequest.image())
             .location(updateClubInRequest.location())
-            .contactPerson(updateClubInRequest.contactPerson())
             .build();
     }
 }

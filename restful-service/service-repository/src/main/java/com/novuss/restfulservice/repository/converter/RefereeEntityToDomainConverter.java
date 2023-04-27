@@ -7,14 +7,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class RefereeEntityToDomainConverter {
     public static Referee convert(RefereeEntity entity) {
-        return Referee.builder()
+        var builder = Referee.builder()
                 .id(entity.getId())
-                .person(PersonEntityToDomainConverter.convert(entity.getPersonEntity()))
-                .category(RefereeCategoryEntityToDomainConverter.convert(entity.getCategoryEntity()))
                 .commissionNumber(entity.getCommissionNumber())
                 .city(entity.getCity())
                 .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .build();
+                .updatedAt(entity.getUpdatedAt());
+
+        if(entity.getPersonEntity() != null) {
+            var person = PersonEntityToDomainConverter.convert(entity.getPersonEntity());
+            builder.person(person);
+        }
+        if (entity.getCategoryEntity() != null) {
+            var category = RefereeCategoryEntityToDomainConverter.convert(entity.getCategoryEntity());
+            builder.category(category);
+        }
+
+        return builder.build();
     }
 }

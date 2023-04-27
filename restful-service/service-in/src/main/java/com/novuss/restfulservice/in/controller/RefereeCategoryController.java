@@ -2,8 +2,10 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.refereeCategory.*;
 import com.novuss.restfulservice.in.converter.refereeCategory.CreateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
 import com.novuss.restfulservice.in.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryResponseConverter;
 import com.novuss.restfulservice.in.converter.refereeCategory.UpdateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.dto.RefereeCategoryDto;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.response.RefereeCategoryResponse;
@@ -55,12 +57,12 @@ public class RefereeCategoryController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/all")
-    public ResponseEntity<List<RefereeCategoryResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<List<RefereeCategoryDto>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referee categories request");
         var category = getAllRefereeCategoriesUseCase.getAll();
 
         return ResponseEntity.ok(category.stream()
-                .map(RefereeCategoryDomainToRefereeCategoryResponseConverter::convert)
+                .map(RefereeCategoryDomainToRefereeCategoryDtoConverter::convert)
                 .collect(Collectors.toList())
         );
     }

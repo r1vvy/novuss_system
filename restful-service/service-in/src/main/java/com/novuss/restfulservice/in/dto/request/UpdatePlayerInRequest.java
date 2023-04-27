@@ -11,10 +11,6 @@ import lombok.Builder;
 public record UpdatePlayerInRequest(
         String image,
         Integer rating,
-        String gender,
-        Person person,
-        Licence licence,
-        SportsClass sportsClass,
-        Club club
+        String gender
 ) {
 }

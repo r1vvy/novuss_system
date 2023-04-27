@@ -27,6 +27,7 @@ public class RefereeController {
     private final GetAllRefereesUseCase getAllRefereesUseCase;
     private final UpdateRefereeByIdUseCase updateRefereeByIdUseCase;
     private final DeleteRefereeByIdUseCase deleteRefereeByIdUseCase;
+    private final UpdateRefereeCategoryForRefereeUseCase updateRefereeCategoryForRefereeUseCase;
 
     @PostMapping
     public ResponseEntity<RefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
@@ -76,6 +77,17 @@ public class RefereeController {
 
         return ResponseEntity.ok(response);
     }
+    @PutMapping("{id}/category")
+    public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader("Authorization") String authorizationHeader,
+                                                                 @PathVariable("id") String id,
+                                                                 @RequestParam(value = "id", required = false) String refereeCategoryId) {
+        log.info("Received update referee category for referee request: {}", id);
+        var updatedReferee = updateRefereeCategoryForRefereeUseCase.updateRefereeCategoryForReferee(id, refereeCategoryId);
+        var response = RefereeDomainToRefereeInResponseConverter.convert(updatedReferee);
+
+        return ResponseEntity.ok(response);
+    }
+
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,

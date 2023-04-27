@@ -26,9 +26,7 @@ public class GetRefereeCategoryByIdService implements GetRefereeCategoryByIdUseC
         var referees = findRefereesByRefereeCategoryIdPort.findByRefereeCategoryId(id);
 
         return refereeCategory.toBuilder()
-                .referees(referees.map(HashSet::new)
-                        .orElse(null)
-                )
+                .referees(new HashSet<>(referees))
                 .build();
     }
 }

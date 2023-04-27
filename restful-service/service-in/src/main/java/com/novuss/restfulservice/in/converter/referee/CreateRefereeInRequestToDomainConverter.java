@@ -11,7 +11,6 @@ public class CreateRefereeInRequestToDomainConverter {
             .city(createRefereeInRequest.city())
             .commissionNumber(createRefereeInRequest.commissionNumber())
             .commissionNumber(createRefereeInRequest.commissionNumber())
-            .category(createRefereeInRequest.refereeCategory())
             .person(createRefereeInRequest.person())
             .build();
     }

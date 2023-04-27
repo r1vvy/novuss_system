@@ -54,6 +54,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
+                <constraints nullable="false"/>
             </column>
             <column name="category_id" type="uuid">
             </column>

@@ -16,12 +16,12 @@ public class DeleteLicenceByIdAdapter implements DeleteLicenceByIdPort {
     private final LicenceJpaRepository licenceJpaRepository;
     @Override
     public void deleteLicenceById(String id) {
-        UUID uuid = UUID.fromString(id);
+        UUID licenceId = UUID.fromString(id);
 
-        licenceJpaRepository.findById(uuid).ifPresentOrElse(
+        licenceJpaRepository.findById(licenceId).ifPresentOrElse(
                 licenceEntity -> {
                     log.info("Licence with id {} found", id);
-                    licenceJpaRepository.deleteById(uuid);
+                    licenceJpaRepository.deleteById(licenceId);
                 },
                 () -> {
                     log.info("Licence with id {} not found", id);

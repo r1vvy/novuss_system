@@ -12,8 +12,6 @@ import java.util.UUID;
 @Builder
 public record UpdateRefereeInRequest(
         String city,
-        String commissionNumber,
-        RefereeCategory refereeCategory,
-        Person person
+        String commissionNumber
 ) {
 }

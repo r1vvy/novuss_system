@@ -13,12 +13,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class DeleteRefereeByIdService implements DeleteRefereeByIdUseCase {
     private final DeleteRefereeByIdPort deleteRefereeByIdPort;
-    private final FindRefereeByIdPort findRefereeByIdPort;
 
     public void deleteById(String id) {
         log.info("Trying to delete referee with id = {}", id);
-        findRefereeByIdPort.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Referee not found"));
 
         deleteRefereeByIdPort.deleteById(id);
     }

@@ -19,5 +19,5 @@ public interface RefereeJpaRepository extends JpaRepository<RefereeEntity, UUID>
     Optional<RefereeEntity> findByPersonId(@Param("personId") UUID personId);
 
     @Query("SELECT r FROM RefereeEntity r WHERE r.categoryEntity.id = :categoryId")
-    List<RefereeEntity> findAllByCategoryId(@Param("categoryId") UUID categoryId);
+    Optional<List<RefereeEntity>> findAllByCategoryId(@Param("categoryId") UUID categoryId);
 }

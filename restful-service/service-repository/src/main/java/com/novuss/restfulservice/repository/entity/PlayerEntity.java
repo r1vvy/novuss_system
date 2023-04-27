@@ -1,5 +1,6 @@
 package com.novuss.restfulservice.repository.entity;
 
+import com.novuss.restfulservice.domain.Club;
 import com.novuss.restfulservice.repository.converter.GenderConverter;
 import com.novuss.restfulservice.domain.Gender;
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -35,6 +36,15 @@ public class PlayerEntity {
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity personEntity;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "licence_id", referencedColumnName = "id")
+    private LicenceEntity licenceEntity;
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "sports_class_id", referencedColumnName = "id")
+    private SportsClassEntity sportsClassEntity;
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "club_id", referencedColumnName = "id")
+    private ClubEntity clubEntity;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Instant createdAt;

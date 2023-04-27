@@ -11,7 +11,6 @@ import java.util.UUID;
 public record CreateRefereeInRequest(
         String city,
         String commissionNumber,
-        RefereeCategory refereeCategory,
         Person person
 ) {
 }

@@ -9,14 +9,22 @@ import java.util.UUID;
 @Component
 public class ClubDomainToEntityConverter {
     public static ClubEntity convert(Club domain) {
-        return ClubEntity.builder()
+        var builder = ClubEntity.builder()
                 .id(domain.id())
                 .title(domain.title())
                 .image(domain.image())
-                .locationEntity(LocationDomainToEntityConverter.convert(domain.location()))
-                .contactPersonEntity(PersonDomainToEntityConverter.convert(domain.contactPerson()))
                 .createdAt(domain.createdAt())
-                .updatedAt(domain.updatedAt())
-                .build();
+                .updatedAt(domain.updatedAt());
+
+        if(domain.location() != null) {
+            var locationEntity = LocationDomainToEntityConverter.convert(domain.location());
+            builder.locationEntity(locationEntity);
+        }
+        if (domain.contactPerson() != null) {
+            var contactPersonEntity = PersonDomainToEntityConverter.convert(domain.contactPerson());
+            builder.contactPersonEntity(contactPersonEntity);
+        }
+
+        return builder.build();
     }
 }

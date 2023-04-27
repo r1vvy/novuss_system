@@ -8,7 +8,6 @@ import lombok.Builder;
 public record CreateClubInRequest(
         String title,
         String image,
-        Location location,
-        Person contactPerson
+        Location location
 ) {
 }

@@ -4,9 +4,11 @@ import com.novuss.restfulservice.core.port.in.location.*;
 import com.novuss.restfulservice.in.converter.location.LocationDomainToResponseConverter;
 import com.novuss.restfulservice.in.converter.location.UpdateLocationInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.location.CreateLocationInRequestToDomainConverter;
+import com.novuss.restfulservice.in.converter.player.PlayerDomainToPlayerResponseConverter;
 import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateLocationInRequest;
 import com.novuss.restfulservice.in.dto.response.LocationResponse;
+import com.novuss.restfulservice.in.dto.response.PlayerResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class LocationController {
     private final GetAllLocationsUseCase getAllLocationsUseCase;
     private final UpdateLocationByIdUseCase updateLocationByIdUseCase;
     private final DeleteLocationByIdUseCase deleteLocationByIdUseCase;
+    private final UpdateLocationContactPersonByIdUseCase updateLocationContactPersonByIdUseCase;
 
     @PostMapping
     public ResponseEntity<LocationResponse> create(@RequestHeader("Authorization") String authorizationHeader,
@@ -74,6 +77,16 @@ public class LocationController {
         log.info("Received update location request: {}", request);
         var location = UpdateLocationInRequestToDomainConverter.convert(request);
         var updatedLocation = updateLocationByIdUseCase.updateLocationById(location, id);
+        var response = LocationDomainToResponseConverter.convert(updatedLocation);
+
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("{id}/contact-person")
+    public ResponseEntity<LocationResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
+                                                     @PathVariable("id") String locationId,
+                                                     @RequestParam(value = "id", required = false) String personId) {
+        log.info("Received update contact person for location request: {}", locationId);
+        var updatedLocation = updateLocationContactPersonByIdUseCase.updateLocationContactPersonById(locationId, personId);
         var response = LocationDomainToResponseConverter.convert(updatedLocation);
 
         return ResponseEntity.ok(response);

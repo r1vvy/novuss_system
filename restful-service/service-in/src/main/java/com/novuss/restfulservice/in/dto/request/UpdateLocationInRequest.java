@@ -11,7 +11,6 @@ public record UpdateLocationInRequest(
         String city,
         String address,
         BigDecimal latitude,
-        BigDecimal longitude,
-        Person contactPerson
+        BigDecimal longitude
 ) {
 }

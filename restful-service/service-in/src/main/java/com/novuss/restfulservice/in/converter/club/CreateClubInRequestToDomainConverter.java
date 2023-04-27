@@ -11,7 +11,6 @@ public class CreateClubInRequestToDomainConverter {
             .title(request.title())
             .image(request.image())
             .location(request.location())
-            .contactPerson(request.contactPerson())
             .build();
     }
 }

@@ -5,6 +5,8 @@ import com.novuss.restfulservice.in.converter.person.CreatePersonInRequestToDoma
 import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class CreateLocationInRequestToDomainConverter {
 
@@ -15,7 +17,10 @@ public class CreateLocationInRequestToDomainConverter {
                 .address(request.address())
                 .latitude(request.latitude())
                 .longitude(request.longitude())
-                .contactPerson(request.contactPerson())
+                .contactPerson(Optional.ofNullable(
+                        request.contactPerson())
+                        .map(CreatePersonInRequestToDomainConverter::convert)
+                        .orElse(null))
                 .build();
     }
 }

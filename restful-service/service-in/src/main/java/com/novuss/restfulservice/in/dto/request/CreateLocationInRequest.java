@@ -12,6 +12,6 @@ public record CreateLocationInRequest(
         String address,
         BigDecimal latitude,
         BigDecimal longitude,
-        Person contactPerson
+        CreatePersonInRequest contactPerson
 ) {
 }

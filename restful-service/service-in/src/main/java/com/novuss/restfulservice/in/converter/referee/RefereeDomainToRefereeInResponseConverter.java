@@ -5,6 +5,8 @@ import com.novuss.restfulservice.in.converter.refereeCategory.RefereeCategoryDom
 import com.novuss.restfulservice.in.dto.response.RefereeResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class RefereeDomainToRefereeInResponseConverter {
 
@@ -15,7 +17,10 @@ public class RefereeDomainToRefereeInResponseConverter {
             .createdAt(referee.createdAt())
             .updatedAt(referee.updatedAt())
             .commissionNumber(referee.commissionNumber())
-            .category(RefereeCategoryDomainToRefereeCategoryDtoConverter.convert(referee.category()))
+            .category(Optional.ofNullable(referee.category())
+                .map(RefereeCategoryDomainToRefereeCategoryDtoConverter::convert)
+                .orElse(null)
+            )
             .person(referee.person())
             .build();
     }

@@ -13,10 +13,6 @@ public class UpdatePlayerInRequestToDomainConverter {
                 .image(request.image())
                 .rating(request.rating())
                 .gender(Gender.valueOf(request.gender()))
-                .person(request.person())
-                .licence(request.licence())
-                .sportsClass(request.sportsClass())
-                .club(request.club())
                 .build();
     }
 }

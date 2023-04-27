@@ -7,14 +7,23 @@ import org.springframework.stereotype.Component;
 @Component
 public class ClubEntityToDomainConverter {
     public static Club convert(ClubEntity entity) {
-        return Club.builder()
+        var builder = Club.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
                 .image(entity.getImage())
-                .location(LocationEntityToDomainConverter.convert(entity.getLocationEntity()))
-                .contactPerson(PersonEntityToDomainConverter.convert(entity.getContactPersonEntity()))
                 .createdAt(entity.getCreatedAt())
-                .updatedAt(entity.getUpdatedAt())
-                .build();
+                .updatedAt(entity.getUpdatedAt());
+
+        if(entity.getLocationEntity() != null) {
+            var location = LocationEntityToDomainConverter.convert(entity.getLocationEntity());
+            builder.location(location);
+        }
+
+        if (entity.getContactPersonEntity() != null) {
+            var contactPerson = PersonEntityToDomainConverter.convert(entity.getContactPersonEntity());
+            builder.contactPerson(contactPerson);
+        }
+
+        return builder.build();
     }
 }

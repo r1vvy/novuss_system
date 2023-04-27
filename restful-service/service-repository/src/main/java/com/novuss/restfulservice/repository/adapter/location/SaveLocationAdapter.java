@@ -29,34 +29,22 @@ public class SaveLocationAdapter implements SaveLocationPort {
                             throw new EntityExistsException("Location already exists with title = " + location.title());
                         }
                 );
-
         var contactPerson = location.contactPerson();
-        var personEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
+        var contactPersonEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
                 contactPerson.firstName(),
                 contactPerson.lastName(),
                 contactPerson.phoneNumber()
-        ).orElseGet(
-                () -> {
-                    var newEntity = personJpaRepository.save(PersonDomainToEntityConverter.convert(contactPerson));
-                    log.info("Person saved with firstName = {}, lastName = {}, phoneNumber = {}",
-                            contactPerson.firstName(),
-                            contactPerson.lastName(),
-                            contactPerson.phoneNumber()
-                    );
-
-                    return newEntity;
-                }
+        ).orElseThrow(
+                () -> new EntityExistsException("Person not found with firstName = " + contactPerson.firstName() +
+                        " lastName = " + contactPerson.lastName() +
+                        " phoneNumber = " + contactPerson.phoneNumber())
         );
-        log.debug("person entity= {}", personEntity);
 
         var locationEntity = LocationDomainToEntityConverter.convert(location);
-        locationEntity.setPersonEntity(personEntity);
-
-        log.debug("person entity= {}", location.contactPerson());
+        locationEntity.setPersonEntity(contactPersonEntity);
 
         var updatedEntity = locationJpaRepository.save(locationEntity);
         log.info("Location saved with id = {}", updatedEntity.getId());
-        log.debug("Location contact person = {}", updatedEntity.getPersonEntity());
 
         return LocationEntityToDomainConverter.convert(updatedEntity);
     }

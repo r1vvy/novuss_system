@@ -6,6 +6,8 @@ import com.novuss.restfulservice.in.converter.person.PersonDomainToPersonRespons
 import com.novuss.restfulservice.in.dto.response.ClubResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class ClubDomainToClubResponseConverter {
     public static ClubResponse convert(Club domain) {
@@ -15,8 +17,16 @@ public class ClubDomainToClubResponseConverter {
                 .image(domain.image())
                 .createdAt(domain.createdAt())
                 .updatedAt(domain.updatedAt())
-                .contactPerson(PersonDomainToPersonResponseConverter.convert(domain.contactPerson()))
-                .location(LocationDomainToResponseConverter.convert(domain.location()))
+                .contactPerson(Optional.ofNullable(
+                        domain.contactPerson())
+                        .map(PersonDomainToPersonResponseConverter::convert)
+                        .orElse(null)
+                )
+                .location(Optional.ofNullable(
+                        domain.location())
+                        .map(LocationDomainToResponseConverter::convert)
+                        .orElse(null)
+                )
                 .build();
     }
 }

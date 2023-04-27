@@ -27,30 +27,34 @@ public class SaveRefereeAdapter implements SaveRefereePort {
 
     @Override
     public Referee save(Referee referee) {
-        log.info("Trying to save referee with firstname = {} and lastname = {}",
-                referee.person().firstName(),
-                referee.person().lastName()
-        );
-        var refereeCategoryEntity = findRefereeCategoryByTitle(referee.category().title());
-
-        var optionalPersonEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
+        log.info("SaveRefereeAdapter.save: referee = {}", referee);
+        var personEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
                 referee.person().firstName(),
                 referee.person().lastName(),
                 referee.person().phoneNumber()
+        ).orElseThrow(() -> {
+            log.warn("Person with firstName {} and lastName {} and phoneNumber {} not found",
+                    referee.person().firstName(),
+                    referee.person().lastName(),
+                    referee.person().phoneNumber());
+            throw new EntityNotFoundException("Person with firstName " + referee.person().firstName() +
+                    " and lastName " + referee.person().lastName() +
+                    " and phoneNumber " + referee.person().phoneNumber() + " not found");
+        });
+        refereeJpaRepository.findByPersonId(personEntity.getId()).ifPresent(
+                refereeEntity -> {
+                    log.warn("Referee with personId {} already exists", personEntity.getId());
+                    throw new EntityExistsException("Referee with personId " + personEntity.getId() + " already exists");
+                }
         );
+        RefereeCategoryEntity refereeCategoryEntity = null;
+        if(referee.category() != null) {
+            refereeCategoryEntity = refereeCategoryJpaRepository.findByTitle(referee.category().title())
+                    .orElseThrow(() -> {
+                        log.warn("RefereeCategory with name {} not found", referee.category().title());
+                        throw new EntityNotFoundException("RefereeCategory with name " + referee.category().title() + " not found");
+                    });
 
-        PersonEntity personEntity;
-        if(optionalPersonEntity.isPresent()) {
-            personEntity = optionalPersonEntity.get();
-            var refereeEntity = refereeJpaRepository.findByPersonId(personEntity.getId());
-            if(refereeEntity.isPresent()) {
-                throw new EntityExistsException("Referee already exists");
-            } else {
-                personEntity = personJpaRepository.save(personEntity);
-            }
-        } else {
-            personEntity = PersonDomainToEntityConverter.convert(referee.person());
-            personJpaRepository.save(personEntity);
         }
 
         var refereeEntity = RefereeDomainToEntityConverter.convert(referee);
@@ -61,10 +65,5 @@ public class SaveRefereeAdapter implements SaveRefereePort {
         log.info("Referee saved successfully {}", savedRefereeEntity);
 
         return RefereeEntityToDomainConverter.convert(savedRefereeEntity);
-    }
-
-    private RefereeCategoryEntity findRefereeCategoryByTitle(String title) {
-        return refereeCategoryJpaRepository.findByTitle(title)
-                .orElseThrow(() -> new EntityNotFoundException("Referee category not found"));
     }
 }

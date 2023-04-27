@@ -10,8 +10,6 @@ public class UpdateRefereeInRequestToDomainConverter {
             return Referee.builder()
                 .city(updateRefereeInRequest.city())
                 .commissionNumber(updateRefereeInRequest.commissionNumber())
-                .category(updateRefereeInRequest.refereeCategory())
-                .person(updateRefereeInRequest.person())
                 .build();
         }
 }

@@ -28,51 +28,26 @@ public class UpdateRefereeByIdAdapter implements UpdateRefereeByIdPort {
 
     @Override
     public Referee updateById(String id, Referee referee) {
-        log.info("Updating referee with id {}", id);
-
+        log.info("Updating referee with id = {}", id);
         var existingReferee = findRefereeFromRepoById(UUID.fromString(id));
-        var existingPerson = existingReferee.getPersonEntity();
-        var existingRefereeCategory = existingReferee.getCategoryEntity();
-
-        var updatedRefereeCategoryEntity = changeRefereeCategory(referee);
-        var updatedPersonEntity = PersonDomainToEntityConverter.convert(referee.person());
-        updatedPersonEntity.setId(existingPerson.getId());
-        updatedPersonEntity.setCreatedAt(existingPerson.getCreatedAt());
-
-        personJpaRepository.save(updatedPersonEntity);
-        refereeCategoryJpaRepository.save(updatedRefereeCategoryEntity);
 
         var updatedRefereeEntity = RefereeDomainToEntityConverter.convert(referee);
         updatedRefereeEntity.setId(existingReferee.getId());
         updatedRefereeEntity.setCreatedAt(existingReferee.getCreatedAt());
-
-        updatedRefereeEntity.setPersonEntity(updatedPersonEntity);
-        updatedRefereeEntity.setCategoryEntity(updatedRefereeCategoryEntity);
+        updatedRefereeEntity.setCategoryEntity(existingReferee.getCategoryEntity());
+        updatedRefereeEntity.setPersonEntity(existingReferee.getPersonEntity());
 
         var newRefereeEntity = refereeJpaRepository.saveAndFlush(updatedRefereeEntity);
-        log.info("Referee with id {} updated", id);
+        log.info("Updated referee with id = {}", id);
+        log.debug("Updated referee = {}", newRefereeEntity);
 
         return RefereeEntityToDomainConverter.convert(newRefereeEntity);
     }
 
     private RefereeEntity findRefereeFromRepoById(UUID id) {
         return refereeJpaRepository.findById(id).orElseThrow(() -> {
-            log.error("Referee with id {} not found", id);
+            log.warn("Referee not found with id = {}", id);
             throw new EntityNotFoundException("Referee with id " + id + " not found");
         });
-    }
-    private RefereeCategoryEntity changeRefereeCategory(Referee updatedReferee) {
-        var updatedCategoryForReferee = refereeCategoryJpaRepository.findByTitle(updatedReferee.category().title());
-
-        if(!updatedCategoryForReferee.isPresent()) {
-            log.error("Referee category with title {} not found", updatedReferee.category().title());
-            throw new EntityNotFoundException("Referee category with title " + updatedReferee.category().title() + " not found");
-        }
-
-        var updatedCategory = updatedCategoryForReferee.get();
-        updatedCategory.setUpdatedAt(Instant.now());
-        log.info("Changed referee category to {}", updatedReferee.category().title());
-
-        return updatedCategory;
     }
 }

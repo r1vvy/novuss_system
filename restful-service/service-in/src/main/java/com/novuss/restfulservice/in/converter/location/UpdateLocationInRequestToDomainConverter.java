@@ -12,7 +12,6 @@ public class UpdateLocationInRequestToDomainConverter {
                 .address(request.address())
                 .latitude(request.latitude())
                 .longitude(request.longitude())
-                .contactPerson(request.contactPerson())
                 .build();
     }
 }

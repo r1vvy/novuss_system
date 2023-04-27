@@ -18,8 +18,8 @@ public class FindPlayerByIdAdapter implements FindPlayerByIdPort {
     private final PlayerJpaRepository playerJpaRepository;
     @Override
     public Player findById(String id) {
-        var uuid = UUID.fromString(id);
-        return playerJpaRepository.findById(uuid)
+        var playerId = UUID.fromString(id);
+        return playerJpaRepository.findById(playerId)
                 .map(PlayerEntityToDomainConverter::convert)
                 .orElseThrow(
                         () -> new EntityNotFoundException("Player with id " + id + " not found")

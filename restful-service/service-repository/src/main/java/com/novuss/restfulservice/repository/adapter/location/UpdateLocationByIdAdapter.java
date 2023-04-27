@@ -26,6 +26,7 @@ public class UpdateLocationByIdAdapter implements UpdateLocationByIdPort {
                         () -> new EntityNotFoundException("Location not found with id = " + id)
                 );
         var updatedEntity = LocationDomainToEntityConverter.convert(location);
+        updatedEntity.setPersonEntity(oldEntity.getPersonEntity());
         updatedEntity.setId(uuid);
         updatedEntity.setCreatedAt(oldEntity.getCreatedAt());
 

@@ -1,5 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.referee;
 
+import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.out.referee.FindRefereesByRefereeCategoryIdPort;
 import com.novuss.restfulservice.domain.Referee;
 import com.novuss.restfulservice.repository.converter.RefereeEntityToDomainConverter;
@@ -21,13 +22,16 @@ import java.util.stream.Collectors;
 public class FindRefereesByRefereeCategoryIdAdapter implements FindRefereesByRefereeCategoryIdPort {
     private final RefereeJpaRepository refereeJpaRepository;
     @Override
-    public Optional<List<Referee>> findByRefereeCategoryId(String refereeCategoryId) {
+    public List<Referee> findByRefereeCategoryId(String refereeCategoryId) {
         log.info("Searching for referees with refereeCategoryId = {}", refereeCategoryId);
-        var refereeEntities = refereeJpaRepository.findAllByCategoryId(UUID.fromString(refereeCategoryId));
+        var refereeEntities = refereeJpaRepository.findAllByCategoryId(UUID.fromString(refereeCategoryId))
+                .orElseThrow(() -> {
+                    log.warn("Referees with refereeCategoryId {} not found", refereeCategoryId);
+                    throw new EntityNotFoundException("Referees with refereeCategoryId " + refereeCategoryId + " not found");
+                });
 
-        return Optional.of(refereeEntities.stream()
+        return refereeEntities.stream()
                 .map(RefereeEntityToDomainConverter::convert)
-                .collect(Collectors.toList())
-        );
+                .collect(Collectors.toList());
     }
 }

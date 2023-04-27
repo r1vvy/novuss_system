@@ -79,7 +79,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="image" type="VARCHAR(1024)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
@@ -95,14 +95,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="person_id" type="uuid">
+                <constraints nullable="false"/>
             </column>
             <column name="licence_id" type="uuid">
             </column>
             <column name="sports_class_id" type="uuid">
             </column>
-            <column name="image" type="VARCHAR(1024)">
-                <constraints nullable="false"/>
+            <column name="club_id" type="uuid">
             </column>
+            <column name="image" type="VARCHAR(1024)" />
             <column name="rating" type="SMALLINT">
                 <constraints nullable="false"/>
             </column>
@@ -136,6 +137,12 @@
                                  referencedTableName="sports_classes"
                                  referencedColumnNames="id"
         />
+        <addForeignKeyConstraint baseTableName="players"
+                                 baseColumnNames="club_id"
+                                 constraintName="fk_players_club_id"
+                                 referencedTableName="clubs"
+                                 referencedColumnNames="id"
+        />
     </changeSet>
     <changeSet id="create.unique.foreign.key.constraints.to.player.relations" author="emils.seflers">
         <addUniqueConstraint tableName="players"
@@ -153,5 +160,27 @@
                 <constraints nullable="false"/>
             </column>
         </addColumn>
+    </changeSet>
+    <changeSet id="create.fk.constraints.to.club.relations" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="clubs"
+                                 baseColumnNames="location_id"
+                                 constraintName="fk_clubs_location_id"
+                                 referencedTableName="locations"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="clubs"
+                                 baseColumnNames="contact_person_id"
+                                 constraintName="fk_clubs_contact_person_id"
+                                 referencedTableName="people"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.fk.constraints.to.location.contactperson.relation" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="locations"
+                                 baseColumnNames="contact_person_id"
+                                 constraintName="fk_locations_contact_person_id"
+                                 referencedTableName="people"
+                                 referencedColumnNames="id"
+        />
     </changeSet>
 </databaseChangeLog>

@@ -18,14 +18,25 @@ public class UpdatePlayerByIdAdapter implements UpdatePlayerByIdPort {
     private final PlayerJpaRepository playerJpaRepository;
     @Override
     public Player updatePlayerById(Player player, String id) {
-        var uuid = UUID.fromString(id);
+        var playerId = UUID.fromString(id);
 
-        var oldEntity = playerJpaRepository.findById(uuid)
+        var oldEntity = playerJpaRepository.findById(playerId)
                 .orElseThrow(
                         () -> new RuntimeException("Player with id " + id + " not found")
                 );
+
         var updatedEntity = PlayerDomainToEntityConverter.convert(player);
         updatedEntity.setId(oldEntity.getId());
+        if(oldEntity.getClubEntity() != null) {
+            updatedEntity.setClubEntity(oldEntity.getClubEntity());
+        }
+        if(oldEntity.getLicenceEntity() != null) {
+            updatedEntity.setLicenceEntity(oldEntity.getLicenceEntity());
+        }
+        if (oldEntity.getSportsClassEntity() != null) {
+            updatedEntity.setSportsClassEntity(oldEntity.getSportsClassEntity());
+        }
+        updatedEntity.setPersonEntity(oldEntity.getPersonEntity());
         updatedEntity.setCreatedAt(oldEntity.getCreatedAt());
 
         var updatedPlayer = playerJpaRepository.save(updatedEntity);

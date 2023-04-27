@@ -8,6 +8,8 @@ import com.novuss.restfulservice.in.converter.sportsClass.SportsClassDomainToRes
 import com.novuss.restfulservice.in.dto.response.PlayerResponse;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class PlayerDomainToPlayerResponseConverter {
 
@@ -19,10 +21,26 @@ public class PlayerDomainToPlayerResponseConverter {
                 .rating(domain.rating())
                 .createdAt(domain.createdAt())
                 .updatedAt(domain.updatedAt())
-                .person(PersonDomainToPersonResponseConverter.convert(domain.person()))
-                .club(ClubDomainToClubResponseConverter.convert(domain.club()))
-                .licence(LicenceDomainToLicenceResponseConverter.convert(domain.licence()))
-                .sportsClass(SportsClassDomainToResponseConverter.convert(domain.sportsClass()))
+                .person(Optional.ofNullable(
+                        domain.person())
+                        .map(PersonDomainToPersonResponseConverter::convert)
+                        .orElse(null)
+                )
+                .club(Optional.ofNullable(
+                        domain.club())
+                        .map(ClubDomainToClubResponseConverter::convert)
+                        .orElse(null)
+                )
+                .licence(Optional.ofNullable(
+                        domain.licence())
+                        .map(LicenceDomainToLicenceResponseConverter::convert)
+                        .orElse(null)
+                )
+                .sportsClass(Optional.ofNullable(
+                        domain.sportsClass())
+                        .map(SportsClassDomainToResponseConverter::convert)
+                        .orElse(null)
+                )
                 .build();
     }
 }

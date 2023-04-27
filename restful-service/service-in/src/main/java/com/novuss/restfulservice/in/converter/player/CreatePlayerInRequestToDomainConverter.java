@@ -11,8 +11,8 @@ public class CreatePlayerInRequestToDomainConverter {
         return Player.builder()
             .image(createPlayerInRequest.image())
             .rating(createPlayerInRequest.rating())
-            .person(createPlayerInRequest.person())
             .gender(createPlayerInRequest.gender())
+            .person(createPlayerInRequest.person())
             .build();
     }
 }

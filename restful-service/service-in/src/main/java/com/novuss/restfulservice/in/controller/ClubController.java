@@ -1,10 +1,10 @@
 package com.novuss.restfulservice.in.controller;
 
+import com.novuss.restfulservice.core.port.in.club.UpdateClubLocationByIdUseCase;
 import com.novuss.restfulservice.core.port.in.club.*;
 import com.novuss.restfulservice.in.converter.club.ClubDomainToClubResponseConverter;
 import com.novuss.restfulservice.in.converter.club.CreateClubInRequestToDomainConverter;
 import com.novuss.restfulservice.in.converter.club.UpdateClubInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.licence.LicenceDomainToLicenceResponseConverter;
 import com.novuss.restfulservice.in.dto.request.CreateClubInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateClubInRequest;
 import com.novuss.restfulservice.in.dto.response.ClubResponse;
@@ -27,8 +27,9 @@ public class ClubController {
     private final FindClubByIdUseCase getClubByIdUseCase;
     private final GetAllClubsUseCase getAllClubs;
     private final UpdateClubByIdUseCase updateClubByIdUseCase;
+    private final UpdateClubLocationByIdUseCase updateClubLocationByIdUseCase;
+    private final UpdateClubContactPersonByIdUseCase updateClubContactPersonByIdUseCase;
     private final DeleteClubByIdUseCase deleteClubByIdUseCase;
-
     @PostMapping
     public ResponseEntity<ClubResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                @RequestBody CreateClubInRequest request) {
@@ -76,6 +77,27 @@ public class ClubController {
         log.info("Received update club request: {}", request);
         var club = UpdateClubInRequestToDomainConverter.convert(request);
         var updatedClub = updateClubByIdUseCase.updateById(club, id);
+        var response = ClubDomainToClubResponseConverter.convert(updatedClub);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/location")
+    public ResponseEntity<ClubResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
+                                                  @PathVariable("id") String clubId,
+                                                  @RequestParam(value = "id", required = false) String locationId) {
+        log.info("Received update club location request: {}", locationId);
+        var updatedClub = updateClubLocationByIdUseCase.updateClubLocationById(clubId, locationId);
+        var response = ClubDomainToClubResponseConverter.convert(updatedClub);
+
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("/{id}/contact-person")
+    public ResponseEntity<ClubResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
+                                                  @PathVariable("id") String clubId,
+                                                  @RequestParam(value = "id") String personId) {
+        log.info("Received update club contact person request: {}", personId);
+        var updatedClub = updateClubContactPersonByIdUseCase.updateClubContactPersonById(clubId, personId);
         var response = ClubDomainToClubResponseConverter.convert(updatedClub);
 
         return ResponseEntity.ok(response);
