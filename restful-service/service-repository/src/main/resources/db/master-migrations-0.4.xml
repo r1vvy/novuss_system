@@ -23,5 +23,144 @@
             </column>
         </createTable>
     </changeSet>
-    
+    <changeSet id="create.competitions.table" author="emils.seflers">
+        <createTable tableName="competitions">
+            <column name="id" type="UUID">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="category_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_person_id" type="UUID"/>
+            <column name="location_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image" type="VARCHAR(1024)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_start" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_end" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competition_start" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="competition_end" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.foreign.key.constraints.to.competitions.relationships" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="competitions"
+                                 baseColumnNames="category_id"
+                                 constraintName="FK_COMPETITIONS_CATEGORY_ID"
+                                 referencedTableName="competition_categories"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="competitions"
+                                 baseColumnNames="contact_person_id"
+                                 constraintName="FK_COMPETITIONS_CONTACT_PERSON_ID"
+                                 referencedTableName="people"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="competitions"
+                                 baseColumnNames="location_id"
+                                 constraintName="FK_COMPETITIONS_LOCATION_ID"
+                                 referencedTableName="locations"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.competition_players.table" author="emils.seflers">
+        <createTable tableName="competition_players">
+            <column name="player_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMPETITION_PLAYER_ID"/>
+            </column>
+            <column name="competition_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMPETITION_PLAYER_ID"/>
+            </column>
+            <column name="placement" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="rating_after" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="rating_change" type="INTEGER">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.competition_referees.table" author="emils.seflers">
+        <createTable tableName="competition_referees">
+            <column name="referee_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMPETITION_REFEREE_ID"/>
+            </column>
+            <column name="competition_id" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_COMPETITION_REFEREE_ID"/>
+            </column>
+            <column name="role" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="DATETIME(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="DATETIME(6)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="create.foreign.key.constraints.to.competition.players.table" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="competition_players"
+                                 baseColumnNames="competition_id"
+                                 constraintName="FK_COMPETITION_PLAYERS_COMPETITION_ID"
+                                 referencedTableName="competitions"
+                                 referencedColumnNames="id"
+        />
+        <addForeignKeyConstraint baseTableName="competition_players"
+                                 baseColumnNames="player_id"
+                                 constraintName="FK_COMPETITION_PLAYERS_PLAYER_ID"
+                                 referencedTableName="players"
+                                 referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraint.to.competition_players.composite.key" author="emils.seflers">
+        <addUniqueConstraint tableName="competition_players" columnNames="competition_id, player_id"/>
+    </changeSet>
+    <changeSet id="create.unique.constraint.to.competition_categories.table" author="emils.seflers">
+        <addUniqueConstraint
+                columnNames="title"
+                tableName="competition_categories"
+                constraintName="UK_COMPETITION_CATEGORIES_TITLE"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraint.to.competition_players.table" author="emils.seflers">
+        <addUniqueConstraint
+                columnNames="competition_id, placement"
+                tableName="competition_players"
+                constraintName="UK_COMPETITION_PLAYERS_COMPETITION_ID_PLACEMENT"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraint.to.competition_referees.table" author="emils.seflers">
+        <addUniqueConstraint
+                columnNames="referee_id, competition_id"
+                tableName="competition_referees"
+                constraintName="UK_COMPETITION_REFEREE_ID_COMPETITION_ID"
+        />
+    </changeSet>
 </databaseChangeLog>

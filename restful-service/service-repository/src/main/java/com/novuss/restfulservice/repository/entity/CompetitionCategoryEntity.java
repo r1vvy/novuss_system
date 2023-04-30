@@ -9,6 +9,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -30,6 +32,12 @@ public class CompetitionCategoryEntity {
 
     @Column(name = "tag_color")
     private String tagColor;
+    @OneToMany(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.DETACH
+    )
+    @JoinColumn(name = "category_id")
+    private Set<CompetitionEntity> competitionEntities = new HashSet<>();
 
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

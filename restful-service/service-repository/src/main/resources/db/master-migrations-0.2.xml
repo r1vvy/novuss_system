@@ -94,4 +94,25 @@
                              constraintName="uk_referees_person_id"
         />
     </changeSet>
+    <changeSet id="create.unique.constraints.to.people.table" author="emils.seflers">
+        <addUniqueConstraint tableName="people"
+                             columnNames="phone_number"
+                             constraintName="uk_people_phone_number"/>
+        <addUniqueConstraint tableName="people"
+                                columnNames="email"
+                                constraintName="uk_people_email"/>
+    </changeSet>
+    <changeSet id="create.unique.constraints.to.referee_categories.table" author="emils.seflers">
+        <addUniqueConstraint
+                columnNames="title"
+                tableName="referee_categories"
+                constraintName="uk_referee_categories_title"/>
+    </changeSet>
+    <changeSet id="create.unique.constraints.to.referees.table" author="emils.seflers">
+        <addUniqueConstraint
+                columnNames="commission_number"
+                tableName="referees"
+                constraintName="uk_referees_commission_number"
+        />
+    </changeSet>
 </databaseChangeLog>
