@@ -1,10 +1,10 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.refereeCategory.*;
-import com.novuss.restfulservice.in.converter.refereeCategory.CreateRefereeCategoryInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
-import com.novuss.restfulservice.in.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryResponseConverter;
-import com.novuss.restfulservice.in.converter.refereeCategory.UpdateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.refereeCategory.CreateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
+import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryResponseConverter;
+import com.novuss.restfulservice.in.util.converter.refereeCategory.UpdateRefereeCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.RefereeCategoryDto;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeCategoryInRequest;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/referees/categories")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class RefereeCategoryController {
     private final SaveRefereeCategoryUseCase saveRefereeCategoryUseCase;
     private final GetRefereeCategoryByIdUseCase getRefereeCategoryByIdUseCase;
@@ -47,9 +49,9 @@ public class RefereeCategoryController {
 
         return ResponseEntity.created(location).body(response);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<RefereeCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @RequestParam("id") String id) {
+                                                 @PathVariable("id") String id) {
         log.info("Received get referee category by id request: {}", id);
         var category = getRefereeCategoryByIdUseCase.getById(id);
         var response = RefereeCategoryDomainToRefereeCategoryResponseConverter.convert(category);
@@ -66,9 +68,9 @@ public class RefereeCategoryController {
                 .collect(Collectors.toList())
         );
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<RefereeCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                    @RequestParam("id") String id,
+                                                    @PathVariable("id") String id,
                                                     @RequestBody UpdateRefereeCategoryInRequest request) {
         log.info("Received update referee request: {}", request);
         var category = UpdateRefereeCategoryInRequestToDomainConverter.convert(request);

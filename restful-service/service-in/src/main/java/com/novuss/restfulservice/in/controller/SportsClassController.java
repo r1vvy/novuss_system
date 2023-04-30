@@ -1,9 +1,9 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.sportsClass.*;
-import com.novuss.restfulservice.in.converter.sportsClass.CreateSportsClassInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.sportsClass.SportsClassDomainToResponseConverter;
-import com.novuss.restfulservice.in.converter.sportsClass.UpdateSportsClassInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.sportsClass.CreateSportsClassInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.sportsClass.SportsClassDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.sportsClass.UpdateSportsClassInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.response.SportsClassResponse;
@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/sports-classes")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class SportsClassController {
     private final SaveSportsClassUseCase saveSportsClassUseCase;
     private final GetSportsClassByIdUseCase getSportsClassByIdUseCase;
@@ -46,9 +48,9 @@ public class SportsClassController {
         return ResponseEntity.created(location)
                 .body(response);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<SportsClassResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @RequestParam("id") String id) {
+                                               @PathVariable("id") String id) {
         log.info("Received get sports class by id request: {}", id);
         var sportsClass = getSportsClassByIdUseCase.getById(id);
         var response = SportsClassDomainToResponseConverter.convert(sportsClass);
@@ -67,9 +69,9 @@ public class SportsClassController {
         );
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<SportsClassResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @RequestParam("id") String id,
+                                                  @PathVariable("id") String id,
                                                   @RequestBody UpdateSportsClassInRequest request) {
         log.info("Received update sports class request: {}", request);
         var sportsClass = UpdateSportsClassInRequestToDomainConverter.convert(request);

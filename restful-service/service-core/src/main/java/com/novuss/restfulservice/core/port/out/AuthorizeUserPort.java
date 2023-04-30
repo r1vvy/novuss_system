@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AuthorizeUserPort {
 
-    String authorize(String token, List<UserRole> requiredAuthorities);
+    void authorize(String token, List<UserRole> requiredAuthorities);
 }

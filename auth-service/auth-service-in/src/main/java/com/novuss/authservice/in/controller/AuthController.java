@@ -13,29 +13,32 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping(value = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE)
 @Slf4j
-@Validated
 @RequiredArgsConstructor
+@Validated
 public class AuthController {
-    private final AuthenticateUserByUsernameUseCase AuthenticateUserByUsernameUseCase;
+    private final AuthenticateUserByUsernameUseCase authenticateUserByUsernameUseCase;
     private final AuthorizeRequestByTokenUseCase authorizeRequestByTokenUseCase;
     private final ExtendTokenExpiryUseCase extendTokenExpiryUseCase;
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         log.info("Recieved authentication request from: {}", request.username());
-        var token = AuthenticateUserByUsernameUseCase.authenticateUserByUsername(request.username(), request.password());
+        var token = authenticateUserByUsernameUseCase.authenticateUserByUsername(request.username(), request.password());
         var response = TokenInStringToAuthenticationResponseConverter.convert(token);
 
         return ResponseEntity.ok(response);
     }
     @PostMapping("/authorize")
-    public ResponseEntity<AuthResponse> authorize(
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void authorize(
             @Valid
             @NotBlank
             @NotEmpty
@@ -46,6 +49,12 @@ public class AuthController {
 
         var token = authorizationHeader.replace("Bearer ", "");
         authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(token, request.requiredAuthorities());
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody String token) {
+        log.info("Recieved refresh request");
+        
         var newToken = extendTokenExpiryUseCase.extendTokenExpiry(token);
         log.info("Extended token expiry");
 

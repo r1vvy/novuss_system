@@ -1,23 +1,17 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competitionCategory.*;
-import com.novuss.restfulservice.domain.CompetitionCategory;
-import com.novuss.restfulservice.in.converter.club.ClubDomainToClubResponseConverter;
-import com.novuss.restfulservice.in.converter.club.CreateClubInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.club.UpdateClubInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.competitionCategory.CompetitionCategoryDomainToResponseConverter;
-import com.novuss.restfulservice.in.converter.competitionCategory.CreateCompetitionCategoryInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.competitionCategory.UpdateCompetitionCategoryInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateClubInRequest;
+import com.novuss.restfulservice.in.util.converter.competitionCategory.CompetitionCategoryDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.competitionCategory.CreateCompetitionCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competitionCategory.UpdateCompetitionCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionCategoryInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateClubInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionCategoryInRequest;
-import com.novuss.restfulservice.in.dto.response.ClubResponse;
 import com.novuss.restfulservice.in.dto.response.CompetitionCategoryResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,9 +19,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/competition-categories")
+@RequestMapping("/api/v1/competitions/categories")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class CompetitionCategoryController {
     private final SaveCompetitionCategoryUseCase saveCompetitionCategoryUseCase;
     private final FindCompetitionCategoryByIdUseCase getCompetitionCategoryByIdUseCase;
@@ -54,9 +49,9 @@ public class CompetitionCategoryController {
                 .body(response);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<CompetitionCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                            @RequestParam("id") String id) {
+                                            @PathVariable("id") String id) {
         log.info("Received get competition category by id request: {}", id);
         var club = getCompetitionCategoryByIdUseCase.findById(id);
         var response = CompetitionCategoryDomainToResponseConverter.convert(club);
@@ -64,8 +59,10 @@ public class CompetitionCategoryController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<CompetitionCategoryResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping
+    public ResponseEntity<List<CompetitionCategoryResponse>> getAll(
+            @RequestHeader("Authorization") String authorizationHeader
+    ) {
         log.info("Received get all competition categories request");
         var clubs = getAllCompetitionCategories.getAll();
 
@@ -75,9 +72,9 @@ public class CompetitionCategoryController {
         );
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<CompetitionCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                               @RequestParam("id") String id,
+                                               @PathVariable("id") String id,
                                                @RequestBody UpdateCompetitionCategoryInRequest request) {
         log.info("Received update competition categories request: {}", request);
         var competitionCategory = UpdateCompetitionCategoryInRequestToDomainConverter.convert(request);

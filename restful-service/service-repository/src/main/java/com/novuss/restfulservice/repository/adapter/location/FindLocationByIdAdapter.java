@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.repository.adapter.location;
 
 import com.novuss.restfulservice.core.exception.EntityNotFoundException;
-import com.novuss.restfulservice.core.port.out.location.findLocationByIdPort;
+import com.novuss.restfulservice.core.port.out.location.FindLocationByIdPort;
 import com.novuss.restfulservice.domain.Location;
 import com.novuss.restfulservice.repository.converter.LocationEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.LocationJpaRepository;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class FindLocationByIdAdapter implements findLocationByIdPort {
+public class FindLocationByIdAdapter implements FindLocationByIdPort {
     private final LocationJpaRepository locationJpaRepository;
     @Override
     public Location getLocationById(String id) {

@@ -1,26 +1,31 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.referee.*;
-import com.novuss.restfulservice.in.converter.referee.CreateRefereeInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.referee.RefereeDomainToRefereeInResponseConverter;
-import com.novuss.restfulservice.in.converter.referee.UpdateRefereeInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.referee.CreateRefereeInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.referee.RefereeDomainToRefereeInResponseConverter;
+import com.novuss.restfulservice.in.util.converter.referee.UpdateRefereeInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.response.RefereeResponse;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.novuss.restfulservice.in.util.PagingUtils.*;
 
 @RestController
 @RequestMapping("/api/v1/referees")
 @RequiredArgsConstructor
 @Slf4j
+@Validated
 public class RefereeController {
     private final SaveRefereeUseCase saveRefereeUseCase;
     private final GetRefereeByIdUseCase getRefereeByIdUseCase;
@@ -46,28 +51,34 @@ public class RefereeController {
 
         return ResponseEntity.created(location).body(response);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<RefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @RequestParam("id") String id) {
+                                               @PathVariable("id") String id) {
         log.info("Received get referee by id request: {}", id);
         var referee = getRefereeByIdUseCase.getById(id);
         var response = RefereeDomainToRefereeInResponseConverter.convert(referee);
 
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/all")
-    public ResponseEntity<List<RefereeResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    @GetMapping
+    public ResponseEntity<Page<RefereeResponse>> getAll(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Min(value = 0, message = "Minimum page value is 0")
+            @RequestParam(value = "page", required = false, defaultValue = DEFAULT_PAGE_NUMBER) Integer page,
+            @Range(min = MIN_PAGE_SIZE, max = MAX_PAGE_SIZE, message = "Page size must be between " + MIN_PAGE_SIZE + " and " + MAX_PAGE_SIZE)
+            @RequestParam(value = "size", required = false, defaultValue = DEFAULT_PAGE_SIZE) Integer size
+    ) {
         log.info("Received get all referees request");
-        var referee = getAllRefereesUseCase.getAll();
+        var pageable = PageRequest.of(page, size);
+        var referees = getAllRefereesUseCase.getAllByPage(pageable);
 
-        return ResponseEntity.ok(referee.stream()
-                .map(RefereeDomainToRefereeInResponseConverter::convert)
-                .collect(Collectors.toList())
-        );
+        var response = referees.map(RefereeDomainToRefereeInResponseConverter::convert);
+
+        return ResponseEntity.ok(response);
     }
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<RefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @RequestParam("id") String id,
+                                                  @PathVariable("id") String id,
                                                   @RequestBody UpdateRefereeInRequest request) {
         log.info("Received update referee request: {}", request);
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);

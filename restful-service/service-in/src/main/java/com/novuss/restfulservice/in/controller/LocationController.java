@@ -1,18 +1,17 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.location.*;
-import com.novuss.restfulservice.in.converter.location.LocationDomainToResponseConverter;
-import com.novuss.restfulservice.in.converter.location.UpdateLocationInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.location.CreateLocationInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.player.PlayerDomainToPlayerResponseConverter;
+import com.novuss.restfulservice.in.util.converter.location.CreateLocationInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.location.LocationDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.location.UpdateLocationInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateLocationInRequest;
 import com.novuss.restfulservice.in.dto.response.LocationResponse;
-import com.novuss.restfulservice.in.dto.response.PlayerResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -23,6 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/locations")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class LocationController {
     private final SaveLocationUseCase saveLocationUseCase;
     private final GetLocationByIdUseCase getLocationByIdUseCase;
@@ -49,9 +49,9 @@ public class LocationController {
         return ResponseEntity.created(uriLocation)
                 .body(response);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<LocationResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @RequestParam("id") String id) {
+                                                   @PathVariable("id") String id) {
         log.info("Received get location by id request: {}", id);
         var location = getLocationByIdUseCase.getLocationById(id);
         var response = LocationDomainToResponseConverter.convert(location);
@@ -70,9 +70,9 @@ public class LocationController {
         );
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<LocationResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                      @RequestParam("id") String id,
+                                                      @PathVariable("id") String id,
                                                       @RequestBody UpdateLocationInRequest request) {
         log.info("Received update location request: {}", request);
         var location = UpdateLocationInRequestToDomainConverter.convert(request);

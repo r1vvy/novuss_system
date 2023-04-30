@@ -53,9 +53,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.warn("Missing or invalid Authorization header");
             return;
         }
-
         jwt = authHeader.replace("Bearer ", "");
-        log.debug("JWT token: {}", jwt);
 
         try {
             username = jwtService.getUsernameFromToken(jwt);
@@ -100,7 +98,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     private void doFilter(FilterChain filterChain, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        try{
+        try {
             filterChain.doFilter(request, response);
         } catch(IOException e) {
             log.error("IOException: " + e.getMessage());

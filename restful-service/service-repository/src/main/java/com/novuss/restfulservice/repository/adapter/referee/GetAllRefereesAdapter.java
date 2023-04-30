@@ -6,10 +6,9 @@ import com.novuss.restfulservice.repository.converter.RefereeEntityToDomainConve
 import com.novuss.restfulservice.repository.repository.jpa.RefereeJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -18,11 +17,9 @@ public class GetAllRefereesAdapter implements GetAllRefereesPort {
     private final RefereeJpaRepository refereeJpaRepository;
 
     @Override
-    public List<Referee> getAllReferees() {
+    public Page<Referee> getAllRefereesByPage(Pageable pageable) {
+        var page = refereeJpaRepository.findAll(pageable);
 
-        return refereeJpaRepository.findAll()
-                .stream()
-                .map(RefereeEntityToDomainConverter::convert)
-                .collect(Collectors.toList());
+        return page.map(RefereeEntityToDomainConverter::convert);
     }
 }

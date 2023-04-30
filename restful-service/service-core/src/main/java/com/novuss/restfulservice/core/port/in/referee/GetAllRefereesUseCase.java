@@ -1,9 +1,9 @@
 package com.novuss.restfulservice.core.port.in.referee;
 
 import com.novuss.restfulservice.domain.Referee;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface GetAllRefereesUseCase {
-    List<Referee> getAll();
+    Page<Referee> getAllByPage(Pageable pageable);
 }

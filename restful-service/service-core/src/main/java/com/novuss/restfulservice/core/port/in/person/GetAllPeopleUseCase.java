@@ -1,9 +1,9 @@
 package com.novuss.restfulservice.core.port.in.person;
 
 import com.novuss.restfulservice.domain.Person;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface GetAllPeopleUseCase {
-    List<Person> getAll();
+    Page<Person> getAllByPage(Pageable pageable);
 }

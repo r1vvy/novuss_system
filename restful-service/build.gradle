@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "org.sonarqube" version "3.5.0.2730"
 }
 
 group 'com.novuss.restfulservice'
@@ -13,6 +14,7 @@ configurations {
 }
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'org.sonarqube'
 
     group 'com.novuss'
     version '1.0-SNAPSHOT'
@@ -35,8 +37,23 @@ subprojects {
 
         testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
     }
+    sonarqube {
+        properties {
+            property "sonar.projectKey", "r1vvy_novuss_system"
+            property "sonar.organization", "r1vvy"
+            property "sonar.host.url", "https://sonarcloud.io"
+        }
+    }
 
     test {
         useJUnitPlatform()
+    }
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectKey", "r1vvy_novuss_system"
+        property "sonar.organization", "r1vvy"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }

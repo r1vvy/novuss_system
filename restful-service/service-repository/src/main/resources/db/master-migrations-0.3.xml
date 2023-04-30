@@ -175,12 +175,34 @@
                                  referencedColumnNames="id"
         />
     </changeSet>
-    <changeSet id="create.fk.constraints.to.location.contactperson.relation" author="emils.seflers">
+    <changeSet id="create.fk.constraints.to.location.contact_person.relation" author="emils.seflers">
         <addForeignKeyConstraint baseTableName="locations"
                                  baseColumnNames="contact_person_id"
                                  constraintName="fk_locations_contact_person_id"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraints.to.sports_classes.table" author="emils.seflers">
+        <addUniqueConstraint tableName="sports_classes"
+                             columnNames="title"
+                             constraintName="uk_sports_classes_title"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraints.to.locations.table" author="emils.seflers">
+        <addUniqueConstraint columnNames="title"
+                             tableName="locations"
+                             constraintName="uk_locations_title"
+        />
+        <addUniqueConstraint columnNames="city, address, latitude, longitude"
+                             tableName="locations"
+                             constraintName="uk_locations_address_latitude_longitude"
+        />
+    </changeSet>
+    <changeSet id="create.unique.constraints.to.clubs.table" author="emils.seflers">
+        <addUniqueConstraint columnNames="title"
+                             tableName="clubs"
+                             constraintName="uk_clubs_title"
         />
     </changeSet>
 </databaseChangeLog>

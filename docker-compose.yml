@@ -6,7 +6,7 @@ services:
     image: "mariadb:10.5"
     volumes:
       - db-data:/var/lib/mysql
-      - /docker-entrypoint-initdb.d/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ${FILE_UPLOADS_PATH}:${FILE_UPLOADS_PATH}
     restart: on-failure:5
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -26,7 +26,11 @@ services:
       # Auth service USER configuration
       AUTH_SERVICE_DB_USER: ${AUTH_SERVICE_DB_USER}
       AUTH_SERVICE_DB_USER_PASSWORD: ${AUTH_SERVICE_DB_USER_PASSWORD}
-    command: --init-file /docker-entrypoint-initdb.d/init.sql
+      # File uploads USER configuration
+      FILE_USER: ${FILE_USER}
+      FILE_USER_PASSWORD: ${FILE_USER_PASSWORD}
+    #command:
+      #- /docker-entrypoint-initdb.d/create_file_rw_user.sh
     networks:
       - bachelor-project-network
 
@@ -44,42 +48,13 @@ services:
     networks:
       - bachelor-project-network
 
-  auth-service:
-    container_name: novuss-auth-service-container
-    build:
-      context: ./auth-service
-      dockerfile: Dockerfile
-    depends_on:
-      - database
-    ports:
-      - ${AUTH_SERVICE_PORT}:8081
-    environment:
-        SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
-        SPRING_DATASOURCE_DRIVER: ${SPRING_DATASOURCE_DRIVER}
-        AUTH_SERVICE_DB_USER: ${DB_USER}
-        AUTH_SERVICE_DB_PASSWORD: ${DB_PASSWORD}
-    networks:
-      - bachelor-project-network
-
-  # restful-service:
-  #   container_name: novuss-restful-service-container
-  #   build: ./restful-service
-  #   depends_on:
-  #     - database
-  #   ports:
-  #     - ${RESTFUL_SERVICE_PORT}:8081
-  #   environment:
-  #     - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-  #     - SPRING_DATASOURCE_DRIVER=${SPRING_DATASOURCE_DRIVER}
-  #     - RESTFUL_SERVICE_DB_USER=${RESTFUL_SERVICE_DB_USER}
-  #     - RESTFUL_SERVICE_DB_PASSWORD=${RESTFUL_SERVICE_DB_PASSWORD}
-  #   networks:
-  #     - bachelor-project-network
-
-
 volumes:
   db-data:
+  file-uploads:
+    driver:
+      local
 
 networks:
-  bachelor-project-network
+  bachelor-project-network:
+    driver: bridge
 

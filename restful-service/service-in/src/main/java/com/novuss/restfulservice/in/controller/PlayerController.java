@@ -1,33 +1,35 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.player.*;
-import com.novuss.restfulservice.domain.Player;
-import com.novuss.restfulservice.in.converter.player.CreatePlayerInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.player.PlayerDomainToPlayerResponseConverter;
-import com.novuss.restfulservice.in.converter.player.UpdatePlayerInRequestToDomainConverter;
-import com.novuss.restfulservice.in.converter.referee.RefereeDomainToRefereeInResponseConverter;
+import com.novuss.restfulservice.in.util.converter.player.CreatePlayerInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.player.PlayerDomainToPlayerResponseConverter;
+import com.novuss.restfulservice.in.util.converter.player.UpdatePlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreatePlayerInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePlayerInRequest;
 import com.novuss.restfulservice.in.dto.response.PlayerResponse;
-import com.novuss.restfulservice.in.dto.response.RefereeResponse;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.novuss.restfulservice.in.util.PagingUtils.*;
 
 @RestController
 @RequestMapping("/api/v1/players")
 @AllArgsConstructor
 @Slf4j
+@Validated
 public class PlayerController {
     private final SavePlayerUseCase savePlayerUseCase;
     private final FindPlayerByIdUseCase findPlayerByIdUseCase;
-    private final GetAllPlayersUseCase getAllPlayersUseCase;
+    private final GetAllPlayersByPageUseCase getAllPlayersByPageUseCase;
     private final UpdatePlayerByIdUseCase updatePlayerByIdUseCase;
     private final UpdatePlayerLicenceByIdUseCase updatePlayerLicenceByIdUseCase;
     private final UpdatePlayerClubByIdUseCase updatePlayerClubByIdUseCase;
@@ -54,9 +56,9 @@ public class PlayerController {
         return ResponseEntity.created(location)
                 .body(response);
     }
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<PlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @RequestParam("id") String id) {
+                                               @PathVariable("id") String id) {
         log.info("Received get player by id request: {}", id);
         var player = findPlayerByIdUseCase.getById(id);
         var response = PlayerDomainToPlayerResponseConverter.convert(player);
@@ -64,20 +66,26 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PlayerResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
-        log.info("Received get all players request");
-        var players = getAllPlayersUseCase.getAll();
+    @GetMapping
+    public ResponseEntity<Page<PlayerResponse>> getAllByPage(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @Min(value = 0, message = "Minimum page value is 0")
+            @RequestParam(value = "page", required = false, defaultValue = DEFAULT_PAGE_NUMBER) Integer page,
+            @Range(min = MIN_PAGE_SIZE, max = MAX_PAGE_SIZE, message = "Page size must be between " + MIN_PAGE_SIZE + " and " + MAX_PAGE_SIZE)
+            @RequestParam(value = "size", required = false, defaultValue = DEFAULT_PAGE_SIZE) Integer size
+    ) {
+        log.info("Received get all players request with page = {}, size = {}", page, size);
+        var pageable = PageRequest.of(page, size);
 
-        return ResponseEntity.ok(players.stream()
-                .map(PlayerDomainToPlayerResponseConverter::convert)
-                .collect(Collectors.toList())
-        );
+        var players = getAllPlayersByPageUseCase.getAllByPage(pageable);
+        var response = players.map(PlayerDomainToPlayerResponseConverter::convert);
+
+        return ResponseEntity.ok(response);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<PlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @RequestParam("id") String id,
+                                                  @PathVariable("id") String id,
                                                   @RequestBody UpdatePlayerInRequest request) {
         log.info("Received update player request: {}", request);
         var player = UpdatePlayerInRequestToDomainConverter.convert(request);

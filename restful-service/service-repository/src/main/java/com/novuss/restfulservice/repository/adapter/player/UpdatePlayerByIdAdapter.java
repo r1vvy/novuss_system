@@ -1,5 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.player;
 
+import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.out.player.UpdatePlayerByIdPort;
 import com.novuss.restfulservice.domain.Player;
 import com.novuss.restfulservice.repository.converter.PlayerDomainToEntityConverter;
@@ -22,7 +23,7 @@ public class UpdatePlayerByIdAdapter implements UpdatePlayerByIdPort {
 
         var oldEntity = playerJpaRepository.findById(playerId)
                 .orElseThrow(
-                        () -> new RuntimeException("Player with id " + id + " not found")
+                        () -> new EntityNotFoundException("Player with id " + id + " not found")
                 );
 
         var updatedEntity = PlayerDomainToEntityConverter.convert(player);
@@ -40,6 +41,21 @@ public class UpdatePlayerByIdAdapter implements UpdatePlayerByIdPort {
         updatedEntity.setCreatedAt(oldEntity.getCreatedAt());
 
         var updatedPlayer = playerJpaRepository.save(updatedEntity);
+
+        return PlayerEntityToDomainConverter.convert(updatedPlayer);
+    }
+
+    @Override
+    public Player updatePlayerRating(Integer ratingChange, String id) {
+        var playerId = UUID.fromString(id);
+        var playerEntity = playerJpaRepository.findById(playerId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Player with id " + id + " not found")
+                );
+        var oldRating = playerEntity.getRating();
+        playerEntity.setRating(oldRating + ratingChange);
+
+        var updatedPlayer = playerJpaRepository.save(playerEntity);
 
         return PlayerEntityToDomainConverter.convert(updatedPlayer);
     }

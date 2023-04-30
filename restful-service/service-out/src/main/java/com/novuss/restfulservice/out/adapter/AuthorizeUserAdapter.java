@@ -12,7 +12,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
     private static final String AUTH_URL = "http://localhost:8000/api/v1/auth/authorize";
 
     @Override
-    public String authorize(String token, List<UserRole> requiredAuthorities) {
+    public void authorize(String token, List<UserRole> requiredAuthorities) {
         log.info("Authorizing user");
         var request = AuthorizationOutRequest.builder()
                 .requiredAuthorities(requiredAuthorities)
@@ -33,13 +32,12 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
         log.debug("Request: {}", request);
         try {
             var response = restTemplate.postForEntity(AUTH_URL, request, AuthorizationOutResponse.class);
-            log.debug("Response: {}, {}", response.getStatusCode(), response.getBody());
+            var statusCode = response.getStatusCode();
+            log.debug("Response status: {}", statusCode);
 
-            return Objects.requireNonNull(response.getBody())
-                    .token();
         } catch (RestClientException | NullPointerException e) {
             log.error("Error authorizing user: {}", e.getMessage());
-            throw new OutgoingAuthorizationServiceException("Failed to authorize user in auth service: " + e.getMessage());
+            throw new OutgoingAuthorizationServiceException("Failed to authorize user while using auth service: " + e.getMessage());
         }
     }
 }

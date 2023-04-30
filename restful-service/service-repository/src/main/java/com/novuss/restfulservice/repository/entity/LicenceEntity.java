@@ -26,10 +26,8 @@ public class LicenceEntity {
     private UUID id;
     @Column(name = "title")
     private String title;
-
     @Column(name = "date_issued")
     private Date issuedDate;
-
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(fetch = FetchType.EAGER)

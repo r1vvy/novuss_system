@@ -44,6 +44,7 @@ public class UpdateClubLocationByIdAdapter implements UpdateClubLocationByIdPort
 
         clubEntity.setLocationEntity(locationEntity);
         clubJpaRepository.save(clubEntity);
+        log.info("Club entity updated successfully: {}", clubEntity);
 
         return ClubEntityToDomainConverter.convert(clubEntity);
     }
