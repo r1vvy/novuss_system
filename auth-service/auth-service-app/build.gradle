@@ -17,6 +17,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-configuration-processor:3.0.3'
 
     implementation 'org.springframework.boot:spring-boot-actuator:3.0.4'
+
+    implementation 'org.springframework.security:spring-security-core:6.0.2'
 }
 
 shadowJar {

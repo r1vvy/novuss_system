@@ -2,26 +2,24 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.person.*;
 import com.novuss.restfulservice.domain.UserRole;
-import com.novuss.restfulservice.in.util.converter.person.CreatePersonInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.person.PersonDomainToPersonResponseConverter;
-import com.novuss.restfulservice.in.util.converter.person.UpdatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreatePersonInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePersonInRequest;
 import com.novuss.restfulservice.in.dto.response.PersonResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
+import com.novuss.restfulservice.in.util.converter.person.CreatePersonInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.person.PersonDomainToPersonResponseConverter;
+import com.novuss.restfulservice.in.util.converter.person.UpdatePersonInRequestToDomainConverter;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.novuss.restfulservice.in.util.PagingUtils.*;
 
@@ -67,9 +65,8 @@ public class PersonController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping()
-    @RequiresAuthority(UserRole.ADMIN)
-    public ResponseEntity<List<PersonResponse>> getAllByPage(
+    @GetMapping
+    public ResponseEntity<Page<PersonResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
             @RequestParam(value = "page", required = false, defaultValue = DEFAULT_PAGE_NUMBER) Integer page,
@@ -81,9 +78,7 @@ public class PersonController {
         log.info("Received get all people by page request: {}", pageable);
         var people = getAllPeople.getAllByPage(pageable);
 
-        return ResponseEntity.ok(people.stream()
-                .map(PersonDomainToPersonResponseConverter::convert)
-                .collect(Collectors.toList())
+        return ResponseEntity.ok(people.map(PersonDomainToPersonResponseConverter::convert)
         );
     }
 

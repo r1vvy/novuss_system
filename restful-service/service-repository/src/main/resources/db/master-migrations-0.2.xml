@@ -78,6 +78,7 @@
                                  constraintName="fk_referees_person_id"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
     </changeSet>
     <changeSet id="create.foreign.key.constraint.to.referee.categories.relationship" author="emils.seflers">
@@ -86,6 +87,7 @@
                                  constraintName="fk_referees_category_id"
                                  referencedTableName="referee_categories"
                                  referencedColumnNames="id"
+                                 onDelete="RESTRICT"
         />
     </changeSet>
     <changeSet id="create.unique.foreign.key.constraints.to.people.relations" author="emils.seflers">

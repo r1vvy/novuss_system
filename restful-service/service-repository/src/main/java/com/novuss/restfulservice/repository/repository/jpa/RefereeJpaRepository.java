@@ -21,4 +21,6 @@ public interface RefereeJpaRepository extends JpaRepository<RefereeEntity, UUID>
 
     @Query("SELECT r FROM RefereeEntity r WHERE r.categoryEntity.id = :categoryId")
     Optional<List<RefereeEntity>> findAllByCategoryId(@Param("categoryId") UUID categoryId);
+
+    void deleteRefereeEntityByPersonEntityId(UUID personEntityId);
 }

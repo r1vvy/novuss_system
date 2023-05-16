@@ -29,7 +29,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtService implements JwtUseCase {
-    // TODO: Move to config
+    // TODO: Move to config, but for bachelor purposes stays here
     private static final String SECRET_KEY = "4D6251655468576D5A7134743777217A25432A46294A404E635266556A586E32";
     private static final long EXPIRATION_TIME = 1000 * 60 * 60;
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;

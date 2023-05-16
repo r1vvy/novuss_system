@@ -10,7 +10,7 @@ import java.util.List;
 
 @Builder
 public record ErrorResponse(
-        LocalDateTime timestamp,
+        String timestamp,
         String type,
         String title,
         int status,
@@ -19,7 +19,7 @@ public record ErrorResponse(
 ) {
     public ErrorResponse {
         if (timestamp == null) {
-            timestamp = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
+            timestamp = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC).toString();
         }
     }
 }

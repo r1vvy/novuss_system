@@ -18,8 +18,6 @@ public class GetAllClubsByPageAdapter implements GetAllClubsByPagePort {
 
     @Override
     public Page<Club> getAll(Pageable pageable) {
-        log.info("Searching for clubs with page");
-
         var page = clubJpaRepository.findAll(pageable);
 
         return page.map(ClubEntityToDomainConverter::convert);

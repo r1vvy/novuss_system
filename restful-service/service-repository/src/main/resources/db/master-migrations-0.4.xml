@@ -32,7 +32,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="contact_person_id" type="UUID">
-                <constraints nullable="false"/>
             </column>
             <column name="location_id" type="UUID">
                 <constraints nullable="false"/>
@@ -75,12 +74,14 @@
                                  constraintName="FK_COMPETITIONS_CONTACT_PERSON_ID"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
         <addForeignKeyConstraint baseTableName="competitions"
                                  baseColumnNames="location_id"
                                  constraintName="FK_COMPETITIONS_LOCATION_ID"
                                  referencedTableName="locations"
                                  referencedColumnNames="id"
+                                 onDelete="RESTRICT"
         />
     </changeSet>
     <changeSet id="create.competition_players.table" author="emils.seflers">
@@ -133,12 +134,14 @@
                                  constraintName="FK_COMPETITION_PLAYERS_COMPETITION_ID"
                                  referencedTableName="competitions"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
         <addForeignKeyConstraint baseTableName="competition_players"
                                  baseColumnNames="player_id"
                                  constraintName="FK_COMPETITION_PLAYERS_PLAYER_ID"
                                  referencedTableName="players"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
     </changeSet>
     <changeSet id="create.unique.constraint.to.competition_categories.table" author="emils.seflers">
@@ -186,12 +189,14 @@
                                  constraintName="FK_COMPETITION_REFEREES_REFEREE_ID"
                                  referencedTableName="referees"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
         <addForeignKeyConstraint baseTableName="competition_referees"
                                  baseColumnNames="competition_id"
                                  constraintName="FK_COMPETITION_REFEREES_COMPETITION_ID"
                                  referencedTableName="competitions"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
     </changeSet>
     <changeSet id="create.indexes.to.competitions.table" author="emils.seflers">

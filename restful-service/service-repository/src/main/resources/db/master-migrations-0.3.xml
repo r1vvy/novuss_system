@@ -124,24 +124,28 @@
                                  constraintName="fk_players_person_id"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+                                 onDelete="CASCADE"
         />
         <addForeignKeyConstraint baseTableName="players"
                                  baseColumnNames="licence_id"
                                  constraintName="fk_players_licence_id"
                                  referencedTableName="licences"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
         <addForeignKeyConstraint baseTableName="players"
                                  baseColumnNames="sports_class_id"
                                  constraintName="fk_players_sports_class_id"
                                  referencedTableName="sports_classes"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
         <addForeignKeyConstraint baseTableName="players"
                                  baseColumnNames="club_id"
                                  constraintName="fk_players_club_id"
                                  referencedTableName="clubs"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
     </changeSet>
     <changeSet id="create.unique.foreign.key.constraints.to.player.relations" author="emils.seflers">
@@ -167,12 +171,14 @@
                                  constraintName="fk_clubs_location_id"
                                  referencedTableName="locations"
                                  referencedColumnNames="id"
+                                 onDelete="RESTRICT"
         />
         <addForeignKeyConstraint baseTableName="clubs"
                                  baseColumnNames="contact_person_id"
                                  constraintName="fk_clubs_contact_person_id"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
     </changeSet>
     <changeSet id="create.fk.constraints.to.location.contact_person.relation" author="emils.seflers">
@@ -181,6 +187,7 @@
                                  constraintName="fk_locations_contact_person_id"
                                  referencedTableName="people"
                                  referencedColumnNames="id"
+                                 onDelete="SET NULL"
         />
     </changeSet>
     <changeSet id="create.unique.constraints.to.sports_classes.table" author="emils.seflers">

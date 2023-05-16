@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @AllArgsConstructor
 @Validated
-@RequestMapping(value = "/api/v1/users")
+@RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
     private final SaveUserUseCase saveUserUseCase;
     private final FindUserByIdUseCase findUserByIdUseCase;
@@ -37,7 +37,6 @@ public class UserController {
     private final UpdateUserByIdUseCase updateUserByIdUseCase;
     private final DeleteUserByIdUseCase deleteUserByIdUseCase;
     private final AuthorizeRequestByTokenService authorizeRequestByTokenService;
-    private final ExtendTokenExpiryUseCase extendTokenExpiryUseCase;
 
     @PostMapping
     @Validated
@@ -52,8 +51,6 @@ public class UserController {
         var user = CreateUserInRequestToUserDomainConverter.convert(request);
         var createdUser = saveUserUseCase.save(user);
         var response = UserDomainToGetUserInResponseConverter.convert(createdUser);
-        var extendedToken = extendTokenExpiryUseCase.extendTokenExpiry(authorizationHeader);
-        log.debug("Extended token: {}", extendedToken);
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -62,7 +59,6 @@ public class UserController {
                 .toUri();
 
         var headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + extendedToken);
         headers.setLocation(location);
 
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
@@ -79,33 +75,25 @@ public class UserController {
             authorizeRequestByTokenService.authorizeByUserId(authorizationHeader, id);
         }
         var user = findUserByIdUseCase.findById(id);
-        var extendedToken = extendTokenExpiryUseCase.extendTokenExpiry(authorizationHeader);
-
         var responseDto = UserDomainToGetUserInResponseConverter.convert(user);
-        var headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + extendedToken);
 
-        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GetUserInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
+    public ResponseEntity<List<GetUserInResponse>> getAll() {
         log.info("Received get all users request");
-        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
-                authorizationHeader,
-                List.of(UserRole.ADMIN)
-        );
+//        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+//                authorizationHeader,
+//                List.of(UserRole.ADMIN)
+//        );
 
         var users = getAllUsersUseCase.getAllUsers();
-        var extendedToken = extendTokenExpiryUseCase.extendTokenExpiry(authorizationHeader);
-
         var responseDto = users.stream()
                 .map(UserDomainToGetUserInResponseConverter::convert)
                 .collect(Collectors.toList());
-        var headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + extendedToken);
 
-        return new ResponseEntity<>(responseDto, headers, HttpStatus.OK);
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping
@@ -135,14 +123,10 @@ public class UserController {
         } catch (AccessDeniedException exc) {
             authorizeRequestByTokenService.authorizeByUserId(authorizationHeader, id);
         }
-
         deleteUserByIdUseCase.deleteUserById(id);
 
-        var extendedToken = extendTokenExpiryUseCase.extendTokenExpiry(authorizationHeader);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + extendedToken);
 
-        return ResponseEntity.noContent().headers(headers).build();
+        return ResponseEntity.noContent().build();
     }
 
 }

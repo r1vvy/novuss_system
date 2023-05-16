@@ -19,7 +19,7 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name = "roles" type="SET('ADMIN', 'USER', 'EVENT_MANAGER')">
+            <column name = "roles" type="SET('SUPER_ADMIN', 'ADMIN', 'USER', 'EVENT_MANAGER')">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="DATETIME(6)">

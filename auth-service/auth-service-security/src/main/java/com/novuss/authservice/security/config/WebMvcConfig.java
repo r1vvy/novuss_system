@@ -1,27 +1,18 @@
-package com.novuss.restfulservice.in.config;
+package com.novuss.authservice.security.config;
 
-import com.novuss.restfulservice.in.util.AuthorizationInterceptor;
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Arrays;
+
 @Configuration
-@RequiredArgsConstructor
-@EnableWebMvc
 public class WebMvcConfig implements WebMvcConfigurer {
-    private final AuthorizationInterceptor authorizationInterceptor;
     private CorsConfigurationSource corsConfigurationSource;
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authorizationInterceptor)
-//                .addPathPatterns("/api/**");
-    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")

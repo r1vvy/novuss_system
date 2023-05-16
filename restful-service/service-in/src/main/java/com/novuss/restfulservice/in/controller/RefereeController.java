@@ -62,7 +62,7 @@ public class RefereeController {
     }
     @GetMapping
     public ResponseEntity<Page<RefereeResponse>> getAll(
-            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
             @RequestParam(value = "page", required = false, defaultValue = DEFAULT_PAGE_NUMBER) Integer page,
             @Range(min = MIN_PAGE_SIZE, max = MAX_PAGE_SIZE, message = "Page size must be between " + MIN_PAGE_SIZE + " and " + MAX_PAGE_SIZE)
@@ -89,7 +89,7 @@ public class RefereeController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("{id}/category")
-    public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader("Authorization") String authorizationHeader,
+    public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                                                  @PathVariable("id") String id,
                                                                  @RequestParam(value = "id", required = false) String refereeCategoryId) {
         log.info("Received update referee category for referee request: {}", id);

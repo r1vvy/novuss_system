@@ -66,15 +66,11 @@ public class ClubController {
     @GetMapping
     public ResponseEntity<Page<ClubResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
-            @RequestParam(value = "search", required = false) String search,
             @Min(value = 0, message = "Minimum page value is 0")
             @RequestParam(value = "page", required = false, defaultValue = DEFAULT_PAGE_NUMBER) Integer page,
             @Range(min = MIN_PAGE_SIZE, max = MAX_PAGE_SIZE, message = "Page size must be between " + MIN_PAGE_SIZE + " and " + MAX_PAGE_SIZE)
             @RequestParam(value = "size", required = false, defaultValue = DEFAULT_PAGE_SIZE) Integer size
     ) {
-        if(!search.equals(null) && !search.isBlank()) {
-
-        }
         var pageable = PageRequest.of(page, size);
 
         log.info("Received get all clubs by page request: {}", pageable);
