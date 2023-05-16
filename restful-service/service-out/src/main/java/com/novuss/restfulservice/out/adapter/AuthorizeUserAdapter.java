@@ -1,5 +1,7 @@
 package com.novuss.restfulservice.out.adapter;
 
+import com.novuss.restfulservice.core.exception.AccessDeniedException;
+import com.novuss.restfulservice.core.exception.AuthorizationException;
 import com.novuss.restfulservice.core.exception.OutgoingAuthorizationServiceException;
 import com.novuss.restfulservice.core.port.out.AuthorizeUserPort;
 import com.novuss.restfulservice.domain.UserRole;
@@ -8,10 +10,14 @@ import com.novuss.restfulservice.out.dto.AuthorizationOutResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.FORBIDDEN;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @Component
 @RequiredArgsConstructor
@@ -28,15 +34,27 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
         var request = AuthorizationOutRequest.builder()
                 .requiredAuthorities(requiredAuthorities)
                 .build();
-
         log.debug("Request: {}", request);
+
         try {
             var response = restTemplate.postForEntity(AUTH_URL, request, AuthorizationOutResponse.class);
-            var statusCode = response.getStatusCode();
-            log.debug("Response status: {}", statusCode);
-
+        } catch (HttpClientErrorException e) {
+            log.error("Error authorizing user: {}", e.getMessage());
+            handleHttpClientErrorException(e);
         } catch (RestClientException | NullPointerException e) {
             log.error("Error authorizing user: {}", e.getMessage());
+            throw new OutgoingAuthorizationServiceException("Failed to authorize user while using auth service: " + e.getMessage());
+        }
+    }
+
+    private void handleHttpClientErrorException(HttpClientErrorException e) {
+        var statusCode = e.getStatusCode();
+        log.error("Error authorizing user: {}", e.getMessage());
+        if (statusCode.isSameCodeAs(FORBIDDEN)) {
+            throw new AccessDeniedException("Failed to authorize user while using auth service: " + e.getMessage());
+        } else if (statusCode.isSameCodeAs(UNAUTHORIZED)) {
+            throw new AuthorizationException("Failed to authorize user while using auth service: " + e.getMessage());
+        } else {
             throw new OutgoingAuthorizationServiceException("Failed to authorize user while using auth service: " + e.getMessage());
         }
     }

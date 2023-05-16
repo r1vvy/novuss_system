@@ -11,17 +11,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @ControllerAdvice
 @Order
 @Slf4j
 public class UnknownExceptionHandler extends ResponseEntityExceptionHandler {
-
-    private Map<String, Object> responseBody = new LinkedHashMap<>();
-
     @ExceptionHandler({Exception.class})
     protected ResponseEntity<Object> handleUnknownException(Exception e, WebRequest request) {
         var status = HttpStatus.INTERNAL_SERVER_ERROR;
