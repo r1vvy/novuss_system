@@ -7,17 +7,21 @@ import com.novuss.authservice.in.util.converter.TokenInStringToAuthenticationRes
 import com.novuss.authservice.in.dto.request.AuthenticationRequest;
 import com.novuss.authservice.in.dto.request.AuthorizationRequest;
 import com.novuss.authservice.in.dto.response.AuthResponse;
+import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import static com.novuss.authservice.core.config.TokenConfig.TOKEN_EXPIRY_IN_SECONDS;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,6 +40,7 @@ public class AuthController {
 
         return ResponseEntity.ok(response);
     }
+
     @PostMapping("/authorize")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void authorize(

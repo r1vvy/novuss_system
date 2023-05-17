@@ -25,13 +25,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.novuss.authservice.core.config.TokenConfig.TOKEN_EXPIRY_IN_SECONDS;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class JwtService implements JwtUseCase {
     // TODO: Move to config, but for bachelor purposes stays here
     private static final String SECRET_KEY = "4D6251655468576D5A7134743777217A25432A46294A404E635266556A586E32";
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60;
     private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
     private final ObjectMapper objectMapper;
 
@@ -48,7 +49,7 @@ public class JwtService implements JwtUseCase {
         log.debug("Claims: {}", claims);
 
         var currentTime = System.currentTimeMillis();
-        var newExpiration = new Date(currentTime + EXPIRATION_TIME);
+        var newExpiration = new Date(currentTime + TOKEN_EXPIRY_IN_SECONDS);
         log.debug("New expiration: {}", newExpiration);
         claims.setExpiration(newExpiration);
 
@@ -90,7 +91,7 @@ public class JwtService implements JwtUseCase {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_EXPIRY_IN_SECONDS))
                 .signWith(getSignInKey(), SIGNATURE_ALGORITHM)
                 .compact();
     }

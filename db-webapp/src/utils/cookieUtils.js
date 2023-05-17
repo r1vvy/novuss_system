@@ -13,4 +13,11 @@ export const setAuthHeader = () => {
         delete axios.defaults.headers.common['Authorization'];
     }
 };
+export const removeCookie = (name) => {
+    if (typeof document === 'undefined') {
+        return;
+    }
+
+    Cookies.remove(name);
+};
 
