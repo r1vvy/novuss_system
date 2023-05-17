@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import AuthService from '../services/AuthService';
+import AuthService from './AuthService';
 import { toast } from 'react-toastify';
 
 const TokenRefreshHandler = () => {

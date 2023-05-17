@@ -64,10 +64,14 @@ public class UserController {
         return new ResponseEntity<>(response, headers, HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/{id}")
     public ResponseEntity<GetUserInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                @RequestParam("id") String id) {
+                                                @PathVariable("id") String id) {
         log.info("Received get user by id request: {}", id);
+        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+                authorizationHeader,
+                List.of(UserRole.ADMIN)
+        );
 
         try {
             authorizeRequestByTokenService.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
@@ -81,12 +85,12 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<GetUserInResponse>> getAll() {
+    public ResponseEntity<List<GetUserInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all users request");
-//        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
-//                authorizationHeader,
-//                List.of(UserRole.ADMIN)
-//        );
+        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+                authorizationHeader,
+                List.of(UserRole.ADMIN)
+        );
 
         var users = getAllUsersUseCase.getAllUsers();
         var responseDto = users.stream()
@@ -96,9 +100,9 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<GetUserInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @RequestParam("id") String id,
+                                                   @PathVariable("id") String id,
                                                    @Valid @RequestBody UpdateUserInRequest request) {
         log.info("Received update user request: {}", request);
         try {
@@ -114,9 +118,9 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @RequestParam("id") String id) {
+                                       @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);
         try {
             authorizeRequestByTokenService.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));

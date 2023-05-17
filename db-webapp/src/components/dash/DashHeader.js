@@ -8,7 +8,6 @@ const DashHeader = () => {
                     <h1 className="dash-header-title">LNF</h1>
                 </Link>
                 <nav className="dash-header-nav">
-
                 </nav>
             </div>
         </header>

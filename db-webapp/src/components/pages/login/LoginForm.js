@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import AuthService from '../../../services/authService';
+import AuthService from '../../../services/AuthService';
 import {useNavigate} from "react-router";
 import {toast} from "react-toastify";
+import {Button} from "@mui/material";
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
 
     const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            <button type="submit">Pieslēgties</button>
+            <Button type="submit" variant="contained">Pieslēgties</Button>
         </form>
     );
 };

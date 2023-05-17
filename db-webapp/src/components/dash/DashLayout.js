@@ -1,10 +1,12 @@
 import { Outlet } from 'react-router-dom';
 import DashHeader from "./DashHeader";
 import DashFooter from "./DashFooter";
-const DashLayout = ({ onLogout }) => {
+import SideNav from "../SideNav";
+const DashLayout = () => {
     return (
         <>
             <DashHeader />
+            <SideNav />
             <div className="dash-container">
                 <Outlet />
             </div>

@@ -7,13 +7,10 @@ const SideNav = () => {
             <div className="collapse navbar-collapse">
                 <ul className="navbar-nav">
                     <li className="nav-item">
-                        <Link to="/" className="nav-link">Home</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/dashboard" className="nav-link">Dashboard</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/profile" className="nav-link">Profile</Link>
+                        {/* add logout button here */}
+                        <Link className="nav-link" to="/logout">
+                            Logout
+                        </Link>
                     </li>
                     {/* Add more navigation items here */}
                 </ul>

@@ -46,9 +46,23 @@ public class UpdateUserByIdAdapter implements UpdateUserByIdPort {
         user.setId(id);
         user.setCreatedAt(existingUserEntity.getCreatedAt());
         user.setRoles(existingUserEntity.getRoles());
+
         log.debug("Updated user: {}", user);
 
         var updatedUserEntity = mapStructMapper.userDomainToEntity(user);
+
+        if(updatedUserEntity.getPassword() == null) {
+            updatedUserEntity.setPassword(existingUserEntity.getPassword());
+        } else {
+            updatedUserEntity.setPassword(user.getPassword());
+        }
+
+        if(updatedUserEntity.getEmail() == null) {
+            updatedUserEntity.setEmail(existingUserEntity.getEmail());
+        } else {
+            updatedUserEntity.setEmail(user.getEmail());
+        }
+
         var saveUserEntity = userJpaRepository.save(updatedUserEntity);
         log.info("Successfully updated user with id: {}", id);
         log.debug("Updated user entity: {}", saveUserEntity);

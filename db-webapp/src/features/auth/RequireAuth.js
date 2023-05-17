@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import AuthService from "../../services/authService";
-import authService from "../../services/authService";
+import React from 'react';
+import { Navigate, useLocation, Outlet } from 'react-router-dom';
+import AuthService from "../../services/AuthService";
 
 const RequireAuth = ({ allowedRoles }) => {
-    const userRoles = authService.getUserRoles();
     const location = useLocation();
-
+    const userRoles = AuthService.getUserRoles();
     if (!AuthService.isAuthenticated()) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    if (allowedRoles.length > 0 && (!userRoles || userRoles.length === 0 || !userRoles.some((role) => allowedRoles.includes(role)))) {
-        console.log("Allowed roles: ", allowedRoles);
-        console.log("User roles: ", userRoles);
+    if (
+        allowedRoles.length > 0 &&
+        (!userRoles || userRoles.length === 0 || !userRoles.some(role => allowedRoles.includes(role)))
+    ) {
         return <Navigate to="/access-denied" replace />;
     }
 
-    return null;
+    return <Outlet />;
 };
 
 export default RequireAuth;

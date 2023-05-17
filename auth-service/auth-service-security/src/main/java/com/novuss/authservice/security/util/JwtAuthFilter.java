@@ -85,7 +85,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 doFilter(filterChain, request, response);
             } catch (UsernameNotFoundException e) {
                 log.warn("User " + username + " not found");
-                responseWithError(response, HttpStatus.NOT_FOUND, e);
+                responseWithError(response, HttpStatus.UNAUTHORIZED, e);
             } catch (InvalidTokenException e) {
                 log.warn("Invalid token: " + e.getMessage());
                 responseWithError(response, HttpStatus.UNAUTHORIZED, e);

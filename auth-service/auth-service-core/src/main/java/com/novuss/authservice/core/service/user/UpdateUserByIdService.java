@@ -16,10 +16,12 @@ public class UpdateUserByIdService implements UpdateUserByIdUseCase {
     private final PasswordEncoder passwordEncoder;
     @Override
     public User updateUserById(String id, User user) {
-        var encodedPassword = passwordEncoder.encode(user.getPassword());
-        user = user.toBuilder()
-                .password(encodedPassword)
-                .build();
+        if(user.getPassword() != null) {
+            var encodedPassword = passwordEncoder.encode(user.getPassword());
+            user = user.toBuilder()
+                    .password(encodedPassword)
+                    .build();
+        }
 
         return updateUserByIdPort.updateById(id, user);
     }
