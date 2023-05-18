@@ -7,25 +7,51 @@ import { ROLES } from './app/roles';
 import RequireAuth from './features/auth/RequireAuth';
 import LoginPage from "./components/pages/login/LoginPage";
 import 'react-toastify/dist/ReactToastify.css';
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import DashboardPage from "./components/pages/DashboardPage";
 import {ThemeProvider} from "@mui/material";
 import theme from "./theme/createTheme";
 import UserListPage from "./components/pages/user/UserListPage";
 import LogoutPage from "./components/pages/LogoutPage";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 import authService from "./services/AuthService";
+import {useNavigate} from "react-router";
 
 function App() {
+    const navigate = useNavigate();
+    const refreshTimerRef = useRef(null);
+
     useEffect(() => {
-        const refreshTime = authService.getRefreshTime() * 1000; // Convert to milliseconds
-
-        const refreshTimer = setTimeout(async () => {
+        const handleRefresh = async () => {
+            try {
                 await authService.refreshAuthToken();
-        }, refreshTime);
+            } catch (error) {
+                toast.error('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
+                authService.logout();
+                navigate('/login');
+            }
+        };
 
-        return () => clearTimeout(refreshTimer);
-    }, []);
+        const startRefreshTimer = () => {
+            const refreshTime = authService.getRefreshTime();
+
+            refreshTimerRef.current = setTimeout(handleRefresh, refreshTime);
+        };
+
+        const clearRefreshTimer = () => {
+            clearTimeout(refreshTimerRef.current);
+        };
+
+        if (authService.isAuthenticated()) {
+            startRefreshTimer();
+        } else {
+            clearRefreshTimer();
+        }
+
+        return () => {
+            clearRefreshTimer();
+        };
+    }, [navigate]);
 
     return (
         <>

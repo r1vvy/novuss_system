@@ -6,11 +6,8 @@ const TokenRefreshHandler = () => {
     useEffect(() => {
         const refreshTimer = setTimeout(() => {
             AuthService.refreshAuthToken().catch((error) => {
-                console.error('Refresh token failed:', error);
-                AuthService.logout();
-                toast.error('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
             });
-        }, AuthService.getRefreshTime() * 1000);
+        }, AuthService.getRefreshTime());
 
         return () => {
             clearTimeout(refreshTimer);
