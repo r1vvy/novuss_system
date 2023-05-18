@@ -16,7 +16,7 @@ import LogoutPage from "./components/pages/LogoutPage";
 import {useEffect, useRef} from "react";
 import authService from "./services/AuthService";
 import {useNavigate} from "react-router";
-import DashFooter from "./components/global/dash/DashFooter";
+import Footer from "./components/global/Footer";
 import {ProSidebarProvider} from "react-pro-sidebar";
 
 function App() {
@@ -83,7 +83,7 @@ function App() {
                         </Route>
                     </Route>
             </Routes>
-            <DashFooter />
+            <Footer />
             </ThemeProvider>
         </>
     );

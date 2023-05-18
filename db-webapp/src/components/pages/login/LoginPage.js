@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box } from '@mui/material';
 import LoginForm from './LoginForm';
-import DashFooter from "../../global/dash/DashFooter";
+import Footer from "../../global/Footer";
 import LoadingLinearWrapper from '../../wrappers/LoadingLinearWrapper';
 import AuthService from "../../../services/AuthService";
 

@@ -2,11 +2,11 @@ import React from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-const DashFooter = () => {
+const Footer = () => {
     const theme = useTheme();
 
     return (
-        <footer className="dash-footer" style={{ position: 'fixed', bottom: 0, width: '100%' }}>
+        <footer className="dash-footer" style={{ position:"initial", bottom: 0, width: '100%' }}>
             <Box
                 sx={{
                     backgroundColor: theme.palette.primary.main,
@@ -39,4 +39,4 @@ const DashFooter = () => {
     );
 };
 
-export default DashFooter;
+export default Footer;

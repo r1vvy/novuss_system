@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
-import { Home, PieChart, Book, CalendarToday, Menu as MenuIcon } from '@mui/icons-material';
+import {Dashboard, ExitToApp, Home, Menu as MenuIcon} from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { Box } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
+import { useNavigate } from 'react-router-dom';
+import GroupIcon from '@mui/icons-material/Group';
+import useLogout from "../../hooks/useLogout";
+
+const CustomMenuItem = ({ icon, name, selected, onClick, path }) => {
+    const theme = useTheme();
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        onClick();
+        navigate(path);
+    };
+
+    return (
+        <MenuItem
+            icon={icon}
+            active={selected}
+            onClick={handleClick}
+            style={selected ? { backgroundColor: theme.palette.secondary.main } : {}}
+        >
+            {name}
+        </MenuItem>
+    );
+};
 
 const SideBar = () => {
     const { collapseSidebar } = useProSidebar();
 
+    const [selectedItem, setSelectedItem] = useState('dashboard'); // Set the initially selected item here
+
     const handleCollapse = () => {
         collapseSidebar();
+    };
+
+    const handleItemClick = (item) => {
+        setSelectedItem(item);
     };
 
     return (
@@ -19,23 +50,27 @@ const SideBar = () => {
                 </IconButton>
             </Box>
             <Menu iconShape="square">
-                <MenuItem icon={<Home />}>
-                    Dashboard
-                </MenuItem>
-                <SubMenu title="Charts" icon={<PieChart />}>
-                    <MenuItem>
-                        Pie charts
-                    </MenuItem>
-                    <MenuItem>
-                        Line charts
-                    </MenuItem>
-                </SubMenu>
-                <MenuItem icon={<Book />}>
-                    Documentation
-                </MenuItem>
-                <MenuItem icon={<CalendarToday />}>
-                    Calendar
-                </MenuItem>
+                <CustomMenuItem
+                    icon={<Dashboard />}
+                    name="Vadības panelis"
+                    selected={selectedItem === 'dashboard'}
+                    onClick={() => handleItemClick('dashboard')}
+                    path="/dash"
+                />
+                <CustomMenuItem
+                    icon={<GroupIcon />}
+                    name="Lietotāji"
+                    selected={selectedItem === 'users'}
+                    onClick={() => handleItemClick('users')}
+                    path="/dash/users"
+                />
+                <CustomMenuItem
+                    icon={<ExitToApp />}
+                    name="Izrakstīties"
+                    selected={selectedItem === 'logout'}
+                    onClick={() => handleItemClick('logout')}
+                    path="/logout"
+                />
             </Menu>
         </Sidebar>
     );

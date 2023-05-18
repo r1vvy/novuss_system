@@ -1,26 +1,22 @@
 import { Outlet } from 'react-router-dom';
 import DashHeader from "./DashHeader";
-import DashFooter from "./DashFooter";
 import SideNav from "../SideNav";
 import { ProSidebarProvider } from "react-pro-sidebar";
 import { Box } from '@mui/system';
 
 const DashLayout = () => {
     return (
-        <Box display="flex" flexDirection="column" minHeight="100vh">
+        <Box minHeight="100vh" display="flex" flexDirection="column">
             <ProSidebarProvider>
                 <DashHeader />
-                <Box display="flex" flex="1">
-                    <Box position="relative" flex="0 0 auto">
-                        <SideNav />
-                    </Box>
-                    <Box flex="1" sx={{ overflow: 'auto', position: 'relative', minHeight: 0 }}>
+                <Box flex="1" display="flex" overflow="hidden">
+                    <SideNav />
+                    <Box flex="1" overflow="auto">
                         <div className="dash-container" style={{ padding: '16px' }}>
                             <Outlet />
                         </div>
                     </Box>
                 </Box>
-                <DashFooter />
             </ProSidebarProvider>
         </Box>
     );
