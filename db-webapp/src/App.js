@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import DashLayout from './components/dash/DashLayout';
-import Public from './components/Public';
+import Public from './components/pages/Public';
 import AccessDeniedPage from './components/pages/AccessDeniedPage';
 import { ROLES } from './app/roles';
 import RequireAuth from './features/auth/RequireAuth';
@@ -16,6 +16,7 @@ import LogoutPage from "./components/pages/LogoutPage";
 import {useEffect, useRef} from "react";
 import authService from "./services/AuthService";
 import {useNavigate} from "react-router";
+import DashFooter from "./components/dash/DashFooter";
 
 function App() {
     const navigate = useNavigate();
@@ -80,10 +81,9 @@ function App() {
                             </Route>
 
                         </Route>
-
                     </Route>
             </Routes>
-
+            <DashFooter />
             </ThemeProvider>
         </>
     );

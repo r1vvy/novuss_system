@@ -4,6 +4,8 @@ import DataTable from "../../components/DataTable";
 import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
 import EditUserDialog from "../../components/dialogs/EditUserDialog";
 import {toast} from "react-toastify";
+import {Button, IconButton} from "@mui/material";
+import {Delete, Edit} from "@mui/icons-material";
 
 const userService = UserService;
 
@@ -27,17 +29,21 @@ const UsersList = () => {
 
     const columns = [
         { field: 'id', headerName: 'ID', hide: true },
-        { field: 'username', headerName: 'Lietotājvārds', width: 200 },
-        { field: 'email', headerName: 'E-pasts', width: 200 },
-        { field: 'roles', headerName: 'Lomas', width: 200 },
+        { field: 'username', headerName: 'Lietotājvārds'},
+        { field: 'email', headerName: 'E-pasts'},
+        { field: 'roles', headerName: 'Lomas'},
         {
             field: 'actions',
-            headerName: 'Actions',
-            width: 200,
+            headerName: 'Darbības',
             renderCell: (rowData) => (
                 <>
-                    <button onClick={() => handleEditUser(rowData)}>Rediģēt</button>
-                    <button onClick={() => handleDeleteUser(rowData)}>Dzēst</button>
+                    <IconButton color="primary" onClick={() => handleEditUser(rowData)}>
+                        <Edit />
+                    </IconButton>
+
+                    <IconButton color="tertiary-secondary" onClick={() => handleDeleteUser(rowData)}>
+                        <Delete />
+                    </IconButton>
                 </>
             ),
         },
@@ -48,6 +54,7 @@ const UsersList = () => {
     const handleDeleteUser = (userData) => {
         setSelectedUser(userData);
         setIsDeleteDialogOpen(true);
+        setIsEditDialogOpen(false); // Close the edit dialog if it's open
     };
 
     const handleConfirmDelete = () => {
@@ -71,6 +78,7 @@ const UsersList = () => {
     const handleEditUser = (userData) => {
         setSelectedUser(userData);
         setIsEditDialogOpen(true);
+        setIsDeleteDialogOpen(false); // Close the delete dialog if it's open
     };
 
     const handleUpdateUser = (updatedUser) => {

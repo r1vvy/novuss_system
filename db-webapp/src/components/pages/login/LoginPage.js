@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import LoginForm from "./LoginForm";
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Paper, Typography, Box } from '@mui/material';
+import LoginForm from './LoginForm';
+import DashFooter from "../../dash/DashFooter";
+import LoadingLinearWrapper from '../../wrappers/LoadingLinearWrapper';
 import AuthService from "../../../services/AuthService";
-import {LinearProgress} from "@mui/material";
-import LoadingLinearWrapper from "../../wrappers/LoadingLinearWrapper";
 
-const LoginPage = () => {
+const LoginPage = ({ errorMessage }) => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
 
@@ -25,10 +26,29 @@ const LoginPage = () => {
 
     return (
         <LoadingLinearWrapper isLoading={loading}>
-            <div>
-                <h2>Ieeja</h2>
-                <LoginForm />
-            </div>
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                minHeight="100vh"
+            >
+                <Paper elevation={3} sx={{ padding: '2rem', maxWidth: '400px' }}>
+                    <Typography variant="h4" align="center" gutterBottom sx={{ marginBottom: '2rem' }}>
+                        Ieeja
+                    </Typography>
+                    {errorMessage && (
+                        <Typography
+                            variant="body2"
+                            color="error"
+                            align="center"
+                            gutterBottom
+                        >
+                            {errorMessage}
+                        </Typography>
+                    )}
+                    <LoginForm />
+                </Paper>
+            </Box>
         </LoadingLinearWrapper>
     );
 };

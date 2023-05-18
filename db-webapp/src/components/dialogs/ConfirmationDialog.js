@@ -12,8 +12,8 @@ const ConfirmationDialog = ({ isOpen, message, onConfirm, onCancel }) => {
     return (
         <div>
             <p>{message}</p>
-            <button onClick={onConfirm}>Confirm</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <button onClick={onConfirm}>Dzēst</button>
+            <button onClick={handleCancel}>Atcelt</button>
         </div>
     );
 };

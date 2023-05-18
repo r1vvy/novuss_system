@@ -2,6 +2,7 @@ import {DataGrid, GRID_DEFAULT_LOCALE_TEXT, GridToolbar} from '@mui/x-data-grid'
 import {customLocaleText} from "../app/dataGridTranslations";
 import React, {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
+import {Grid3x3Outlined, GridGoldenratioOutlined} from "@mui/icons-material";
 
 const DataTable = ({ data, columns, sortableColumns }) => {
     const [localeText, setLocaleText] = useState(null);
@@ -12,7 +13,7 @@ const DataTable = ({ data, columns, sortableColumns }) => {
         });
     }, []);
 
-    const columnsWithSorting = columns.map((column) => {
+    const dataColumns = columns.map((column) => {
         if (sortableColumns.includes(column.field)) {
             return { ...column, sortable: true };
         }
@@ -26,17 +27,20 @@ const DataTable = ({ data, columns, sortableColumns }) => {
 
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
+        <div className="data-table">
             <DataGrid
                 rows={data}
-                columns={columnsWithSorting}
-                sortingOrder={['asc', 'desc']} // Set the sorting order
-                disableColumnMenu // Disable the column menu
-                disableColumnSelector // Disable the column selector
+                columns={dataColumns}
+                sortingOrder={['asc', 'desc']}
+                disableColumnMenu
+                disableColumnSelector
+                disableColumnResize={false}
                 slots={{
                     toolbar: GridToolbar,
+                    resizeContainer: GridGoldenratioOutlined,
                 }}
-                localeText={ localeText }
+                localeText={localeText}
+                autoHeight
             />
         </div>
     );

@@ -26,9 +26,9 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
 
     return (
         <div>
-            <h2>Edit User</h2>
+            <h2>Rediģēt lietotāju</h2>
             <label>
-                Username:
+                Lietotājvārds
                 <input
                     type="text"
                     name="username"
@@ -37,7 +37,7 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
                 />
             </label>
             <label>
-                Email:
+                E-pasts:
                 <input
                     type="text"
                     name="email"
@@ -45,8 +45,8 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
                     onChange={handleInputChange}
                 />
             </label>
-            <button onClick={handleSave}>Save</button>
-            <button onClick={handleCancel}>Cancel</button>
+            <button onClick={handleSave}>Saglabāt</button>
+            <button onClick={handleCancel}>Atcelt</button>
         </div>
     );
 };
