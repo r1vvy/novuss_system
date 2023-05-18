@@ -44,6 +44,8 @@ class AuthService {
                     });
             }, expiresInMs);
 
+            console.log('Login successful');
+
             return roles;
         } catch (error) {
             throw error

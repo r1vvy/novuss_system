@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import DashLayout from './components/dash/DashLayout';
+import Layout from './components/global/Layout';
+import DashLayout from './components/global/dash/DashLayout';
 import Public from './components/pages/Public';
 import AccessDeniedPage from './components/pages/AccessDeniedPage';
 import { ROLES } from './app/roles';
@@ -16,7 +16,8 @@ import LogoutPage from "./components/pages/LogoutPage";
 import {useEffect, useRef} from "react";
 import authService from "./services/AuthService";
 import {useNavigate} from "react-router";
-import DashFooter from "./components/dash/DashFooter";
+import DashFooter from "./components/global/dash/DashFooter";
+import {ProSidebarProvider} from "react-pro-sidebar";
 
 function App() {
     const navigate = useNavigate();
@@ -67,7 +68,6 @@ function App() {
                         <Route path="access-denied" element={<AccessDeniedPage />} />
 
                         <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-
                             <Route path="dash" element={<DashLayout />}>
 
                                 <Route index element={<DashboardPage />} />
