@@ -36,7 +36,7 @@ const Public = () => {
                     Datu Pārvaldības Sistēma
                 </Typography>
                 <Typography variant="body1" align="center" sx={{ mb: 4 }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eleifend magna eu massa tincidunt, vitae pretium massa rutrum.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </Typography>
                 <Button
                     component={Link}

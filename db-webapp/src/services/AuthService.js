@@ -3,13 +3,10 @@ import Cookies from 'js-cookie';
 import jwtDecode from 'jwt-decode';
 import {AUTH_EXPIRY_TIME_MS} from "../app/cookieConfig";
 import apiConfig, {AUTH_API_DOMAIN} from "../app/api/apiConfig";
-import configureApiBaseUrl from "../app/api/apiConfig";
 import {toast} from "react-toastify";
 
 
-
 class AuthService {
-    expirationDate = new Date(Date.now() + AUTH_EXPIRY_TIME_MS);
     api = apiConfig;
     timeoutId = null;
 
@@ -17,92 +14,100 @@ class AuthService {
         this.api.defaults.baseURL = AUTH_API_DOMAIN;
     }
 
-
     login = async (username, password) => {
         try {
-            const response = await axios.post(this.api.defaults.baseURL.toString() + '/auth/authenticate', {
+            const response = await axios.post(`${this.api.defaults.baseURL}/auth/authenticate`, {
                 username,
                 password,
             });
-            const authToken  = response.data.token;
+            const authToken = response.data.token;
+            const decodedToken = jwtDecode(authToken);
+            const roles = decodedToken.roles;
+            const cookieExpiryTime = decodedToken.exp;
 
-            // Set the auth token in cookies,
-            // bad side is that client sided cookies cannot be with attributes: httpOnly and sameSite.
-            // that opens my implementation up for CSRF and XSS attacks.
+            Cookies.set('authToken', authToken, { expires: cookieExpiryTime });
+            Cookies.set('userRoles', JSON.stringify(roles), { expires: cookieExpiryTime });
+            Cookies.set('authExpiry', cookieExpiryTime, { expires: cookieExpiryTime });
 
-            Cookies.set('authToken', authToken, { expires: this.expirationDate });
 
-            // Decode JWT to extract user roles
-            const { roles } = jwtDecode(authToken);
-            Cookies.set('userRoles', JSON.stringify(roles), { expires: this.expirationDate });
-
-            const expiresInMs = AUTH_EXPIRY_TIME_MS;
+            if (this.timeoutId) {
+                clearTimeout(this.timeoutId);
+            }
             this.timeoutId = setTimeout(() => {
-                toast.info('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.',
-                    {
-                        autoClose: false
-                    });
-            }, expiresInMs);
+                toast.info('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.', {
+                    autoClose: false,
+                });
+                this.logout();
+            }, cookieExpiryTime * 1000 - Date.now() - 5000);
 
-            console.log('Login successful');
-
-            return roles;
-        } catch (error) {
-            throw error
-        }
-    }
-
-    refreshAuthToken = async () => {
-        try {
-            const authToken = Cookies.get('authToken');
-            const response = await this.api.post(`/auth/refresh`, authToken);
-            const { newAuthToken } = response.data.token;
-
-            // Update the auth token in cookies
-            Cookies.set('authToken', newAuthToken, { expires: this.expirationDate });
-
-            // Decode JWT to extract user roles
-            const { roles } = jwtDecode(newAuthToken);
-            Cookies.set('userRoles', JSON.stringify(roles), { expires: this.expirationDate });
-
-            return roles;
         } catch (error) {
             throw error;
         }
-    }
+    };
 
+    refreshAuthToken = async () => {
+        try {
+            const token = Cookies.get('authToken');
+            const response = await axios.post(`${this.api.defaults.baseURL}/auth/refresh`, token);
+
+            const newAuthToken = response.data.token;
+            const decodedToken = jwtDecode(newAuthToken);
+            const roles = decodedToken.roles;
+            const cookieExpiryTime = decodedToken.exp;
+
+            Cookies.set('authToken', newAuthToken, { expires: cookieExpiryTime });
+            Cookies.set('userRoles', JSON.stringify(roles), { expires: cookieExpiryTime });
+            Cookies.set('authExpiry', cookieExpiryTime, { expires: cookieExpiryTime });
+
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
 
     logout = () => {
         clearTimeout(this.timeoutId);
 
         Cookies.remove('authToken');
         Cookies.remove('userRoles');
-    }
+        Cookies.remove('authExpiry');
+    };
 
     getUserRoles = () => {
         const userRoles = Cookies.get('userRoles');
 
         return userRoles ? JSON.parse(userRoles) : [];
-    }
+    };
 
     isAuthenticated = () => {
-        const authToken = Cookies.get('authToken');
-        if (!authToken) {
-            return false; // No authToken present
-        }
-        return true; // authToken is present and valid
+        return Cookies.get('authToken');
     };
 
-    getRefreshTime = () => {
+    getRefreshTimeMs = () => {
         const authToken = Cookies.get('authToken');
-        if (!authToken) {
-            return 0;
-        }
+        const expirationTimestamp = Cookies.get('authExpiry');
+        const userRoles = Cookies.get('userRoles');
 
-        const { exp } = jwtDecode(authToken);
-        const currentTime = Date.now() / 1000;
-        return (exp - currentTime - 60) * 1000; // Convert to milliseconds and subtract 60 seconds
+        if (authToken && expirationTimestamp && userRoles) {
+            const currentTimestamp = Date.now();
+            const bufferPeriodMs = 5000; // 5 seconds
+
+            console.log('currentTimestamp', currentTimestamp);
+            console.log('expirationTimestamp', expirationTimestamp);
+
+            const remainingTime = expirationTimestamp * 1000 - currentTimestamp - bufferPeriodMs;
+
+            console.log('remainingTime', remainingTime);
+
+            return remainingTime;
+        } else {
+            return -1;
+        }
     };
+
+
+
 }
 
 export default new AuthService();
+

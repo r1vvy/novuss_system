@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
 import {Dashboard, ExitToApp, Home, Menu as MenuIcon} from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import {Divider, IconButton} from '@mui/material';
 import { Box } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
@@ -64,6 +64,7 @@ const SideBar = () => {
                     onClick={() => handleItemClick('users')}
                     path="/dash/users"
                 />
+                <Divider />
                 <CustomMenuItem
                     icon={<ExitToApp />}
                     name="Izrakstīties"

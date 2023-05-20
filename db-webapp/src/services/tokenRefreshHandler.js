@@ -7,7 +7,7 @@ const TokenRefreshHandler = () => {
         const refreshTimer = setTimeout(() => {
             AuthService.refreshAuthToken().catch((error) => {
             });
-        }, AuthService.getRefreshTime());
+        }, AuthService.getRefreshTimeMs());
 
         return () => {
             clearTimeout(refreshTimer);

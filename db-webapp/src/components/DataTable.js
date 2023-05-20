@@ -1,11 +1,11 @@
-import {DataGrid, GRID_DEFAULT_LOCALE_TEXT, GridToolbar} from '@mui/x-data-grid';
-import {customLocaleText} from "../app/dataGridTranslations";
-import React, {useEffect, useState} from "react";
-import {CircularProgress} from "@mui/material";
-import {Grid3x3Outlined, GridGoldenratioOutlined} from "@mui/icons-material";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
+import { Grid3x3Outlined, GridGoldenratioOutlined } from '@mui/icons-material';
+import { customLocaleText } from '../app/dataGridTranslations';
 
 const DataTable = ({ data, columns, sortableColumns }) => {
     const [localeText, setLocaleText] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         import('../app/dataGridTranslations').then((module) => {
@@ -14,17 +14,19 @@ const DataTable = ({ data, columns, sortableColumns }) => {
     }, []);
 
     const dataColumns = columns.map((column) => {
-        if (sortableColumns.includes(column.field)) {
-            return { ...column, sortable: true };
-        }
-
-        return { ...column, sortable: false };
+        const isSortable = sortableColumns.includes(column.field);
+        const isIDField = column.field === 'id';
+        const isActionsField = column.field === 'actions';
+        return {
+            ...column,
+            sortable: isSortable,
+            flex: 1,
+            filterable: !isIDField && !isActionsField,
+            disableColumnMenu: isIDField || isActionsField,
+            disableColumnSelector: isIDField || isActionsField,
+            disableColumnResize: isIDField || isActionsField,
+        };
     });
-
-    if (!localeText) {
-        return <CircularProgress />;
-    }
-
 
     return (
         <div className="data-table">
@@ -35,11 +37,18 @@ const DataTable = ({ data, columns, sortableColumns }) => {
                 disableColumnMenu
                 disableColumnSelector
                 disableColumnResize={false}
+                columnVisibilityModel={{
+                    id: false
+                }}
+                GridColDef={{
+                    resizable: true,
+                }}
                 slots={{
                     toolbar: GridToolbar,
                     resizeContainer: GridGoldenratioOutlined,
                 }}
-                localeText={localeText}
+                localeText={customLocaleText}
+                loading={isLoading}
                 autoHeight
             />
         </div>

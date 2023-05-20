@@ -28,13 +28,15 @@ const UsersList = () => {
     }, []);
 
     const columns = [
-        { field: 'id', headerName: 'ID', hide: true },
+        { field: 'id', headerName: 'ID'},
         { field: 'username', headerName: 'Lietotājvārds'},
         { field: 'email', headerName: 'E-pasts'},
         { field: 'roles', headerName: 'Lomas'},
         {
             field: 'actions',
             headerName: 'Darbības',
+            sortable: false,
+            hideable: false,
             renderCell: (rowData) => (
                 <>
                     <IconButton color="primary" onClick={() => handleEditUser(rowData)}>
@@ -100,7 +102,6 @@ const UsersList = () => {
 
     return (
         <div>
-            <h1 className="primary">Lietotāji</h1>
             <DataTable data={users} columns={columns} sortableColumns={sortableColumns} />
             <ConfirmationDialog
                 isOpen={isDeleteDialogOpen}

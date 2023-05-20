@@ -18,42 +18,11 @@ import authService from "./services/AuthService";
 import {useNavigate} from "react-router";
 import Footer from "./components/global/Footer";
 import {ProSidebarProvider} from "react-pro-sidebar";
+import useAuthCheck from "./hooks/useAuthCheck";
 
 function App() {
-    const navigate = useNavigate();
-    const refreshTimerRef = useRef(null);
 
-    useEffect(() => {
-        const handleRefresh = async () => {
-            try {
-                await authService.refreshAuthToken();
-            } catch (error) {
-                toast.error('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
-                authService.logout();
-                navigate('/login');
-            }
-        };
-
-        const startRefreshTimer = () => {
-            const refreshTime = authService.getRefreshTime();
-
-            refreshTimerRef.current = setTimeout(handleRefresh, refreshTime);
-        };
-
-        const clearRefreshTimer = () => {
-            clearTimeout(refreshTimerRef.current);
-        };
-
-        if (authService.isAuthenticated()) {
-            startRefreshTimer();
-        } else {
-            clearRefreshTimer();
-        }
-
-        return () => {
-            clearRefreshTimer();
-        };
-    }, [navigate]);
+    useAuthCheck();
 
     return (
         <>
