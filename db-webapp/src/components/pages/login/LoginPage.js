@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Paper, Typography, Box } from '@mui/material';
 import LoginForm from './LoginForm';
-import Footer from "../../global/Footer";
+import Footer from '../../global/Footer';
 import LoadingLinearWrapper from '../../wrappers/LoadingLinearWrapper';
-import AuthService from "../../../services/AuthService";
+import AuthService from '../../../services/AuthService';
 
 const LoginPage = ({ errorMessage }) => {
     const navigate = useNavigate();
@@ -42,6 +42,7 @@ const LoginPage = ({ errorMessage }) => {
                             color="error"
                             align="center"
                             gutterBottom
+                            sx={{ fontWeight: 'bold', marginBottom: '1rem' }} // Add additional styling
                         >
                             {errorMessage}
                         </Typography>
@@ -49,6 +50,7 @@ const LoginPage = ({ errorMessage }) => {
                     <LoginForm />
                 </Paper>
             </Box>
+            <Footer />
         </LoadingLinearWrapper>
     );
 };

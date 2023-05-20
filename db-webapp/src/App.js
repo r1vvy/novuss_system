@@ -7,22 +7,21 @@ import { ROLES } from './app/roles';
 import RequireAuth from './features/auth/RequireAuth';
 import LoginPage from "./components/pages/login/LoginPage";
 import 'react-toastify/dist/ReactToastify.css';
-import {toast, ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import DashboardPage from "./components/pages/DashboardPage";
-import {ThemeProvider} from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "./theme/createTheme";
 import UserListPage from "./components/pages/user/UserListPage";
 import LogoutPage from "./components/pages/LogoutPage";
-import {useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 import authService from "./services/AuthService";
-import {useNavigate} from "react-router";
+import { useNavigate } from "react-router";
 import Footer from "./components/global/Footer";
-import {ProSidebarProvider} from "react-pro-sidebar";
+import { ProSidebarProvider } from "react-pro-sidebar";
 import useAuthCheck from "./hooks/useAuthCheck";
 
 function App() {
-
-    useAuthCheck();
+    const errorMessage = useAuthCheck();
 
     return (
         <>
@@ -32,8 +31,8 @@ function App() {
                     <Route path="/" element={<Layout />}>
 
                         <Route index element={<Public />} />
-                        <Route path="login" element={<LoginPage />} />
-                        <Route path="logout" element= { <LogoutPage /> } />
+                        <Route path="login" element={<LoginPage errorMessage={errorMessage} />} />
+                        <Route path="logout" element={<LogoutPage />} />
                         <Route path="access-denied" element={<AccessDeniedPage />} />
 
                         <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
@@ -42,21 +41,17 @@ function App() {
                                 <Route index element={<DashboardPage />} />
 
                                 <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-
                                     <Route path="users" element={<UserListPage />} />
-
                                 </Route>
 
                             </Route>
-
                         </Route>
                     </Route>
-            </Routes>
-            <Footer />
+                </Routes>
+                <Footer />
             </ThemeProvider>
         </>
     );
 }
 
 export default App;
-

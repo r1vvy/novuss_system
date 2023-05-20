@@ -1,42 +1,42 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/AuthService';
-import { toast } from 'react-toastify';
 
 const useAuthCheck = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleRefresh = async () => {
         try {
             await authService.refreshAuthToken();
+            setRefreshTimer(); // Reset the refresh timer after a successful token refresh
         } catch (error) {
-            console.log(error);
-            toast.error('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
+            setErrorMessage('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
             authService.logout();
             navigate('/login');
         }
     };
 
+    const setRefreshTimer = () => {
+        const refreshTime = authService.getRefreshTimeMs();
+
+        if (refreshTime > 0) {
+            setTimeout(handleRefresh, refreshTime);
+        } else {
+            setErrorMessage('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.');
+            navigate('/logout');
+        }
+    };
+
     useEffect(() => {
-        const checkRefreshTime = () => {
-            const refreshTime = authService.getRefreshTimeMs();
-            console.log('refresh time', refreshTime);
-
-            if (6000 > refreshTime && refreshTime > 0) {
-                handleRefresh();
-            } else if(refreshTime < 0) {
-                navigate('/logout');
-            }
-        };
-
         const isAuthenticated = authService.isAuthenticated();
         if (isAuthenticated) {
-            checkRefreshTime();
+            setRefreshTimer(); // Set the initial refresh timer
         }
-    }, [location.key]);
+    }, [location, authService.isAuthenticated()]); // Include authService.isAuthenticated() as a dependency
 
-    return authService.isAuthenticated();
+    return errorMessage;
 };
 
 export default useAuthCheck;

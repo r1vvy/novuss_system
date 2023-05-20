@@ -30,16 +30,6 @@ class AuthService {
             Cookies.set('authExpiry', cookieExpiryTime, { expires: cookieExpiryTime });
 
 
-            if (this.timeoutId) {
-                clearTimeout(this.timeoutId);
-            }
-            this.timeoutId = setTimeout(() => {
-                toast.info('Jūsu sesija ir beigusies. Lūdzu, piesakieties vēlreiz.', {
-                    autoClose: false,
-                });
-                this.logout();
-            }, cookieExpiryTime * 1000 - Date.now() - 5000);
-
         } catch (error) {
             throw error;
         }
@@ -60,7 +50,6 @@ class AuthService {
             Cookies.set('authExpiry', cookieExpiryTime, { expires: cookieExpiryTime });
 
         } catch (error) {
-            console.log(error);
             throw error;
         }
     };
@@ -90,14 +79,8 @@ class AuthService {
 
         if (authToken && expirationTimestamp && userRoles) {
             const currentTimestamp = Date.now();
-            const bufferPeriodMs = 5000; // 5 seconds
-
-            console.log('currentTimestamp', currentTimestamp);
-            console.log('expirationTimestamp', expirationTimestamp);
-
+            const bufferPeriodMs = 1 * 60 * 1000; // 1 minutes in ms
             const remainingTime = expirationTimestamp * 1000 - currentTimestamp - bufferPeriodMs;
-
-            console.log('remainingTime', remainingTime);
 
             return remainingTime;
         } else {
