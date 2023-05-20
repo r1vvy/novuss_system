@@ -3,40 +3,29 @@ import UserService from "../../services/UserService";
 import DataTable from "../../components/DataTable";
 import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
 import EditUserDialog from "../../components/dialogs/EditUserDialog";
-import {toast} from "react-toastify";
-import {Button, IconButton} from "@mui/material";
-import {Delete, Edit} from "@mui/icons-material";
+import { toast } from "react-toastify";
+import { IconButton } from "@mui/material";
+import { Delete, Edit } from "@mui/icons-material";
 
-const userService = UserService;
-
-const UsersList = () => {
-    const [users, setUsers] = useState([]);
+const UsersList = ({ users }) => {
+    const [userList, setUserList] = useState(users);
     const [selectedUser, setSelectedUser] = useState(null);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
     useEffect(() => {
-        // Fetch users data from the API
-        userService.getAllUsers()
-            .then((data) => {
-                setUsers(data)
-            })
-            .catch((error) => {
-                console.error(error);
-                toast.error('Neizdevās ielādēt lietotājus!');
-            });
-    }, []);
+        setUserList(users);
+    }, [users]);
 
     const columns = [
-        { field: 'id', headerName: 'ID'},
-        { field: 'username', headerName: 'Lietotājvārds'},
-        { field: 'email', headerName: 'E-pasts'},
-        { field: 'roles', headerName: 'Lomas'},
+        { field: 'id', headerName: 'ID' },
+        { field: 'username', headerName: 'Lietotājvārds' },
+        { field: 'email', headerName: 'E-pasts' },
+        { field: 'roles', headerName: 'Lomas' },
         {
             field: 'actions',
             headerName: 'Darbības',
             sortable: false,
-            hideable: false,
             renderCell: (rowData) => (
                 <>
                     <IconButton color="primary" onClick={() => handleEditUser(rowData)}>
@@ -59,13 +48,20 @@ const UsersList = () => {
         setIsEditDialogOpen(false); // Close the edit dialog if it's open
     };
 
-    const handleConfirmDelete = () => {
+    const handleEditUser = (userData) => {
+        setSelectedUser(userData.row);
+        setIsEditDialogOpen(true);
+        setIsDeleteDialogOpen(false); // Close the delete dialog if it's open
+    };
+
+    const handleConfirmDelete = (event) => {
+        event.preventDefault(); // Prevent form submission
+
         if (selectedUser) {
-            console.log(`Selected user id: ${selectedUser.id}`)
-            userService.deleteUser(selectedUser.id)
+            UserService.deleteUser(selectedUser.id)
                 .then(() => {
                     // Remove the deleted user from the state
-                    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== selectedUser.id));
+                    setUserList((prevUsers) => prevUsers.filter((user) => user.id !== selectedUser.id));
                     toast.success('Lietotājs veiksmīgi dzēsts!');
                 })
                 .catch((error) => {
@@ -77,32 +73,25 @@ const UsersList = () => {
         setIsDeleteDialogOpen(false);
     };
 
-    const handleEditUser = (userData) => {
-        setSelectedUser(userData);
-        setIsEditDialogOpen(true);
-        setIsDeleteDialogOpen(false); // Close the delete dialog if it's open
-    };
-
-    const handleUpdateUser = (updatedUser) => {
-        userService.updateUser(updatedUser)
-            .then(() => {
-                // Update the user in the state
-                setUsers((prevUsers) => {
-                    prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-                    toast.success('Lietotāja dati veiksmīgi atjaunoti!')
+    const handleConfirmUpdateUser = (updatedUser) => {
+        if (updatedUser) {
+            UserService.updateUser(updatedUser)
+                .then(() => {
+                    setUserList((prevUsers) =>
+                        prevUsers.map((user) => (user.id === updatedUser.id ? updatedUser : user))
+                    );
+                    toast.success('Lietotāja dati veiksmīgi atjaunoti!');
+                    setIsEditDialogOpen(false);
+                })
+                .catch((error) => {
+                    toast.error('Neizdevās atjaunot lietotāja datus!');
                 });
-            })
-            .catch((error) => {
-                console.error(error);
-                toast.error('Neizdevās atjaunot lietotāja datus!');
-            });
-
-        setIsEditDialogOpen(false);
+        }
     };
 
     return (
         <div>
-            <DataTable data={users} columns={columns} sortableColumns={sortableColumns} />
+            <DataTable data={userList} columns={columns} sortableColumns={sortableColumns} />
             <ConfirmationDialog
                 isOpen={isDeleteDialogOpen}
                 message="Vai esat pārliecināts, ka vēlaties dzēst šo lietotāju?"
@@ -113,7 +102,7 @@ const UsersList = () => {
                 <EditUserDialog
                     isOpen={isEditDialogOpen}
                     user={selectedUser}
-                    onSave={handleUpdateUser}
+                    onSave={handleConfirmUpdateUser}
                     onCancel={() => setIsEditDialogOpen(false)}
                 />
             )}

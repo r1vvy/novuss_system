@@ -28,8 +28,8 @@ export const customLocaleText = {
     toolbarQuickFilterDeleteIconLabel: 'Notīrīt',
 
     // Export selector toolbar button text
-    toolbarExport: 'Eksports',
-    toolbarExportLabel: 'Eksports',
+    toolbarExport: 'Lejupielādēt',
+    toolbarExportLabel: 'Lejupielādēt',
     toolbarExportCSV: 'Lejupielādēt kā CSV',
     toolbarExportPrint: 'Drukāt',
     toolbarExportExcel: 'Lejupielādēt kā Excel',

@@ -9,6 +9,7 @@ const userAPI = axios.create({
 userAPI.interceptors.request.use((config) => {
     const authToken = Cookies.get('authToken');
     config.headers.Authorization = `Bearer ${authToken}`;
+
     return config;
 });
 
@@ -31,11 +32,14 @@ const UserAPI = {
         }
     },
 
-    updateUser: async (userId, userData) => {
+    updateUser: async (userData) => {
         try {
-            const response = await userAPI.put(`/users/${userId}`, userData);
+            const response = await userAPI.put(`/users/${userData.id}`, userData);
+            console.log(response.data);
+
             return response.data;
         } catch (error) {
+            console.error(error);
             throw new Error('Failed to update user');
         }
     },

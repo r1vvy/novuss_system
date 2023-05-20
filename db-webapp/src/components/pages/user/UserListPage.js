@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import UserAPI from "../../../services/UserService";
 import UsersList from "../../../features/users/UsersList";
 import AddUserDialog from "../../dialogs/AddUserDialog";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
+import userService from "../../../services/UserService";
 
 const UserListPage = () => {
     const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
@@ -10,35 +11,34 @@ const UserListPage = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        fetchUsers();
+        setIsLoading(true);
+        userService.getAllUsers()
+            .then((data) => {
+                setUsers(data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                toast.error('Neizdevās ielādēt lietotājus!');
+                setIsLoading(false);
+            });
     }, []);
-
-    const fetchUsers = async () => {
-        try {
-            setIsLoading(true);
-            const userList = await UserAPI.getAllUsers();
-            setUsers(userList);
-            setIsLoading(false);
-        } catch (error) {
-            setIsLoading(false);
-            toast.error('Neizdevās iegūt lietotājus');
-        }
-    };
 
     const handleAddUser = () => {
         setIsAddUserDialogOpen(true);
     };
 
-    const handleCreateUser = async (newUser) => {
-        try {
-            await UserAPI.createUser(newUser);
-            setIsAddUserDialogOpen(false);
-            await fetchUsers(); // Refresh the user list
-            toast.success('Lietotājs veiksmīgi izveidots');
-        } catch (error) {
-            console.error(error);
-            toast.error('Neizdevās izveidot lietotāju');
-        }
+    const handleCreateUser = (newUser) => {
+        userService.createUser(newUser)
+            .then((createdUser) => {
+                setUsers((prevUsers) => [...prevUsers, createdUser]);
+                toast.success('Lietotājs veiksmīgi pievienots!');
+                setIsAddUserDialogOpen(false);
+            })
+            .catch((error) => {
+                console.error(error);
+                toast.error('Neizdevās pievienot lietotāju!');
+            });
     };
 
     return (
@@ -50,7 +50,7 @@ const UserListPage = () => {
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                <UsersList users={users} />
+                <UsersList users={users} /> // Pass the users state as a prop
             )}
 
             {isAddUserDialogOpen && (
@@ -63,5 +63,6 @@ const UserListPage = () => {
         </div>
     );
 };
+
 
 export default UserListPage;

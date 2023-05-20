@@ -5,7 +5,6 @@ import { customLocaleText } from '../app/dataGridTranslations';
 
 const DataTable = ({ data, columns, sortableColumns }) => {
     const [localeText, setLocaleText] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         import('../app/dataGridTranslations').then((module) => {
@@ -47,8 +46,7 @@ const DataTable = ({ data, columns, sortableColumns }) => {
                     toolbar: GridToolbar,
                     resizeContainer: GridGoldenratioOutlined,
                 }}
-                localeText={customLocaleText}
-                loading={isLoading}
+                localeText={localeText}
                 autoHeight
             />
         </div>

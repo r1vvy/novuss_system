@@ -18,7 +18,8 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
     const [selectedRoles, setSelectedRoles] = useState([]);
     const [errors, setErrors] = useState({});
 
-    const handleCreateClick = () => {
+    const handleCreateClick = (event) => {
+        event.preventDefault(); // Prevent form submission
         const newUser = {
             username,
             email,
@@ -27,7 +28,7 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
         };
         onCreateUser(newUser);
         clearFields();
-    }
+    };
 
     const clearFields = () => {
         setUsername('');
@@ -66,7 +67,7 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
                     <TextField
                         type="text"
                         id="username"
-                        label="Username"
+                        label="Lietotājvārds"
                         variant="outlined"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -80,7 +81,7 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
                     <TextField
                         type="email"
                         id="email"
-                        label="Email"
+                        label="E-pasts"
                         variant="outlined"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -94,7 +95,7 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
                     <TextField
                         type="password"
                         id="password"
-                        label="Password"
+                        label="Parole"
                         variant="outlined"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -106,7 +107,7 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
 
                 <FormControl component="fieldset" style={{ width: '300px' }}>
                     <FormGroup>
-                        <legend>Roles</legend>
+                        <legend>Lomas</legend>
                         {Object.keys(ROLES).map((key) => {
                             const role = ROLES[key];
                             return (
@@ -126,31 +127,38 @@ const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
                     </FormGroup>
                 </FormControl>
 
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        marginTop: '2rem',
+                    }}
+                >
                     <Button
                         type="submit"
                         variant="contained"
                         sx={{
-                            width: '200px',
-                            marginTop: '2rem',
+                            width: '150px',
+                            marginRight: '1rem',
                             backgroundColor: theme.palette.secondary.main,
                             color: '#fff',
                         }}
                     >
-                        Create
+                        Izveidot
                     </Button>
                     <Button
                         type="button"
                         variant="contained"
                         onClick={onCancel}
                         sx={{
-                            width: '200px',
-                            marginTop: '2rem',
+                            width: '150px',
+                            marginLeft: '1rem',
                             backgroundColor: theme.palette.secondary.secondary,
                             color: '#fff',
                         }}
                     >
-                        Cancel
+                        Atcelt
                     </Button>
                 </Box>
             </form>
