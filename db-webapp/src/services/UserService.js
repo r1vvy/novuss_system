@@ -35,7 +35,6 @@ const UserAPI = {
     updateUser: async (userData) => {
         try {
             const response = await userAPI.put(`/users/${userData.id}`, userData);
-            console.log(response.data);
 
             return response.data;
         } catch (error) {

@@ -54,9 +54,7 @@ const UsersList = ({ users }) => {
         setIsDeleteDialogOpen(false); // Close the delete dialog if it's open
     };
 
-    const handleConfirmDelete = (event) => {
-        event.preventDefault(); // Prevent form submission
-
+    const handleConfirmDelete = () => {
         if (selectedUser) {
             UserService.deleteUser(selectedUser.id)
                 .then(() => {
@@ -65,13 +63,13 @@ const UsersList = ({ users }) => {
                     toast.success('Lietotājs veiksmīgi dzēsts!');
                 })
                 .catch((error) => {
-                    console.error(error);
                     toast.error('Neizdevās dzēst lietotāju!');
                 });
         }
 
         setIsDeleteDialogOpen(false);
     };
+
 
     const handleConfirmUpdateUser = (updatedUser) => {
         if (updatedUser) {

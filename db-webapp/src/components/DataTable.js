@@ -1,7 +1,6 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import { Grid3x3Outlined, GridGoldenratioOutlined } from '@mui/icons-material';
-import { customLocaleText } from '../app/dataGridTranslations';
+import { GridGoldenratioOutlined } from '@mui/icons-material';
 
 const DataTable = ({ data, columns, sortableColumns }) => {
     const [localeText, setLocaleText] = useState(null);

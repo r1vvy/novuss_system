@@ -32,11 +32,12 @@ const UserListPage = () => {
         userService.createUser(newUser)
             .then((createdUser) => {
                 setUsers((prevUsers) => [...prevUsers, createdUser]);
+
                 toast.success('Lietotājs veiksmīgi pievienots!');
+
                 setIsAddUserDialogOpen(false);
             })
             .catch((error) => {
-                console.error(error);
                 toast.error('Neizdevās pievienot lietotāju!');
             });
     };

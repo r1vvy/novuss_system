@@ -1,20 +1,26 @@
 import React from 'react';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
 const ConfirmationDialog = ({ isOpen, message, onConfirm, onCancel }) => {
-    if (!isOpen) {
-        return null;
-    }
-
     const handleCancel = () => {
         onCancel();
     };
 
+    const handleConfirm = () => {
+        onConfirm();
+    };
+
     return (
-        <div>
-            <p>{message}</p>
-            <button onClick={onConfirm}>Dzēst</button>
-            <button onClick={handleCancel}>Atcelt</button>
-        </div>
+        <Dialog open={isOpen} onClose={handleCancel}>
+            <DialogTitle>Apstiprināt</DialogTitle>
+            <DialogContent>{message}</DialogContent>
+            <DialogActions>
+                <Button onClick={handleCancel}>Atcelt</Button>
+                <Button onClick={handleConfirm} variant="contained" color="secondary">
+                    Dzēst
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

@@ -36,7 +36,7 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
                         <Box marginBottom={2} marginTop={2}>
                             <TextField
                                 name="username"
-                                label="Username"
+                                label="Lietotājvārds"
                                 value={editedUser.username}
                                 onChange={handleChange}
                                 fullWidth
@@ -46,7 +46,7 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
                         <Box marginBottom={2}>
                             <TextField
                                 name="email"
-                                label="Email"
+                                label="E-pasts"
                                 value={editedUser.email}
                                 onChange={handleChange}
                                 fullWidth
@@ -55,9 +55,9 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
                         </Box>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={handleClose}>Atcelt</Button>
                     <Button type="submit" variant="contained" color="primary">
-                        Save
+                        Saglabāt
                     </Button>
                 </DialogActions>
             </form>
