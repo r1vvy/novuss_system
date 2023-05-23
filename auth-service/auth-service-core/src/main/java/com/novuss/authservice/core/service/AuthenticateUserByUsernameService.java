@@ -23,14 +23,15 @@ public class AuthenticateUserByUsernameService implements AuthenticateUserByUser
 
     @Override
     public String authenticateUserByUsername(String username, String password) {
+        var user = findUserByUsernamePort.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username = " + username));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         username,
                         password
                 )
         );
-        var user = findUserByUsernamePort.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with username = " + username));
         var roles = user.getRoles().stream()
                 .map(UserRole::name)
                 .toArray(String[]::new);

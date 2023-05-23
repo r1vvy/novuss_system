@@ -34,7 +34,7 @@ public class AuthorizationApp implements CommandLineRunner {
                     .username("dev")
                     .email("dev@dev.com")
                     .password("dev123")
-                    .roles(Set.of(UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN))
+                    .roles(Set.of(UserRole.USER, UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.EVENT_MANAGER))
                     .build();
 
             saveUserUseCase.save(devUser);

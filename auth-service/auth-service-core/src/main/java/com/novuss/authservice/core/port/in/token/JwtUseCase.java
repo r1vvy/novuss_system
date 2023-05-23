@@ -18,4 +18,5 @@ public interface JwtUseCase {
     Claims getAllClaimsFromToken(String token);
     List<UserRole> getUserRolesFromToken(String token);
     String getUserIdFromToken(String token);
+    boolean verifyTokenSignature(String token);
 }

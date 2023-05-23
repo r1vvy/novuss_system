@@ -42,14 +42,22 @@ public class JwtService implements JwtUseCase {
         module.addDeserializer(List.class, new UserRoleDeserializer());
         objectMapper.registerModule(module);
     }
-
+    @Override
     public String extendExpirationTime(String token) {
         log.debug("Extending expiration time for token: {}", token);
         var claims = getAllClaimsFromToken(token);
         log.debug("Claims: {}", claims);
 
+        if(claims.getExpiration().before(new Date(System.currentTimeMillis()))) {
+            log.error("Token is expired");
+            throw new InvalidTokenException("Token has already expired");
+        }
+
+        this.verifyTokenSignature(token);
+
         var currentTime = System.currentTimeMillis();
         var newExpiration = new Date(currentTime + TOKEN_EXPIRY_IN_SECONDS);
+
         log.debug("New expiration: {}", newExpiration);
         claims.setExpiration(newExpiration);
 
@@ -67,25 +75,25 @@ public class JwtService implements JwtUseCase {
         }
 
     }
-
+    @Override
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
-
+    @Override
     public String getUserIdFromToken(String token) {
         return getClaimFromToken(token, claims -> claims.get("id", String.class));
     }
-
+    @Override
     public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
         final var claims = getAllClaimsFromToken(token);
 
         return claimsResolver.apply(claims);
     }
-
+    @Override
     public String generateToken(UserDetails userDetails) {
         return generateToken(Map.of(), userDetails);
     }
-
+    @Override
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .setClaims(extraClaims)
@@ -95,13 +103,12 @@ public class JwtService implements JwtUseCase {
                 .signWith(getSignInKey(), SIGNATURE_ALGORITHM)
                 .compact();
     }
-
+    @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final var username = getUsernameFromToken(token);
 
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
-
     private boolean isTokenExpired(String token) {
         try {
             return getExpirationDateFromToken(token).before(new Date());
@@ -111,11 +118,25 @@ public class JwtService implements JwtUseCase {
             throw new InvalidTokenException("Invalid JWT token");
         }
     }
+    @Override
+    public boolean verifyTokenSignature(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(getSignInKey())
+                    .build()
+                    .parseClaimsJws(token);
+
+            return true;
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature: {}", e.getMessage());
+            throw new InvalidTokenException("Invalid JWT signature");
+        }
+    }
 
     private Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
-
+    @Override
     public Claims getAllClaimsFromToken(String token) {
         try {
 
@@ -145,18 +166,17 @@ public class JwtService implements JwtUseCase {
             throw new InvalidTokenException("JWT claims could not be decoded");
         }
     }
-
+    @Override
     public List<UserRole> getUserRolesFromToken(String token) {
         try {
             var claims = Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(getSignInKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            log.info("Claims: {}", claims);
             return objectMapper.convertValue(claims.get("roles"), new TypeReference<List<UserRole>>() {});
-        } catch(io.jsonwebtoken.security.SignatureException e) {
+        } catch(SignatureException e) {
             log.warn("Invalid JWT signature: {}", e.getMessage());
             throw new InvalidTokenException("Invalid JWT signature");
         } catch(MalformedJwtException e) {

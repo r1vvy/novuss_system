@@ -1,5 +1,6 @@
 package com.novuss.authservice.in.controller;
 
+import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
 import com.novuss.authservice.core.port.in.token.ExtendTokenExpiryUseCase;
 import com.novuss.authservice.core.port.in.user.*;
 import com.novuss.authservice.core.service.AuthorizeRequestByTokenService;
@@ -36,14 +37,14 @@ public class UserController {
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final UpdateUserByIdUseCase updateUserByIdUseCase;
     private final DeleteUserByIdUseCase deleteUserByIdUseCase;
-    private final AuthorizeRequestByTokenService authorizeRequestByTokenService;
+    private final AuthorizeRequestByTokenUseCase authorizeRequestByTokenUseCase;
 
     @PostMapping
     @Validated
     public ResponseEntity<GetUserInResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                     @Valid @RequestBody CreateUserInRequest request) {
         log.debug("Received create user request: {}", request);
-        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+        authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(
                 authorizationHeader,
                 List.of(UserRole.ADMIN)
         );
@@ -68,15 +69,15 @@ public class UserController {
     public ResponseEntity<GetUserInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                 @PathVariable("id") String id) {
         log.info("Received get user by id request: {}", id);
-        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+        authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(
                 authorizationHeader,
                 List.of(UserRole.ADMIN)
         );
 
         try {
-            authorizeRequestByTokenService.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
+            authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
         } catch (AccessDeniedException exc) {
-            authorizeRequestByTokenService.authorizeByUserId(authorizationHeader, id);
+            authorizeRequestByTokenUseCase.authorizeByUserId(authorizationHeader, id);
         }
         var user = findUserByIdUseCase.findById(id);
         var responseDto = UserDomainToGetUserInResponseConverter.convert(user);
@@ -87,7 +88,7 @@ public class UserController {
     @GetMapping("/all")
     public ResponseEntity<List<GetUserInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all users request");
-        authorizeRequestByTokenService.authorizeByRequiredAuthorities(
+        authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(
                 authorizationHeader,
                 List.of(UserRole.ADMIN)
         );
@@ -106,9 +107,9 @@ public class UserController {
                                                    @Valid @RequestBody UpdateUserInRequest request) {
         log.info("Received update user request: {}", request);
         try {
-            authorizeRequestByTokenService.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
+            authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
         } catch (AccessDeniedException exc) {
-            authorizeRequestByTokenService.authorizeByUserId(authorizationHeader, id);
+            authorizeRequestByTokenUseCase.authorizeByUserId(authorizationHeader, id);
         }
 
         var user = UpdateUserInRequestToDomainConverter.convert(request);
@@ -123,9 +124,9 @@ public class UserController {
                                        @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);
         try {
-            authorizeRequestByTokenService.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
+            authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
         } catch (AccessDeniedException exc) {
-            authorizeRequestByTokenService.authorizeByUserId(authorizationHeader, id);
+            authorizeRequestByTokenUseCase.authorizeByUserId(authorizationHeader, id);
         }
         deleteUserByIdUseCase.deleteUserById(id);
 

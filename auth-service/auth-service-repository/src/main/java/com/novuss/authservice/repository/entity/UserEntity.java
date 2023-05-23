@@ -5,15 +5,9 @@ import com.novuss.authservice.repository.converter.UserRoleConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.annotations.TimeZoneStorage;
-import org.hibernate.annotations.TimeZoneStorageType;
 import org.hibernate.type.SqlTypes;
 
-import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.UUID;
 
