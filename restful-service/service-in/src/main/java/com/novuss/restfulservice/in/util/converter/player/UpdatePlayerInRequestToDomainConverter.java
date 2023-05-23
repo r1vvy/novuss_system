@@ -10,7 +10,6 @@ public class UpdatePlayerInRequestToDomainConverter {
 
     public static Player convert(UpdatePlayerInRequest request) {
         return Player.builder()
-                .image(request.image())
                 .rating(request.rating())
                 .gender(Gender.valueOf(request.gender()))
                 .build();

@@ -17,7 +17,6 @@ public class PlayerDomainToPlayerResponseConverter {
         return PlayerResponse.builder()
                 .id(domain.id().toString())
                 .gender(domain.gender().toString())
-                .image(domain.image())
                 .rating(domain.rating())
                 .createdAt(domain.createdAt())
                 .updatedAt(domain.updatedAt())

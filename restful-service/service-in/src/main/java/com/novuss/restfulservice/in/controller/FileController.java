@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.file.SaveFileUseCase;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.file.FileDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.file.MultipartFileToFileDomainConverter;
 import com.novuss.restfulservice.in.dto.response.FileResponse;
@@ -22,6 +24,7 @@ import java.io.IOException;
 public class FileController {
     private final SaveFileUseCase saveFileUseCase;
     @PostMapping(value = "/upload", consumes = "multipart/form-data")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<FileResponse> save(@RequestHeader("Authorization") String authorizationHeader,
                                              @RequestParam("file") MultipartFile multipartFile,
                                              @ModelAttribute("title") String title) throws IOException {
