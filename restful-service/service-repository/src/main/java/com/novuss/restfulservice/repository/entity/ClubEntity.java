@@ -25,8 +25,6 @@ public class ClubEntity {
     private UUID id;
     @Column(name = "title")
     private String title;
-    @Column(name = "image")
-    private String image;
     @OneToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "location_id", referencedColumnName = "id")
     private LocationEntity locationEntity;

@@ -8,7 +8,6 @@ import java.time.Instant;
 public record ClubResponse(
         String id,
         String title,
-        String image,
         LocationResponse location,
         PersonResponse contactPerson,
         Instant createdAt,

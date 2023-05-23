@@ -11,7 +11,6 @@ public record PlayerResponse(
         ClubResponse club,
         LicenceResponse licence,
         SportsClassResponse sportsClass,
-        String image,
         Integer rating,
         String gender,
         Instant createdAt,

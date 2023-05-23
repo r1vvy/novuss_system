@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ROLES } from "../../app/roles";
+import { ROLES } from "../../../app/roles";
 import {
     Box,
     Button,
@@ -9,7 +9,7 @@ import {
     FormGroup,
     TextField,
 } from '@mui/material';
-import theme from "../../theme/createTheme";
+import theme from "../../../theme/createTheme";
 
 const AddUserDialog = ({ isOpen, onCreateUser, onCancel }) => {
     const [username, setUsername] = useState('');

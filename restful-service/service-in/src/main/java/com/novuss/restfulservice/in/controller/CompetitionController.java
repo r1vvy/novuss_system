@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competition.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competition.CompetitionDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competition.CreateCompetitionInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competition.UpdateCompetitionInRequestToDomainConverter;
@@ -33,6 +35,7 @@ public class CompetitionController {
     private final DeleteCompetitionByIdUseCase deleteCompetitionByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                       @RequestBody CreateCompetitionInRequest request) {
         log.info("Received create competition request: {}", request);
@@ -43,7 +46,7 @@ public class CompetitionController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -52,6 +55,7 @@ public class CompetitionController {
     }
 
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestParam("id") String id) {
         log.info("Received get competition by id request: {}", id);
@@ -62,6 +66,7 @@ public class CompetitionController {
     }
 
     @GetMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<Page<CompetitionResponse>> getAll(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -79,6 +84,7 @@ public class CompetitionController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                       @PathVariable("id") String id,
                                                       @RequestBody UpdateCompetitionInRequest request) {
@@ -92,6 +98,7 @@ public class CompetitionController {
     }
 
     @PutMapping("/{competitionId}/category")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionResponse> updateCategory(@RequestHeader("Authorization") String authorizationHeader,
                                                               @PathVariable("competitionId") String competitionId,
                                                               @RequestParam(value = "id", required = false) String categoryId
@@ -105,6 +112,7 @@ public class CompetitionController {
     }
 
     @PutMapping("/{competitionId}/location")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
                                                               @PathVariable("competitionId") String competitionId,
                                                               @RequestParam(value = "id", required = false) String locationId
@@ -117,7 +125,10 @@ public class CompetitionController {
         return ResponseEntity.ok(response);
     }
 
+    // TODO: add file
+
     @DeleteMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @RequestParam("id") String id) {
         log.info("Received delete competition request: {}", id);

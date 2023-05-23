@@ -9,7 +9,6 @@ import java.util.UUID;
 public record Club(
         UUID id,
         String title,
-        String image,
         Location location,
         Person contactPerson,
         Instant createdAt,

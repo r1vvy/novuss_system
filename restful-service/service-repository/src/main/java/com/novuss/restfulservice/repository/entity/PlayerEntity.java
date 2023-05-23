@@ -1,8 +1,7 @@
 package com.novuss.restfulservice.repository.entity;
 
-import com.novuss.restfulservice.domain.Club;
-import com.novuss.restfulservice.repository.converter.GenderConverter;
 import com.novuss.restfulservice.domain.Gender;
+import com.novuss.restfulservice.repository.converter.GenderConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,14 +25,12 @@ public class PlayerEntity {
     @JdbcTypeCode(SqlTypes.CHAR)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(name = "image")
-    private String image;
     @Column(name = "rating")
     private Integer rating;
     @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE')")
     @Convert(converter = GenderConverter.class)
     private Gender gender;
-    @OneToOne(cascade = CascadeType.DETACH)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private PersonEntity personEntity;
     @OneToOne(cascade = CascadeType.ALL)

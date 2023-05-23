@@ -10,7 +10,6 @@ public class ClubEntityToDomainConverter {
         var builder = Club.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .image(entity.getImage())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt());
 

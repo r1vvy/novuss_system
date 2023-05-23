@@ -7,18 +7,15 @@ import { ROLES } from './app/roles';
 import RequireAuth from './features/auth/RequireAuth';
 import LoginPage from "./components/pages/login/LoginPage";
 import 'react-toastify/dist/ReactToastify.css';
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import DashboardPage from "./components/pages/DashboardPage";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme/createTheme";
 import UserListPage from "./components/pages/user/UserListPage";
 import LogoutPage from "./components/pages/LogoutPage";
-import { useEffect, useRef } from "react";
-import authService from "./services/AuthService";
-import { useNavigate } from "react-router";
 import Footer from "./components/global/Footer";
-import { ProSidebarProvider } from "react-pro-sidebar";
 import useAuthCheck from "./hooks/useAuthCheck";
+import PeopleListPage from "./components/pages/people/PeopleListPage";
 
 function App() {
     const errorMessage = useAuthCheck();
@@ -26,29 +23,34 @@ function App() {
     return (
         <>
             <ThemeProvider theme={theme}>
-                <ToastContainer />
-                <Routes>
-                    <Route path="/" element={<Layout />}>
+                    <ToastContainer />
+                    <Routes>
+                        <Route path="/" element={<Layout />}>
 
-                        <Route index element={<Public />} />
-                        <Route path="login" element={<LoginPage errorMessage={errorMessage} />} />
-                        <Route path="logout" element={<LogoutPage />} />
-                        <Route path="access-denied" element={<AccessDeniedPage />} />
+                            <Route index element={<Public />} />
+                            <Route path="login" element={<LoginPage errorMessage={errorMessage} />} />
+                            <Route path="logout" element={<LogoutPage />} />
+                            <Route path="access-denied" element={<AccessDeniedPage />} />
 
-                        <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
-                            <Route path="dash" element={<DashLayout />}>
+                            <Route element={<RequireAuth allowedRoles={[...Object.values(ROLES)]} />}>
+                                <Route path="dash" element={<DashLayout />}>
 
-                                <Route index element={<DashboardPage />} />
+                                    <Route index element={<DashboardPage />} />
 
-                                <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-                                    <Route path="users" element={<UserListPage />} />
+                                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+                                        <Route path="users" element={<UserListPage />} />
+                                    </Route>
+                                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
+                                        <Route path="people" element={<PeopleListPage />} />
+                                    </Route>
+
                                 </Route>
-
                             </Route>
+
+
                         </Route>
-                    </Route>
-                </Routes>
-                <Footer />
+                    </Routes>
+                    <Footer />
             </ThemeProvider>
         </>
     );

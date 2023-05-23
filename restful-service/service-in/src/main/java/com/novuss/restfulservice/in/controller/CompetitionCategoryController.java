@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competitionCategory.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competitionCategory.CompetitionCategoryDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competitionCategory.CreateCompetitionCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competitionCategory.UpdateCompetitionCategoryInRequestToDomainConverter;
@@ -31,6 +33,7 @@ public class CompetitionCategoryController {
     private final DeleteCompetitionCategoryByIdUseCase deleteCompetitionCategoryByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<CompetitionCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                               @RequestBody CreateCompetitionCategoryInRequest request) {
         log.info("Received create competitionCategory request: {}", request);
@@ -41,7 +44,7 @@ public class CompetitionCategoryController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -50,6 +53,7 @@ public class CompetitionCategoryController {
     }
 
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<CompetitionCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                             @PathVariable("id") String id) {
         log.info("Received get competition category by id request: {}", id);
@@ -60,6 +64,7 @@ public class CompetitionCategoryController {
     }
 
     @GetMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<List<CompetitionCategoryResponse>> getAll(
             @RequestHeader("Authorization") String authorizationHeader
     ) {
@@ -73,6 +78,7 @@ public class CompetitionCategoryController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<CompetitionCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id,
                                                @RequestBody UpdateCompetitionCategoryInRequest request) {
@@ -86,6 +92,7 @@ public class CompetitionCategoryController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority(UserRole.ADMIN)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete competition category request: {}", id);

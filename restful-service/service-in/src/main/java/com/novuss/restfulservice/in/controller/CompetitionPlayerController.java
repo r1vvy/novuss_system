@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competitionPlayer.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CompetitionPlayerDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CreateCompetitionPlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.UpdateCompetitionPlayerInRequestToDomainConverter;
@@ -31,6 +33,7 @@ public class CompetitionPlayerController {
 
 
     @PostMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionPlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                             @PathVariable("competitionId") String competitionId,
                                                             @RequestBody CreateCompetitionPlayerInRequest request) {
@@ -42,7 +45,7 @@ public class CompetitionPlayerController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.playerId())
                 .toUri();
 
@@ -51,6 +54,7 @@ public class CompetitionPlayerController {
     }
 
     @GetMapping("/{playerId}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionPlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                              @PathVariable("competitionId") String competitionId,
                                              @PathVariable("playerId") String playerId) {
@@ -61,7 +65,8 @@ public class CompetitionPlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<List<CompetitionPlayerResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
                                                                   @PathVariable("competitionId") String competitionId) {
         log.info("Received get all competition players by competition id request");
@@ -75,6 +80,7 @@ public class CompetitionPlayerController {
     }
 
     @PutMapping("/{playerId}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<CompetitionPlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                             @PathVariable("competitionId") String competitionId,
                                                             @PathVariable("playerId") String playerId,
@@ -93,6 +99,7 @@ public class CompetitionPlayerController {
     }
 
     @DeleteMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                         @PathVariable("competitionId") String competitionId,
                                        @RequestParam("id") String playerId) {

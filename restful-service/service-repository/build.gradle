@@ -8,7 +8,7 @@ dependencies {
 
     implementation 'jakarta.transaction:jakarta.transaction-api:2.0.1'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.1.2'
-    implementation 'org.liquibase:liquibase-core:4.19.1'
+    implementation 'org.liquibase:liquibase-core:4.22.0'
 
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     annotationProcessor('org.mapstruct:mapstruct-processor:1.5.3.Final')

@@ -163,6 +163,8 @@
             <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+            <column name="competition_id" type="UUID">
+            </column>
             <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -201,16 +203,11 @@
     </changeSet>
     <changeSet id="create.indexes.to.competitions.table" author="emils.seflers">
         <sql>
-            CREATE INDEX idx_competitions_reg_start ON competitions(registration_start) USING HASH;
-            CREATE INDEX idx_competitions_reg_end ON competitions(registration_end) USING HASH;
-            CREATE INDEX idx_competitions_start ON competitions(competition_start) USING HASH;
-            CREATE INDEX idx_competitions_end ON competitions(competition_end) USING HASH;
+            CREATE INDEX idx_competitions_reg_start ON competitions(registration_start) USING BTREE;
+            CREATE INDEX idx_competitions_reg_end ON competitions(registration_end) USING BTREE;
+            CREATE INDEX idx_competitions_start ON competitions(competition_start) USING BTREE;
+            CREATE INDEX idx_competitions_end ON competitions(competition_end) USING BTREE;
             CREATE INDEX idx_competitions_title ON competitions(title) USING BTREE;
-        </sql>
-    </changeSet>
-    <changeSet id="create.indexes.to.competition_categories.table" author="emils.seflers">
-        <sql>
-            CREATE INDEX idx_competition_categories_title ON competition_categories(title) USING BTREE;
         </sql>
     </changeSet>
     <changeSet id="create.indexes.to.players.table" author="emils.seflers">
@@ -223,5 +220,12 @@
             CREATE INDEX idx_people_name ON people(first_name, last_name) USING BTREE;
 
         </sql>
+    </changeSet>
+    <changeSet id="create.foreign.key.constraint.to.files.table" author="emils.seflers">
+        <addForeignKeyConstraint baseTableName="files" baseColumnNames="competition_id" constraintName="FK_FILES_COMPETITION_ID"
+                                 referencedTableName="competitions"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"
+        />
     </changeSet>
 </databaseChangeLog>

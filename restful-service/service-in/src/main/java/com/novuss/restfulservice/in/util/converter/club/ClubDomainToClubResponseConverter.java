@@ -14,7 +14,6 @@ public class ClubDomainToClubResponseConverter {
         return ClubResponse.builder()
                 .id(domain.id().toString())
                 .title(domain.title())
-                .image(domain.image())
                 .createdAt(domain.createdAt())
                 .updatedAt(domain.updatedAt())
                 .contactPerson(Optional.ofNullable(

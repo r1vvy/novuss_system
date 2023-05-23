@@ -1,12 +1,14 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.club.*;
-import com.novuss.restfulservice.in.util.converter.club.ClubDomainToClubResponseConverter;
-import com.novuss.restfulservice.in.util.converter.club.CreateClubInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.club.UpdateClubInRequestToDomainConverter;
+import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.dto.request.CreateClubInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateClubInRequest;
 import com.novuss.restfulservice.in.dto.response.ClubResponse;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
+import com.novuss.restfulservice.in.util.converter.club.ClubDomainToClubResponseConverter;
+import com.novuss.restfulservice.in.util.converter.club.CreateClubInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.club.UpdateClubInRequestToDomainConverter;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,7 @@ public class ClubController {
     private final UpdateClubContactPersonByIdUseCase updateClubContactPersonByIdUseCase;
     private final DeleteClubByIdUseCase deleteClubByIdUseCase;
     @PostMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<ClubResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                @RequestBody CreateClubInRequest request) {
         log.info("Received create club request: {}", request);
@@ -45,7 +48,7 @@ public class ClubController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -54,6 +57,7 @@ public class ClubController {
     }
 
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<ClubResponse> getById(@RequestHeader("Authorization") String authorizationHeader,
                                                 @PathVariable("id") String id) {
         log.info("Received get club by id request: {}", id);
@@ -64,6 +68,7 @@ public class ClubController {
     }
 
     @GetMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<Page<ClubResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -80,6 +85,7 @@ public class ClubController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<ClubResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdateClubInRequest request) {
@@ -92,6 +98,7 @@ public class ClubController {
     }
 
     @PutMapping("/{id}/location")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<ClubResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String clubId,
                                                   @RequestParam(value = "id", required = false) String locationId) {
@@ -102,6 +109,7 @@ public class ClubController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("/{id}/contact-person")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<ClubResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String clubId,
                                                   @RequestParam(value = "id") String personId) {
@@ -114,6 +122,7 @@ public class ClubController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority(UserRole.ADMIN)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete club request: {}", id);

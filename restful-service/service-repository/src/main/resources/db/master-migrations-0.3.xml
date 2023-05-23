@@ -78,9 +78,6 @@
             <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="image" type="VARCHAR(1024)">
-                <constraints nullable="true"/>
-            </column>
             <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>
@@ -103,7 +100,6 @@
             </column>
             <column name="club_id" type="uuid">
             </column>
-            <column name="image" type="VARCHAR(1024)" />
             <column name="rating" type="SMALLINT">
                 <constraints nullable="false"/>
             </column>
@@ -201,7 +197,7 @@
                              tableName="locations"
                              constraintName="uk_locations_title"
         />
-        <addUniqueConstraint columnNames="city, address, latitude, longitude"
+        <addUniqueConstraint columnNames="city, address"
                              tableName="locations"
                              constraintName="uk_locations_address_latitude_longitude"
         />

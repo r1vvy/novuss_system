@@ -30,5 +30,15 @@
             </column>
         </createTable>
     </changeSet>
+    <changeSet id="create.unique.constraints.to.users.table" author="emils.seflers">
+        <addUniqueConstraint columnNames="username"
+                             tableName="users"
+                             constraintName="uk_users_username"
+        />
+        <addUniqueConstraint columnNames="email"
+                             tableName="users"
+                             constraintName="uk_users_email"
+        />
+    </changeSet>
 
 </databaseChangeLog>

@@ -45,7 +45,7 @@ public class RefereeController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 

@@ -7,7 +7,6 @@ import lombok.Builder;
 
 @Builder
 public record CreatePlayerInRequest(
-        String image,
         Integer rating,
         @JsonDeserialize(using = GenderDeserializer.class)
         Gender gender,

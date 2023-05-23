@@ -5,6 +5,7 @@ import {toast} from "react-toastify";
 
 export const AUTH_API_DOMAIN = 'http://localhost:8000/api/v1'
 export const REST_API_DOMAIN = 'http://localhost:8001/api/v1'
+export const MAX_PAGE_SIZE = 100;
 
 const api = axios.create({
     baseURL: REST_API_DOMAIN,

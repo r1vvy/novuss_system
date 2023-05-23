@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.player.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.player.CreatePlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.player.PlayerDomainToPlayerResponseConverter;
 import com.novuss.restfulservice.in.util.converter.player.UpdatePlayerInRequestToDomainConverter;
@@ -37,6 +39,7 @@ public class PlayerController {
     private final DeletePlayerByIdUseCase deletePlayerByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestBody CreatePlayerInRequest request) {
         log.info("Received create player request: {}", request);
@@ -49,7 +52,7 @@ public class PlayerController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -57,6 +60,7 @@ public class PlayerController {
                 .body(response);
     }
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id) {
         log.info("Received get player by id request: {}", id);
@@ -67,6 +71,7 @@ public class PlayerController {
     }
 
     @GetMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<Page<PlayerResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -84,6 +89,7 @@ public class PlayerController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdatePlayerInRequest request) {
@@ -96,6 +102,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/licence")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PlayerResponse> updateLicence(@RequestHeader("Authorization") String authorizationHeader,
                                                 @PathVariable("id") String playerId,
                                                 @RequestParam(value = "id", required = false) String licenceId) {
@@ -107,6 +114,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/club")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PlayerResponse> updateClub(@RequestHeader("Authorization") String authorizationHeader,
                                                          @PathVariable("id") String playerId,
                                                          @RequestParam(value = "id", required = false) String clubId) {
@@ -118,6 +126,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/sports-class")
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<PlayerResponse> updateSportsClass(@RequestHeader("Authorization") String authorizationHeader,
                                                       @PathVariable("id") String playerId,
                                                       @RequestParam(value = "id", required = false) String sportsClassId) {
@@ -130,6 +139,7 @@ public class PlayerController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority(UserRole.ADMIN)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete player request: {}", id);

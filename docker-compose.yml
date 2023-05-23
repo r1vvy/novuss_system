@@ -6,7 +6,6 @@ services:
     image: "mariadb:10.5"
     volumes:
       - db-data:/var/lib/mysql
-      - ${FILE_UPLOADS_PATH}:${FILE_UPLOADS_PATH}
     restart: on-failure:5
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]

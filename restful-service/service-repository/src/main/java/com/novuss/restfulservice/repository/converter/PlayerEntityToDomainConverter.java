@@ -14,7 +14,6 @@ public class PlayerEntityToDomainConverter {
                 .id(entity.getId())
                 .createdAt(entity.getCreatedAt())
                 .gender(entity.getGender())
-                .image(entity.getImage())
                 .rating(entity.getRating())
                 .updatedAt(entity.getUpdatedAt());
 

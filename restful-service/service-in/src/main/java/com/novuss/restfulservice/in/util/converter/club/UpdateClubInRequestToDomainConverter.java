@@ -9,7 +9,6 @@ public class UpdateClubInRequestToDomainConverter {
     public static Club convert(UpdateClubInRequest updateClubInRequest) {
         return Club.builder()
             .title(updateClubInRequest.title())
-            .image(updateClubInRequest.image())
             .location(updateClubInRequest.location())
             .build();
     }

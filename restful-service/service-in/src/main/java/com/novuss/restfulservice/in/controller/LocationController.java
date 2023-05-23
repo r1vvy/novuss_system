@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.location.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.location.CreateLocationInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.location.LocationDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.location.UpdateLocationInRequestToDomainConverter;
@@ -32,6 +34,7 @@ public class LocationController {
     private final UpdateLocationContactPersonByIdUseCase updateLocationContactPersonByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<LocationResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                    @RequestBody CreateLocationInRequest request) {
         log.info("Received create location request: {}", request);
@@ -40,16 +43,17 @@ public class LocationController {
         var createdLocation = saveLocationUseCase.save(locationDomain);
         var response = LocationDomainToResponseConverter.convert(createdLocation);
 
-        var uriLocation = ServletUriComponentsBuilder
+        var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
-        return ResponseEntity.created(uriLocation)
+        return ResponseEntity.created(location)
                 .body(response);
     }
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<LocationResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                    @PathVariable("id") String id) {
         log.info("Received get location by id request: {}", id);
@@ -60,6 +64,7 @@ public class LocationController {
     }
 
     @GetMapping("/all")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<List<LocationResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all locations request");
         var location = getAllLocationsUseCase.getAllLocations();
@@ -71,6 +76,7 @@ public class LocationController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<LocationResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                       @PathVariable("id") String id,
                                                       @RequestBody UpdateLocationInRequest request) {
@@ -82,6 +88,7 @@ public class LocationController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("{id}/contact-person")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<LocationResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
                                                      @PathVariable("id") String locationId,
                                                      @RequestParam(value = "id", required = false) String personId) {
@@ -94,6 +101,7 @@ public class LocationController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete location request: {}", id);

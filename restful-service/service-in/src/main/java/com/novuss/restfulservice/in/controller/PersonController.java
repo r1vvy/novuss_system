@@ -36,7 +36,7 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PersonResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);
@@ -47,7 +47,7 @@ public class PersonController {
 
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -56,6 +56,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                               @RequestParam("id") String id) {
         log.info("Received get person by id request: {}", id);
@@ -66,6 +67,7 @@ public class PersonController {
     }
 
     @GetMapping
+    @RequiresAuthority(UserRole.ADMIN)
     public ResponseEntity<Page<PersonResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -83,10 +85,12 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public ResponseEntity<PersonResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                  @PathVariable("id") String id,
                                                  @RequestBody UpdatePersonInRequest request) {
         log.info("Received update person request: {}", request);
+        log.info("Update person wth id: {}", id);
         var person = UpdatePersonInRequestToDomainConverter.convert(request);
         var updatedPerson = updatePersonByIdUseCase.updateById(id, person);
         var response = PersonDomainToPersonResponseConverter.convert(updatedPerson);
@@ -94,10 +98,11 @@ public class PersonController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority(UserRole.EVENT_MANAGER)
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @RequestParam("id") String id) {
+                                       @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);
         deletePersonByIdUseCase.deleteById(id);
     }

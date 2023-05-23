@@ -9,7 +9,6 @@ public class CreateCompetitionInRequestToDomainConverter {
     public static Competition convert(CreateCompetitionInRequest createCompetitionInRequest) {
         return Competition.builder()
                 .title(createCompetitionInRequest.title())
-                .image(createCompetitionInRequest.image())
                 .competitionStart(createCompetitionInRequest.competitionStart())
                 .competitionEnd(createCompetitionInRequest.competitionEnd())
                 .registrationStart(createCompetitionInRequest.registrationStart())

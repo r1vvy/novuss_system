@@ -9,7 +9,6 @@ public class CreateClubInRequestToDomainConverter {
     public static Club convert(CreateClubInRequest request) {
         return Club.builder()
             .title(request.title())
-            .image(request.image())
             .location(request.location())
             .build();
     }
