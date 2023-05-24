@@ -32,6 +32,7 @@ public class AuthController {
     private final AuthenticateUserByUsernameUseCase authenticateUserByUsernameUseCase;
     private final AuthorizeRequestByTokenUseCase authorizeRequestByTokenUseCase;
     private final ExtendTokenExpiryUseCase extendTokenExpiryUseCase;
+
     @PostMapping("/authenticate")
     public ResponseEntity<AuthResponse> authenticate(@Valid @RequestBody AuthenticationRequest request) {
         log.info("Recieved authentication request from: {}", request.username());
