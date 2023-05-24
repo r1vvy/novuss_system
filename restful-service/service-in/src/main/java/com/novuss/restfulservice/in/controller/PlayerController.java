@@ -39,7 +39,7 @@ public class PlayerController {
     private final DeletePlayerByIdUseCase deletePlayerByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestBody CreatePlayerInRequest request) {
         log.info("Received create player request: {}", request);
@@ -60,7 +60,7 @@ public class PlayerController {
                 .body(response);
     }
     @GetMapping("/{id}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id) {
         log.info("Received get player by id request: {}", id);
@@ -71,7 +71,7 @@ public class PlayerController {
     }
 
     @GetMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Page<PlayerResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -89,7 +89,7 @@ public class PlayerController {
     }
 
     @PutMapping("/{id}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdatePlayerInRequest request) {
@@ -102,7 +102,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/licence")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateLicence(@RequestHeader("Authorization") String authorizationHeader,
                                                 @PathVariable("id") String playerId,
                                                 @RequestParam(value = "id", required = false) String licenceId) {
@@ -114,7 +114,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/club")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateClub(@RequestHeader("Authorization") String authorizationHeader,
                                                          @PathVariable("id") String playerId,
                                                          @RequestParam(value = "id", required = false) String clubId) {
@@ -126,7 +126,7 @@ public class PlayerController {
     }
 
     @PutMapping("{id}/sports-class")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateSportsClass(@RequestHeader("Authorization") String authorizationHeader,
                                                       @PathVariable("id") String playerId,
                                                       @RequestParam(value = "id", required = false) String sportsClassId) {
@@ -139,7 +139,7 @@ public class PlayerController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete player request: {}", id);

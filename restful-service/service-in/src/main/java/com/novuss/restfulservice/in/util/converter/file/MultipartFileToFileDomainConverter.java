@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.in.util.converter.file;
 
-import com.novuss.restfulservice.domain.File;
+import com.novuss.restfulservice.domain.FileDomain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 @Component
 public class MultipartFileToFileDomainConverter {
-    public static File convert(MultipartFile multipartFile) throws IOException {
+    public static FileDomain convert(MultipartFile multipartFile) throws IOException {
         try (var inputStream = new BufferedInputStream(multipartFile.getInputStream())) {
             var outputStream = new ByteArrayOutputStream();
             // TODO: move to config
@@ -22,7 +22,7 @@ public class MultipartFileToFileDomainConverter {
             }
             var content = outputStream.toByteArray();
 
-            return File.builder()
+            return FileDomain.builder()
                     .title(multipartFile.getOriginalFilename())
                     .type(multipartFile.getContentType())
                     .size(multipartFile.getSize())

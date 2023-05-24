@@ -2,11 +2,11 @@ package com.novuss.restfulservice.repository.adapter.file;
 
 import com.novuss.restfulservice.core.port.out.file.SaveFilePort;
 import com.novuss.restfulservice.core.util.FileUtils;
-import com.novuss.restfulservice.domain.File;
+import com.novuss.restfulservice.domain.FileDomain;
 import com.novuss.restfulservice.repository.converter.FileDomainToEntityConverter;
 import com.novuss.restfulservice.repository.converter.FileEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.FileJpaRepository;
-import com.novuss.restfulservice.repository.util.FileConfig;
+import com.novuss.restfulservice.repository.config.FileConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,26 +24,26 @@ public class SaveFileAdapter implements SaveFilePort {
     private final FileConfig fileConfig;
     private final FileUtils fileUtils;
     @Override
-    public File save(File file) {
+    public FileDomain save(FileDomain fileDomain) {
         var uploadDir = FileConfig.generateUploadPath();
         log.debug("Upload directory: {}", uploadDir);
-        var fileExtension = fileUtils.getFileExtension(file.type());
+        var fileExtension = fileUtils.getFileExtension(fileDomain.type());
         var uniqueFileName = fileConfig.generateUniqueFileName(fileExtension);
         var fileLocation = uploadDir + "/" + uniqueFileName;
 
         try {
             var filePath = Paths.get(fileLocation);
-            Files.write(filePath, file.content(), StandardOpenOption.CREATE_NEW);
+            Files.write(filePath, fileDomain.content(), StandardOpenOption.CREATE_NEW);
 
         } catch (IOException e) {
-            log.error("Error saving file: {}", e.getMessage());
-            throw new RuntimeException("Error saving file: " + e.getMessage());
+            log.error("Error saving fileDomain: {}", e.getMessage());
+            throw new RuntimeException("Error saving fileDomain: " + e.getMessage());
         }
 
-        var fileEntity = FileDomainToEntityConverter.convert(file);
+        var fileEntity = FileDomainToEntityConverter.convert(fileDomain);
         fileEntity.setLocation(fileLocation);
         var savedEntity = fileJpaRepository.save(fileEntity);
-        log.info("File entity saved successfully: {}", savedEntity);
+        log.info("FileDomain entity saved successfully: {}", savedEntity);
 
         return FileEntityToDomainConverter.convert(savedEntity);
     }

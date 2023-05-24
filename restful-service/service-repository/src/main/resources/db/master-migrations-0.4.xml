@@ -225,7 +225,7 @@
         <addForeignKeyConstraint baseTableName="files" baseColumnNames="competition_id" constraintName="FK_FILES_COMPETITION_ID"
                                  referencedTableName="competitions"
                                  referencedColumnNames="id"
-                                 onDelete="SET NULL"
+                                 onDelete="CASCADE"
         />
     </changeSet>
 </databaseChangeLog>

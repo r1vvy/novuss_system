@@ -9,7 +9,6 @@ public class PlayerDomainToCreatePlayerResponseConverter {
     public static CreatePlayerResponse convert (Player player) {
         return CreatePlayerResponse.builder()
             .id(player.id().toString())
-            .image(player.image())
             .gender(player.gender())
             .person(player.person())
             .rating(player.rating())

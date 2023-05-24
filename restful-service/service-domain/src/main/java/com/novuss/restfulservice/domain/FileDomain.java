@@ -6,7 +6,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Builder(toBuilder = true)
-public record File(
+public record FileDomain(
         UUID id,
         String title,
         String type,

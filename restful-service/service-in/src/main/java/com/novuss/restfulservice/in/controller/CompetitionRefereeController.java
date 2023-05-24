@@ -32,7 +32,7 @@ public class CompetitionRefereeController {
     private final DeleteCompetitionRefereeByIdUseCase deleteCompetitionRefereeByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                              @PathVariable("competitionId") String competitionId,
                                                              @RequestParam("id") String refereeId,
@@ -54,7 +54,7 @@ public class CompetitionRefereeController {
     }
 
     @GetMapping("/{refereeId}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                          @PathVariable("competitionId") String competitionId,
                                                          @RequestParam("refereeId") String refereeId) {
@@ -66,7 +66,7 @@ public class CompetitionRefereeController {
     }
 
     @GetMapping("/all")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionRefereeResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
                                                                    @PathVariable("competitionId") String competitionId) {
         log.info("Received get all competition referees by competition id request");
@@ -79,7 +79,7 @@ public class CompetitionRefereeController {
     }
 
     @PutMapping("/{refereeId}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                              @PathVariable("competitionId") String competitionId,
                                                              @PathVariable("id") String refereeId,
@@ -94,7 +94,7 @@ public class CompetitionRefereeController {
     }
 
     @DeleteMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @PathVariable("competitionId") String competitionId,
                                        @RequestParam("id") String refereeId) {

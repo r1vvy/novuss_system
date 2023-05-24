@@ -1,18 +1,14 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.licence.FindLicenceByIdUseCase;
-import com.novuss.restfulservice.core.port.in.licence.DeleteLicenceByIdUseCase;
-import com.novuss.restfulservice.core.port.in.licence.GetAllLicencesUseCase;
-import com.novuss.restfulservice.core.port.in.licence.SaveLicenceUseCase;
-import com.novuss.restfulservice.core.port.in.licence.UpdateLicenceByIdUseCase;
+import com.novuss.restfulservice.core.port.in.licence.*;
 import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.dto.request.CreateLicenceInRequest;
+import com.novuss.restfulservice.in.dto.request.UpdateLicenceInRequest;
+import com.novuss.restfulservice.in.dto.response.LicenceResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.licence.CreateLicenceInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.licence.LicenceDomainToLicenceResponseConverter;
 import com.novuss.restfulservice.in.util.converter.licence.UpdateLicenceInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateLicenceInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateLicenceInRequest;
-import com.novuss.restfulservice.in.dto.response.LicenceResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -37,7 +33,7 @@ public class LicenceController {
     private final DeleteLicenceByIdUseCase deleteLicenceByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                   @RequestBody CreateLicenceInRequest request) {
         log.info("Received create licence request: {}", request);
@@ -56,7 +52,7 @@ public class LicenceController {
                 .body(response);
     }
     @GetMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id) {
         log.info("Received get licence by id request: {}", id);
@@ -67,7 +63,7 @@ public class LicenceController {
     }
 
     @GetMapping("/all")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<LicenceResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all licences request");
         var licences = getAllLicences.getALl();
@@ -79,7 +75,7 @@ public class LicenceController {
     }
 
     @PutMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                    @PathVariable("id") String id,
                                                    @RequestBody UpdateLicenceInRequest request) {
@@ -93,7 +89,7 @@ public class LicenceController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete licence request: {}", id);

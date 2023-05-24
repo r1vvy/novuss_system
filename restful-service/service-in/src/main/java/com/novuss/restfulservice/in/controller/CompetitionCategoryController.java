@@ -33,7 +33,7 @@ public class CompetitionCategoryController {
     private final DeleteCompetitionCategoryByIdUseCase deleteCompetitionCategoryByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                               @RequestBody CreateCompetitionCategoryInRequest request) {
         log.info("Received create competitionCategory request: {}", request);
@@ -53,7 +53,7 @@ public class CompetitionCategoryController {
     }
 
     @GetMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                             @PathVariable("id") String id) {
         log.info("Received get competition category by id request: {}", id);
@@ -64,7 +64,7 @@ public class CompetitionCategoryController {
     }
 
     @GetMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionCategoryResponse>> getAll(
             @RequestHeader("Authorization") String authorizationHeader
     ) {
@@ -78,7 +78,7 @@ public class CompetitionCategoryController {
     }
 
     @PutMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id,
                                                @RequestBody UpdateCompetitionCategoryInRequest request) {
@@ -92,7 +92,7 @@ public class CompetitionCategoryController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete competition category request: {}", id);

@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.sportsClass.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.sportsClass.CreateSportsClassInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.sportsClass.SportsClassDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.sportsClass.UpdateSportsClassInRequestToDomainConverter;
@@ -31,6 +33,7 @@ public class SportsClassController {
     private final DeleteSportsClassByIdUseCase deleteSportsClassByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                       @RequestBody CreateSportsClassInRequest request) {
         log.info("Received create sports class request: {}", request);
@@ -49,6 +52,7 @@ public class SportsClassController {
                 .body(response);
     }
     @GetMapping("/{id}")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id) {
         log.info("Received get sports class by id request: {}", id);
@@ -59,6 +63,7 @@ public class SportsClassController {
     }
 
     @GetMapping("/all")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<SportsClassResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all sports classes request");
         var sportsClasses = getAllSportsClassesUseCase.getAll();
@@ -70,6 +75,7 @@ public class SportsClassController {
     }
 
     @PutMapping("/{id}")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdateSportsClassInRequest request) {
@@ -83,6 +89,7 @@ public class SportsClassController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete sports class request: {}", id);

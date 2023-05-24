@@ -37,7 +37,7 @@ public class ClubController {
     private final UpdateClubContactPersonByIdUseCase updateClubContactPersonByIdUseCase;
     private final DeleteClubByIdUseCase deleteClubByIdUseCase;
     @PostMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                @RequestBody CreateClubInRequest request) {
         log.info("Received create club request: {}", request);
@@ -57,7 +57,7 @@ public class ClubController {
     }
 
     @GetMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> getById(@RequestHeader("Authorization") String authorizationHeader,
                                                 @PathVariable("id") String id) {
         log.info("Received get club by id request: {}", id);
@@ -85,7 +85,7 @@ public class ClubController {
     }
 
     @PutMapping("/{id}")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdateClubInRequest request) {
@@ -98,7 +98,7 @@ public class ClubController {
     }
 
     @PutMapping("/{id}/location")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String clubId,
                                                   @RequestParam(value = "id", required = false) String locationId) {
@@ -109,7 +109,7 @@ public class ClubController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("/{id}/contact-person")
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String clubId,
                                                   @RequestParam(value = "id") String personId) {
@@ -122,7 +122,7 @@ public class ClubController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete club request: {}", id);

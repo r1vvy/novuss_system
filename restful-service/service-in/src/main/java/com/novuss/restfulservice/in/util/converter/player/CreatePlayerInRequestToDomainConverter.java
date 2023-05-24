@@ -9,7 +9,6 @@ public class CreatePlayerInRequestToDomainConverter {
     public static Player convert(CreatePlayerInRequest createPlayerInRequest) {
 
         return Player.builder()
-            .image(createPlayerInRequest.image())
             .rating(createPlayerInRequest.rating())
             .gender(createPlayerInRequest.gender())
             .person(createPlayerInRequest.person())

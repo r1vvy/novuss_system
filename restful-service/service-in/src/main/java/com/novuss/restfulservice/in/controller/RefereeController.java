@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.referee.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.referee.CreateRefereeInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.referee.RefereeDomainToRefereeInResponseConverter;
 import com.novuss.restfulservice.in.util.converter.referee.UpdateRefereeInRequestToDomainConverter;
@@ -35,6 +37,7 @@ public class RefereeController {
     private final UpdateRefereeCategoryForRefereeUseCase updateRefereeCategoryForRefereeUseCase;
 
     @PostMapping
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                   @RequestBody CreateRefereeInRequest request) {
         log.info("Received create referee request: {}", request);
@@ -52,6 +55,7 @@ public class RefereeController {
         return ResponseEntity.created(location).body(response);
     }
     @GetMapping("/{id}")
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                @PathVariable("id") String id) {
         log.info("Received get referee by id request: {}", id);
@@ -61,6 +65,7 @@ public class RefereeController {
         return ResponseEntity.ok(response);
     }
     @GetMapping
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Page<RefereeResponse>> getAll(
             @RequestHeader(value = "Authorization", required = false) String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -77,6 +82,7 @@ public class RefereeController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("/{id}")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String id,
                                                   @RequestBody UpdateRefereeInRequest request) {
@@ -89,6 +95,7 @@ public class RefereeController {
         return ResponseEntity.ok(response);
     }
     @PutMapping("{id}/category")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                                                  @PathVariable("id") String id,
                                                                  @RequestParam(value = "id", required = false) String refereeCategoryId) {
@@ -101,6 +108,7 @@ public class RefereeController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete referee by id request: {}", id);

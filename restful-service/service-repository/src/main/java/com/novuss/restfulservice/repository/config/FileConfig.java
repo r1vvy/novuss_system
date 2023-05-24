@@ -1,15 +1,12 @@
-package com.novuss.restfulservice.repository.util;
+package com.novuss.restfulservice.repository.config;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
 import java.io.File;
-
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Component
-@Slf4j
+@Configuration
 public class FileConfig {
     public static final String UPLOAD_DIR = "var/uploads/%s/%s";
     public static String generateUploadPath() {

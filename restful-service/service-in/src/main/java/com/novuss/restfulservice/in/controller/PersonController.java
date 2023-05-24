@@ -36,7 +36,7 @@ public class PersonController {
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                  @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);
@@ -56,7 +56,7 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                               @RequestParam("id") String id) {
         log.info("Received get person by id request: {}", id);
@@ -67,7 +67,7 @@ public class PersonController {
     }
 
     @GetMapping
-    @RequiresAuthority(UserRole.ADMIN)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Page<PersonResponse>> getAllByPage(
             @RequestHeader("Authorization") String authorizationHeader,
             @Min(value = 0, message = "Minimum page value is 0")
@@ -85,7 +85,7 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                  @PathVariable("id") String id,
                                                  @RequestBody UpdatePersonInRequest request) {
@@ -100,7 +100,7 @@ public class PersonController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);

@@ -1,6 +1,8 @@
 package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.refereeCategory.*;
+import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.refereeCategory.CreateRefereeCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
 import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryResponseConverter;
@@ -33,6 +35,7 @@ public class RefereeCategoryController {
     private final DeleteRefereeCategoryByIdUseCase deleteRefereeCategoryByIdUseCase;
 
     @PostMapping
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                           @RequestBody CreateRefereeCategoryInRequest request) {
         log.info("Received create referee category request: {}", request);
@@ -50,6 +53,7 @@ public class RefereeCategoryController {
         return ResponseEntity.created(location).body(response);
     }
     @GetMapping("/{id}")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                  @PathVariable("id") String id) {
         log.info("Received get referee category by id request: {}", id);
@@ -59,6 +63,7 @@ public class RefereeCategoryController {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/all")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<RefereeCategoryDto>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referee categories request");
         var category = getAllRefereeCategoriesUseCase.getAll();
@@ -69,6 +74,7 @@ public class RefereeCategoryController {
         );
     }
     @PutMapping("/{id}")
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                     @PathVariable("id") String id,
                                                     @RequestBody UpdateRefereeCategoryInRequest request) {
@@ -81,6 +87,7 @@ public class RefereeCategoryController {
     }
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
                        @RequestParam("id") String id) {
         log.info("Received delete referee category by id request: {}", id);

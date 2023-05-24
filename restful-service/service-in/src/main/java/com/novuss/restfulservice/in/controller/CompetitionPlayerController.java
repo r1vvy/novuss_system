@@ -33,7 +33,7 @@ public class CompetitionPlayerController {
 
 
     @PostMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                             @PathVariable("competitionId") String competitionId,
                                                             @RequestBody CreateCompetitionPlayerInRequest request) {
@@ -54,7 +54,7 @@ public class CompetitionPlayerController {
     }
 
     @GetMapping("/{playerId}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                              @PathVariable("competitionId") String competitionId,
                                              @PathVariable("playerId") String playerId) {
@@ -66,7 +66,7 @@ public class CompetitionPlayerController {
     }
 
     @GetMapping()
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionPlayerResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
                                                                   @PathVariable("competitionId") String competitionId) {
         log.info("Received get all competition players by competition id request");
@@ -80,7 +80,7 @@ public class CompetitionPlayerController {
     }
 
     @PutMapping("/{playerId}")
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                             @PathVariable("competitionId") String competitionId,
                                                             @PathVariable("playerId") String playerId,
@@ -99,7 +99,7 @@ public class CompetitionPlayerController {
     }
 
     @DeleteMapping
-    @RequiresAuthority(UserRole.EVENT_MANAGER)
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                         @PathVariable("competitionId") String competitionId,
                                        @RequestParam("id") String playerId) {
