@@ -2,13 +2,13 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competitionPlayer.*;
 import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.dto.request.CreateCompetitionPlayerInRequest;
+import com.novuss.restfulservice.in.dto.request.UpdateCompetitionPlayerInRequest;
+import com.novuss.restfulservice.in.dto.response.CompetitionPlayerResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CompetitionPlayerDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CreateCompetitionPlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.UpdateCompetitionPlayerInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateCompetitionPlayerInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateCompetitionPlayerInRequest;
-import com.novuss.restfulservice.in.dto.response.CompetitionPlayerResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -32,10 +32,11 @@ public class CompetitionPlayerController {
     private final DeleteCompetitionPlayerByIdUseCase deleteCompetitionPlayerByIdUseCase;
 
 
-    @PostMapping
+    @PostMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                             @PathVariable("competitionId") String competitionId,
+                                                            @PathVariable("playerId") String playerId,
                                                             @RequestBody CreateCompetitionPlayerInRequest request) {
         log.info("Received create competitionPlayer request: {}", request);
 
@@ -65,7 +66,7 @@ public class CompetitionPlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping()
+    @GetMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionPlayerResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
                                                                   @PathVariable("competitionId") String competitionId) {
@@ -98,11 +99,11 @@ public class CompetitionPlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                         @PathVariable("competitionId") String competitionId,
-                                       @RequestParam("id") String playerId) {
+                                       @PathVariable("playerId") String playerId) {
         log.info("Received delete competition player request: {}", playerId);
 
         deleteCompetitionPlayerByIdUseCase.deleteById(competitionId, playerId);

@@ -31,11 +31,11 @@ public class CompetitionRefereeController {
     private final UpdateCompetitionRefereeByIdUseCase updateCompetitionRefereeByIdUseCase;
     private final DeleteCompetitionRefereeByIdUseCase deleteCompetitionRefereeByIdUseCase;
 
-    @PostMapping
+    @PostMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                              @PathVariable("competitionId") String competitionId,
-                                                             @RequestParam("id") String refereeId,
+                                                             @PathVariable("id") String refereeId,
                                                              @RequestBody CreateCompetitionRefereeInRequest request) {
         log.info("Received create competitionReferee request: {}", request);
 
@@ -57,7 +57,7 @@ public class CompetitionRefereeController {
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
                                                          @PathVariable("competitionId") String competitionId,
-                                                         @RequestParam("refereeId") String refereeId) {
+                                                         @PathVariable("refereeId") String refereeId) {
         log.info("Received get competition referee by id request: {}", refereeId);
         var competitionReferee = getCompetitionRefereeByIdUseCase.findById(competitionId, refereeId);
         var response = CompetitionRefereeDomainToResponseConverter.convert(competitionReferee);
@@ -93,11 +93,11 @@ public class CompetitionRefereeController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @PathVariable("competitionId") String competitionId,
-                                       @RequestParam("id") String refereeId) {
+                                       @PathVariable("refereeId") String refereeId) {
         log.info("Received delete competitionReferee request: {}", refereeId);
 
         deleteCompetitionRefereeByIdUseCase.delete(competitionId, refereeId);

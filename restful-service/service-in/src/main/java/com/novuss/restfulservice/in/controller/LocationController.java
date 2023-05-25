@@ -87,11 +87,11 @@ public class LocationController {
 
         return ResponseEntity.ok(response);
     }
-    @PutMapping("{id}/contact-person")
+    @PutMapping("{id}/contact-person/{personId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LocationResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
                                                      @PathVariable("id") String locationId,
-                                                     @RequestParam(value = "id", required = false) String personId) {
+                                                     @PathVariable(value = "personId", required = false) String personId) {
         log.info("Received update contact person for location request: {}", locationId);
         var updatedLocation = updateLocationContactPersonByIdUseCase.updateLocationContactPersonById(locationId, personId);
         var response = LocationDomainToResponseConverter.convert(updatedLocation);
@@ -99,11 +99,11 @@ public class LocationController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @RequestParam("id") String id) {
+                       @PathVariable("id") String id) {
         log.info("Received delete location request: {}", id);
         deleteLocationByIdUseCase.deleteLocationById(id);
     }

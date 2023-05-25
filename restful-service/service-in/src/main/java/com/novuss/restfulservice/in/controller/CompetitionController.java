@@ -57,7 +57,7 @@ public class CompetitionController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @RequestParam("id") String id) {
+                                                   @PathVariable("id") String id) {
         log.info("Received get competition by id request: {}", id);
         var competition = getCompetitionByIdUseCase.findById(id);
         var response = CompetitionDomainToResponseConverter.convert(competition);
@@ -127,10 +127,10 @@ public class CompetitionController {
 
     // TODO: add file
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @RequestParam("id") String id) {
+                                       @PathVariable("id") String id) {
         log.info("Received delete competition request: {}", id);
 
         deleteCompetitionByIdUseCase.deleteById(id);

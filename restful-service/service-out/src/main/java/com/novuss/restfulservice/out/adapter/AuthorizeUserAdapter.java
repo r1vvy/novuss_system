@@ -37,7 +37,8 @@ public class AuthorizeUserAdapter implements AuthorizeUserPort {
         log.debug("Request: {}", request);
 
         try {
-            var response = restTemplate.postForEntity(AUTH_URL, request, AuthorizationOutResponse.class);
+            restTemplate.postForEntity(AUTH_URL, request, AuthorizationOutResponse.class);
+
         } catch (HttpClientErrorException e) {
             log.error("Error authorizing user: {}", e.getMessage());
             handleHttpClientErrorException(e);

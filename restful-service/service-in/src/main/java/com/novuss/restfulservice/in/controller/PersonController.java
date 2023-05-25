@@ -58,7 +58,7 @@ public class PersonController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                              @RequestParam("id") String id) {
+                                              @PathVariable("id") String id) {
         log.info("Received get person by id request: {}", id);
         var person = getPersonByIdUseCase.getById(id);
         var response = PersonDomainToPersonResponseConverter.convert(person);

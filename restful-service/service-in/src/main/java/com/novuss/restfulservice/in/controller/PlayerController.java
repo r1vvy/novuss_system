@@ -137,11 +137,11 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @RequestParam("id") String id) {
+                       @PathVariable("id") String id) {
         log.info("Received delete player request: {}", id);
         deletePlayerByIdUseCase.deleteById(id);
     }
