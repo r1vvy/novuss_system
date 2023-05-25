@@ -29,7 +29,7 @@ public class UserEntity {
     String email;
     @Column(name = "password")
     String password;
-    @Column(name = "roles", columnDefinition = "SET('ADMIN', 'USER', 'EVENT_MANAGER')")
+    @Column(name = "roles", columnDefinition = "SET('ADMIN', 'USER', 'EVENT_MANAGER, 'SUPER_ADMIN')")
     @Convert(converter = UserRoleConverter.class)
     Set<UserRole> roles;
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)

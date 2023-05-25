@@ -26,8 +26,10 @@ public class AuthorizeRequestByTokenService implements AuthorizeRequestByTokenUs
         var userRoles = jwtService.getUserRolesFromToken(token);
         log.info("Extracted user roles from token: {}", userRoles);
 
-        var isAuthorized = requiredAuthorities.stream()
-                .anyMatch(userRoles::contains) && jwtService.verifyTokenSignature(token);
+        var isAuthorized = !jwtService.isTokenExpired(token) &&
+                jwtService.verifyTokenSignature(token) &&
+                requiredAuthorities.stream()
+                .anyMatch(userRoles::contains);
 
         if (!isAuthorized) {
             log.warn("User is not authorized to perform this action");
