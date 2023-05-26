@@ -1,0 +1,22 @@
+name: SonarCloud
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build-auth:
+    name: Build and analyze auth API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Test AUTH API
+        uses: ./auth-service/sonar/build.yml
+        
+  build-rest:
+    name: Build and analyze REST API
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build and Test REST API
+        uses: ./restful-service/sonar/build.yml
