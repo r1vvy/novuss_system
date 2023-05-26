@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - auth-service/**
+      - restful-service/**
   pull_request:
     types: [opened, synchronize, reopened]
 
