@@ -4,7 +4,7 @@ import com.novuss.restfulservice.domain.Player;
 import com.novuss.restfulservice.in.util.converter.club.ClubDomainToClubResponseConverter;
 import com.novuss.restfulservice.in.util.converter.licence.LicenceDomainToLicenceResponseConverter;
 import com.novuss.restfulservice.in.util.converter.person.PersonDomainToPersonResponseConverter;
-import com.novuss.restfulservice.in.util.converter.sportsClass.SportsClassDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.sports_class.SportsClassDomainToResponseConverter;
 import com.novuss.restfulservice.in.dto.response.PlayerResponse;
 import org.springframework.stereotype.Component;
 

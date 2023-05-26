@@ -1,8 +1,7 @@
 package com.novuss.restfulservice.repository.adapter.sportsClass;
 
 import com.novuss.restfulservice.core.exception.EntityExistsException;
-import com.novuss.restfulservice.core.exception.EntityNotFoundException;
-import com.novuss.restfulservice.core.port.out.sportsClass.SaveSportsClassPort;
+import com.novuss.restfulservice.core.port.out.sports_class.SaveSportsClassPort;
 import com.novuss.restfulservice.domain.SportsClass;
 import com.novuss.restfulservice.repository.converter.SportsClassDomainToEntityConverter;
 import com.novuss.restfulservice.repository.converter.SportsClassEntityToDomainConverter;

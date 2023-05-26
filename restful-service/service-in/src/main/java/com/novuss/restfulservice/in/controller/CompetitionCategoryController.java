@@ -1,11 +1,11 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.competitionCategory.*;
+import com.novuss.restfulservice.core.port.in.competition_category.*;
 import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
-import com.novuss.restfulservice.in.util.converter.competitionCategory.CompetitionCategoryDomainToResponseConverter;
-import com.novuss.restfulservice.in.util.converter.competitionCategory.CreateCompetitionCategoryInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.competitionCategory.UpdateCompetitionCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_category.CompetitionCategoryDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.competition_category.CreateCompetitionCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_category.UpdateCompetitionCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionCategoryInRequest;
 import com.novuss.restfulservice.in.dto.response.CompetitionCategoryResponse;
@@ -38,7 +38,7 @@ public class CompetitionCategoryController {
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                               @Valid @RequestBody CreateCompetitionCategoryInRequest request) {
-        log.info("Received create competitionCategory request: {}", request);
+        log.info("Received create competition_category request: {}", request);
 
         var competitionCategory = CreateCompetitionCategoryInRequestToDomainConverter.convert(request);
         var createdCompetitionCategory = saveCompetitionCategoryUseCase.save(competitionCategory);

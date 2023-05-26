@@ -1,14 +1,14 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.competitionPlayer.*;
+import com.novuss.restfulservice.core.port.in.competition_player.*;
 import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionPlayerInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionPlayerInRequest;
 import com.novuss.restfulservice.in.dto.response.CompetitionPlayerResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
-import com.novuss.restfulservice.in.util.converter.competitionPlayer.CompetitionPlayerDomainToResponseConverter;
-import com.novuss.restfulservice.in.util.converter.competitionPlayer.CreateCompetitionPlayerInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.competitionPlayer.UpdateCompetitionPlayerInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_player.CompetitionPlayerDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.competition_player.CreateCompetitionPlayerInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_player.UpdateCompetitionPlayerInRequestToDomainConverter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class CompetitionPlayerController {
                                                             @UUID  @PathVariable("competitionId") String competitionId,
                                                             @UUID  @PathVariable("playerId") String playerId,
                                                             @Valid @RequestBody CreateCompetitionPlayerInRequest request) {
-        log.info("Received create competitionPlayer request: {}", request);
+        log.info("Received create competition_player request: {}", request);
 
         var competitionPlayer = CreateCompetitionPlayerInRequestToDomainConverter.convert(request);
         var createdCompetitionPlayer = saveCompetitionPlayerUseCase.save(competitionId, competitionPlayer);

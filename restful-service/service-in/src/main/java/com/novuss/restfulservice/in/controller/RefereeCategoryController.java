@@ -1,12 +1,12 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.refereeCategory.*;
+import com.novuss.restfulservice.core.port.in.referee_category.*;
 import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
-import com.novuss.restfulservice.in.util.converter.refereeCategory.CreateRefereeCategoryInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
-import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryResponseConverter;
-import com.novuss.restfulservice.in.util.converter.refereeCategory.UpdateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.referee_category.CreateRefereeCategoryInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.referee_category.RefereeCategoryDomainToRefereeCategoryDtoConverter;
+import com.novuss.restfulservice.in.util.converter.referee_category.RefereeCategoryDomainToRefereeCategoryResponseConverter;
+import com.novuss.restfulservice.in.util.converter.referee_category.UpdateRefereeCategoryInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.RefereeCategoryDto;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeCategoryInRequest;

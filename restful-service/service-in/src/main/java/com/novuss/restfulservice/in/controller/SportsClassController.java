@@ -1,11 +1,11 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.sportsClass.*;
+import com.novuss.restfulservice.core.port.in.sports_class.*;
 import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
-import com.novuss.restfulservice.in.util.converter.sportsClass.CreateSportsClassInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.sportsClass.SportsClassDomainToResponseConverter;
-import com.novuss.restfulservice.in.util.converter.sportsClass.UpdateSportsClassInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.sports_class.CreateSportsClassInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.sports_class.SportsClassDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.sports_class.UpdateSportsClassInRequestToDomainConverter;
 import com.novuss.restfulservice.in.dto.request.CreateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.response.SportsClassResponse;

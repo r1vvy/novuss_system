@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.core.service.sportsClass;
 
-import com.novuss.restfulservice.core.port.in.sportsClass.DeleteSportsClassByIdUseCase;
-import com.novuss.restfulservice.core.port.out.sportsClass.DeleteSportsClassByIdPort;
+import com.novuss.restfulservice.core.port.in.sports_class.DeleteSportsClassByIdUseCase;
+import com.novuss.restfulservice.core.port.out.sports_class.DeleteSportsClassByIdPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

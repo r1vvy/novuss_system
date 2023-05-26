@@ -1,14 +1,14 @@
 package com.novuss.restfulservice.in.controller;
 
-import com.novuss.restfulservice.core.port.in.competitionReferee.*;
+import com.novuss.restfulservice.core.port.in.competition_referee.*;
 import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionRefereeInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionRefereeInRequest;
 import com.novuss.restfulservice.in.dto.response.CompetitionRefereeResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
-import com.novuss.restfulservice.in.util.converter.competitionReferee.CompetitionRefereeDomainToResponseConverter;
-import com.novuss.restfulservice.in.util.converter.competitionReferee.CreateCompetitionRefereeInRequestToDomainConverter;
-import com.novuss.restfulservice.in.util.converter.competitionReferee.UpdateCompetitionRefereeInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_referee.CompetitionRefereeDomainToResponseConverter;
+import com.novuss.restfulservice.in.util.converter.competition_referee.CreateCompetitionRefereeInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.competition_referee.UpdateCompetitionRefereeInRequestToDomainConverter;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,7 @@ public class CompetitionRefereeController {
                                                              @UUID  @PathVariable("competitionId") String competitionId,
                                                              @UUID  @PathVariable("id") String refereeId,
                                                              @Valid @RequestBody CreateCompetitionRefereeInRequest request) {
-        log.info("Received create competitionReferee request: {}", request);
+        log.info("Received create competition_referee request: {}", request);
 
         var competitionReferee = CreateCompetitionRefereeInRequestToDomainConverter.convert(request);
         var createdCompetitionReferee = saveCompetitionRefereeUseCase.save(competitionId, refereeId, competitionReferee);
@@ -86,7 +86,7 @@ public class CompetitionRefereeController {
                                                              @UUID @PathVariable("competitionId") String competitionId,
                                                              @UUID  @PathVariable("id") String refereeId,
                                                              @Valid @RequestBody UpdateCompetitionRefereeInRequest request) {
-        log.info("Received update competitionReferee request: {}", request);
+        log.info("Received update competition_referee request: {}", request);
 
         var competitionReferee = UpdateCompetitionRefereeInRequestToDomainConverter.convert(request);
         var updatedCompetitionReferee = updateCompetitionRefereeByIdUseCase.update(competitionId, refereeId, competitionReferee);
@@ -100,7 +100,7 @@ public class CompetitionRefereeController {
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
                                        @UUID @PathVariable("competitionId") String competitionId,
                                        @UUID @PathVariable("refereeId") String refereeId) {
-        log.info("Received delete competitionReferee request: {}", refereeId);
+        log.info("Received delete competition_referee request: {}", refereeId);
 
         deleteCompetitionRefereeByIdUseCase.delete(competitionId, refereeId);
 

@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.sportsClass;
 
-import com.novuss.restfulservice.core.port.out.sportsClass.GetAllSportsClassesPort;
+import com.novuss.restfulservice.core.port.out.sports_class.GetAllSportsClassesPort;
 import com.novuss.restfulservice.domain.SportsClass;
 import com.novuss.restfulservice.repository.converter.SportsClassEntityToDomainConverter;
 import com.novuss.restfulservice.repository.repository.jpa.SportsClassJpaRepository;

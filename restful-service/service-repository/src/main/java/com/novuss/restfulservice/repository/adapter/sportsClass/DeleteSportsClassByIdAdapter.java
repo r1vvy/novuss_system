@@ -1,6 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.sportsClass;
 
-import com.novuss.restfulservice.core.port.out.sportsClass.DeleteSportsClassByIdPort;
+import com.novuss.restfulservice.core.port.out.sports_class.DeleteSportsClassByIdPort;
 import com.novuss.restfulservice.repository.repository.jpa.SportsClassJpaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;

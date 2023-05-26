@@ -1,7 +1,7 @@
 package com.novuss.restfulservice.in.util.converter.referee;
 
 import com.novuss.restfulservice.domain.Referee;
-import com.novuss.restfulservice.in.util.converter.refereeCategory.RefereeCategoryDomainToRefereeCategoryDtoConverter;
+import com.novuss.restfulservice.in.util.converter.referee_category.RefereeCategoryDomainToRefereeCategoryDtoConverter;
 import com.novuss.restfulservice.in.dto.response.RefereeResponse;
 import org.springframework.stereotype.Component;
 
