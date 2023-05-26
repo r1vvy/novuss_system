@@ -11,6 +11,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,6 @@ public class AuthController {
     public void authorize(
             @Valid
             @NotBlank
-            @NotEmpty
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid
             @RequestBody AuthorizationRequest request) {
@@ -58,7 +58,11 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@Valid @RequestBody String token) {
+    public ResponseEntity<AuthResponse> refresh(
+            @RequestBody
+            @Pattern(regexp = "\\S+", message = "Token is required")
+            String token
+    ) {
         log.info("Recieved refresh request");
         
         var newToken = extendTokenExpiryUseCase.extendTokenExpiry(token);

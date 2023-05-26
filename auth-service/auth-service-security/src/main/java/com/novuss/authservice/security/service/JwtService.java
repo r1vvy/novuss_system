@@ -44,7 +44,7 @@ public class JwtService implements JwtUseCase {
     }
     @Override
     public String extendExpirationTime(String token) {
-        log.debug("Extending expiration time for token: {}", token);
+        log.debug("Extending token expiration time");
         var claims = getAllClaimsFromToken(token);
         log.debug("Claims: {}", claims);
 
