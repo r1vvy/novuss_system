@@ -8,19 +8,31 @@ on:
 
 jobs:
   build-auth:
-    name: Build and analyze auth API
+    name: BuildAuth
     runs-on: ubuntu-latest
-    if: |
-      ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(github.event.head_commit.modified, 'auth-service') }}
     steps:
-      - name: Build and Test AUTH API
-        uses: ./auth-service/sonar/build.yml
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan
+      - uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          SONAR_TOKEN: ${{ secrets.NOVUSS_SYSTEM_AUTH_TOKEN }}
+        with:
+          projectBaseDir: auth-service/
         
   build-rest:
-    name: Build and analyze REST API
+    name: BuildRest
     runs-on: ubuntu-latest
-    if: |
-      ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(github.event.head_commit.modified, 'restful-service') }}
     steps:
-      - name: Build and Test REST API
-        uses: ./restful-service/sonar/build.yml
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan
+      - uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
+          SONAR_TOKEN: ${{ secrets.NOVUSS_SYSTEM_REST_TOKEN }}
+        with:
+          projectBaseDir: restful-service/
