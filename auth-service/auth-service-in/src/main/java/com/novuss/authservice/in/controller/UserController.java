@@ -14,6 +14,7 @@ import com.novuss.authservice.in.util.converter.UserDomainToGetUserInResponseCon
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -67,7 +68,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetUserInResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                @PathVariable("id") String id) {
+                                                 @UUID @PathVariable("id") String id) {
         log.info("Received get user by id request: {}", id);
         authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(
                 authorizationHeader,
@@ -103,7 +104,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<GetUserInResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @PathVariable("id") String id,
+                                                   @UUID @PathVariable("id") String id,
                                                    @Valid @RequestBody UpdateUserInRequest request) {
         log.info("Received update user request: {}", request);
         try {
@@ -121,7 +122,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @PathVariable("id") String id) {
+                                      @UUID @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);
         try {
             authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(authorizationHeader, List.of(UserRole.ADMIN));
