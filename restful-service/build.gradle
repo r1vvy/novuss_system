@@ -25,6 +25,12 @@ subprojects {
         mavenCentral()
     }
 
+    sonarqube {
+        properties {
+            property "sonar.sources", "src"
+        }
+    }
+
     dependencies {
         implementation 'org.springframework:spring-context:6.0.5'
         implementation 'org.springframework:spring-core:6.0.5'
@@ -47,8 +53,11 @@ subprojects {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "r1vvy_novuss_system"
+        property "sonar.projectKey", "r1vvy_novuss_system.restful-service"
         property "sonar.organization", "r1vvy"
         property "sonar.host.url", "https://sonarcloud.io"
+        property "sonar.sourceEncoding", "UTF-8"
+        property "sonar.sources", "src/main/java"
+        property "sonar.tests", "src/test/java"
     }
 }
