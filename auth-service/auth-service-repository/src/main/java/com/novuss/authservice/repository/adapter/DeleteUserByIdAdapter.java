@@ -18,6 +18,7 @@ public class DeleteUserByIdAdapter implements DeleteUserByIdPort {
     public void deleteUserById(String id) {
         userJpaRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
         userJpaRepository.deleteById(UUID.fromString(id));
     }
 }
