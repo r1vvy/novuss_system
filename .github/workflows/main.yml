@@ -10,6 +10,8 @@ jobs:
   build-auth:
     name: Build and analyze auth API
     runs-on: ubuntu-latest
+    if: |
+      ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(github.event.head_commit.modified, 'auth-service') }}
     steps:
       - name: Build and Test AUTH API
         uses: ./auth-service/sonar/build.yml
@@ -17,6 +19,8 @@ jobs:
   build-rest:
     name: Build and analyze REST API
     runs-on: ubuntu-latest
+    if: |
+      ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' && contains(github.event.head_commit.modified, 'restful-service') }}
     steps:
       - name: Build and Test REST API
         uses: ./restful-service/sonar/build.yml
