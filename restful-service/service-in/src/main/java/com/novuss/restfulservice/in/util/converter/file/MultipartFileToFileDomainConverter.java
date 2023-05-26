@@ -21,6 +21,7 @@ public class MultipartFileToFileDomainConverter {
                 outputStream.write(buffer, 0, bytesRead);
             }
             var content = outputStream.toByteArray();
+            outputStream.close();
 
             return FileDomain.builder()
                     .title(multipartFile.getOriginalFilename())

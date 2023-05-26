@@ -11,8 +11,10 @@ import com.novuss.restfulservice.in.dto.RefereeCategoryDto;
 import com.novuss.restfulservice.in.dto.request.CreateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeCategoryInRequest;
 import com.novuss.restfulservice.in.dto.response.RefereeCategoryResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +39,7 @@ public class RefereeCategoryController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                          @RequestBody CreateRefereeCategoryInRequest request) {
+                                                          @Valid @RequestBody CreateRefereeCategoryInRequest request) {
         log.info("Received create referee category request: {}", request);
 
         var category = CreateRefereeCategoryInRequestToDomainConverter.convert(request);
@@ -55,14 +57,14 @@ public class RefereeCategoryController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @PathVariable("id") String id) {
+                                                       @UUID @PathVariable("id") String id) {
         log.info("Received get referee category by id request: {}", id);
         var category = getRefereeCategoryByIdUseCase.getById(id);
         var response = RefereeCategoryDomainToRefereeCategoryResponseConverter.convert(category);
 
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/all")
+    @GetMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<RefereeCategoryDto>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all referee categories request");
@@ -76,8 +78,8 @@ public class RefereeCategoryController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                    @PathVariable("id") String id,
-                                                    @RequestBody UpdateRefereeCategoryInRequest request) {
+                                                          @UUID @PathVariable("id") String id,
+                                                          @Valid @RequestBody UpdateRefereeCategoryInRequest request) {
         log.info("Received update referee request: {}", request);
         var category = UpdateRefereeCategoryInRequestToDomainConverter.convert(request);
         var updatedCategory = updateRefereeCategoryByIdUseCase.updateById(id, category);
@@ -89,7 +91,7 @@ public class RefereeCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete referee category by id request: {}", id);
         deleteRefereeCategoryByIdUseCase.deleteById(id);
     }

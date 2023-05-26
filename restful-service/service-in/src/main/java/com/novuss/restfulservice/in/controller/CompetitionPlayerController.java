@@ -9,8 +9,10 @@ import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CompetitionPlayerDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.CreateCompetitionPlayerInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competitionPlayer.UpdateCompetitionPlayerInRequestToDomainConverter;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,9 +37,9 @@ public class CompetitionPlayerController {
     @PostMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @PathVariable("competitionId") String competitionId,
-                                                            @PathVariable("playerId") String playerId,
-                                                            @RequestBody CreateCompetitionPlayerInRequest request) {
+                                                            @UUID  @PathVariable("competitionId") String competitionId,
+                                                            @UUID  @PathVariable("playerId") String playerId,
+                                                            @Valid @RequestBody CreateCompetitionPlayerInRequest request) {
         log.info("Received create competitionPlayer request: {}", request);
 
         var competitionPlayer = CreateCompetitionPlayerInRequestToDomainConverter.convert(request);
@@ -57,8 +59,8 @@ public class CompetitionPlayerController {
     @GetMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                             @PathVariable("competitionId") String competitionId,
-                                             @PathVariable("playerId") String playerId) {
+                                                         @UUID @PathVariable("competitionId") String competitionId,
+                                                         @UUID @PathVariable("playerId") String playerId) {
         log.info("Received get competition player by id request: {}", playerId);
         var competitionPlayer = getCompetitionPlayerByIdUseCase.findById(competitionId, playerId);
         var response = CompetitionPlayerDomainToResponseConverter.convert(competitionPlayer);
@@ -69,7 +71,7 @@ public class CompetitionPlayerController {
     @GetMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionPlayerResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
-                                                                  @PathVariable("competitionId") String competitionId) {
+                                                                  @UUID @PathVariable("competitionId") String competitionId) {
         log.info("Received get all competition players by competition id request");
         var competitionPlayers = getAllCompetitionPlayersByCompetitionId.getAllByCompetitionId(competitionId);
 
@@ -83,8 +85,8 @@ public class CompetitionPlayerController {
     @PutMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @PathVariable("competitionId") String competitionId,
-                                                            @PathVariable("playerId") String playerId,
+                                                            @UUID @PathVariable("competitionId") String competitionId,
+                                                            @UUID @PathVariable("playerId") String playerId,
                                                             @RequestBody UpdateCompetitionPlayerInRequest request) {
         log.info("Received update competition player request: {}", request);
 
@@ -102,8 +104,8 @@ public class CompetitionPlayerController {
     @DeleteMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                        @PathVariable("competitionId") String competitionId,
-                                       @PathVariable("playerId") String playerId) {
+                                       @UUID @PathVariable("competitionId") String competitionId,
+                                       @UUID @PathVariable("playerId") String playerId) {
         log.info("Received delete competition player request: {}", playerId);
 
         deleteCompetitionPlayerByIdUseCase.deleteById(competitionId, playerId);

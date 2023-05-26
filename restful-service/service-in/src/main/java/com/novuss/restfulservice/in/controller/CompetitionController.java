@@ -2,19 +2,22 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competition.*;
 import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.dto.request.CreateCompetitionInRequest;
+import com.novuss.restfulservice.in.dto.request.UpdateCompetitionInRequest;
+import com.novuss.restfulservice.in.dto.response.CompetitionResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competition.CompetitionDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competition.CreateCompetitionInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competition.UpdateCompetitionInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateCompetitionInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateCompetitionInRequest;
-import com.novuss.restfulservice.in.dto.response.CompetitionResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,7 +60,7 @@ public class CompetitionController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @PathVariable("id") String id) {
+                                                   @UUID @PathVariable("id") String id) {
         log.info("Received get competition by id request: {}", id);
         var competition = getCompetitionByIdUseCase.findById(id);
         var response = CompetitionDomainToResponseConverter.convert(competition);
@@ -86,8 +89,8 @@ public class CompetitionController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                      @PathVariable("id") String id,
-                                                      @RequestBody UpdateCompetitionInRequest request) {
+                                                      @UUID @PathVariable("id") String id,
+                                                     @Valid @RequestBody UpdateCompetitionInRequest request) {
         log.info("Received update competition request: {}", request);
 
         var competition = UpdateCompetitionInRequestToDomainConverter.convert(request);
@@ -97,11 +100,11 @@ public class CompetitionController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{competitionId}/category")
+    @PutMapping("/{competitionId}/category/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionResponse> updateCategory(@RequestHeader("Authorization") String authorizationHeader,
-                                                              @PathVariable("competitionId") String competitionId,
-                                                              @RequestParam(value = "id", required = false) String categoryId
+                                                              @UUID @PathVariable("competitionId") String competitionId,
+                                                              @UUID @PathVariable(value = "id", required = false) String categoryId
     ) {
         log.info("Received update competition {} location {} request", competitionId, categoryId);
 
@@ -111,11 +114,11 @@ public class CompetitionController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{competitionId}/location")
+    @PutMapping("/{competitionId}/location/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
-                                                              @PathVariable("competitionId") String competitionId,
-                                                              @RequestParam(value = "id", required = false) String locationId
+                                                              @UUID @PathVariable("competitionId") String competitionId,
+                                                              @UUID @PathVariable(value = "id", required = false) String locationId
     ) {
         log.info("Received update competition {} location {} request", competitionId, locationId);
 
@@ -125,12 +128,22 @@ public class CompetitionController {
         return ResponseEntity.ok(response);
     }
 
-    // TODO: add file
+    @PutMapping("/{competitionId}/files/{id}")
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
+    @ResponseStatus(HttpStatus.OK)
+    public void updateFiles(@RequestHeader("Authorization") String authorizationHeader,
+                                                              @UUID @PathVariable("competitionId") String competitionId,
+                                                              @UUID @PathVariable(value = "id", required = false) String fileId
+    ) {
+        log.info("Received add competition {} files {} request", competitionId, fileId);
+
+        updateCompetitionByIdUseCase.addFileById(competitionId, fileId);
+    }
 
     @DeleteMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @PathVariable("id") String id) {
+                                       @UUID @PathVariable("id") String id) {
         log.info("Received delete competition request: {}", id);
 
         deleteCompetitionByIdUseCase.deleteById(id);

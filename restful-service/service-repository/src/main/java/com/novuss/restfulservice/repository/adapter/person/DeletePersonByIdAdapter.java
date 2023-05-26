@@ -1,5 +1,6 @@
 package com.novuss.restfulservice.repository.adapter.person;
 
+import com.novuss.restfulservice.core.exception.EntityNotFoundException;
 import com.novuss.restfulservice.core.port.out.person.DeletePersonByIdPort;
 import com.novuss.restfulservice.repository.repository.jpa.*;
 import lombok.RequiredArgsConstructor;
@@ -13,13 +14,12 @@ import java.util.UUID;
 @Slf4j
 public class DeletePersonByIdAdapter implements DeletePersonByIdPort {
     private final PersonJpaRepository personJpaRepository;
-    private final RefereeJpaRepository refereeJpaRepository;
     @Override
     public void deleteById(String id) {
-        var personEntity = personJpaRepository.findById(UUID.fromString(id))
+        personJpaRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> {
                     log.error("Person with id {} not found", id);
-                    throw new RuntimeException("Person not found");
+                    throw new EntityNotFoundException("Person not found");
                 });
 
         personJpaRepository.deleteById(UUID.fromString(id));

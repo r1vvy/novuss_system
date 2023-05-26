@@ -9,10 +9,12 @@ import com.novuss.restfulservice.in.util.converter.referee.UpdateRefereeInReques
 import com.novuss.restfulservice.in.dto.request.CreateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateRefereeInRequest;
 import com.novuss.restfulservice.in.dto.response.RefereeResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -39,7 +41,7 @@ public class RefereeController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @RequestBody CreateRefereeInRequest request) {
+                                                  @Valid  @RequestBody CreateRefereeInRequest request) {
         log.info("Received create referee request: {}", request);
 
         var referee = CreateRefereeInRequestToDomainConverter.convert(request);
@@ -57,7 +59,7 @@ public class RefereeController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @PathVariable("id") String id) {
+                                               @UUID @PathVariable("id") String id) {
         log.info("Received get referee by id request: {}", id);
         var referee = getRefereeByIdUseCase.getById(id);
         var response = RefereeDomainToRefereeInResponseConverter.convert(referee);
@@ -84,8 +86,8 @@ public class RefereeController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @PathVariable("id") String id,
-                                                  @RequestBody UpdateRefereeInRequest request) {
+                                                  @UUID @PathVariable("id") String id,
+                                                  @Valid @RequestBody UpdateRefereeInRequest request) {
         log.info("Received update referee request: {}", request);
         var referee = UpdateRefereeInRequestToDomainConverter.convert(request);
         var updatedReferee = updateRefereeByIdUseCase.updateById(id, referee);
@@ -97,8 +99,8 @@ public class RefereeController {
     @PutMapping("{id}/category")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
-                                                                 @PathVariable("id") String id,
-                                                                 @RequestParam(value = "id", required = false) String refereeCategoryId) {
+                                                                 @UUID @PathVariable("id") String id,
+                                                                 @UUID @RequestParam(value = "id", required = false) String refereeCategoryId) {
         log.info("Received update referee category for referee request: {}", id);
         var updatedReferee = updateRefereeCategoryForRefereeUseCase.updateRefereeCategoryForReferee(id, refereeCategoryId);
         var response = RefereeDomainToRefereeInResponseConverter.convert(updatedReferee);
@@ -110,7 +112,7 @@ public class RefereeController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete referee by id request: {}", id);
         deleteRefereeByIdUseCase.deleteById(id);
     }

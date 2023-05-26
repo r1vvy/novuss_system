@@ -9,8 +9,10 @@ import com.novuss.restfulservice.in.util.converter.sportsClass.UpdateSportsClass
 import com.novuss.restfulservice.in.dto.request.CreateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateSportsClassInRequest;
 import com.novuss.restfulservice.in.dto.response.SportsClassResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +37,7 @@ public class SportsClassController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                      @RequestBody CreateSportsClassInRequest request) {
+                                                      @Valid @RequestBody CreateSportsClassInRequest request) {
         log.info("Received create sports class request: {}", request);
 
         var sportsClass = CreateSportsClassInRequestToDomainConverter.convert(request);
@@ -54,7 +56,7 @@ public class SportsClassController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @PathVariable("id") String id) {
+                                                   @UUID  @PathVariable("id") String id) {
         log.info("Received get sports class by id request: {}", id);
         var sportsClass = getSportsClassByIdUseCase.getById(id);
         var response = SportsClassDomainToResponseConverter.convert(sportsClass);
@@ -62,7 +64,7 @@ public class SportsClassController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<SportsClassResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all sports classes request");
@@ -77,8 +79,8 @@ public class SportsClassController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<SportsClassResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @PathVariable("id") String id,
-                                                  @RequestBody UpdateSportsClassInRequest request) {
+                                                      @UUID @PathVariable("id") String id,
+                                                      @Valid @RequestBody UpdateSportsClassInRequest request) {
         log.info("Received update sports class request: {}", request);
         var sportsClass = UpdateSportsClassInRequestToDomainConverter.convert(request);
         var updatedSportsClass = updateSportsClassByIdUseCase.update(sportsClass, id);
@@ -91,7 +93,7 @@ public class SportsClassController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete sports class request: {}", id);
         deleteSportsClassByIdUseCase.delete(id);
     }

@@ -7,4 +7,5 @@ public interface UpdateCompetitionByIdUseCase {
 
     Competition updateCategoryById(String competitionId, String categoryId);
     Competition updateLocationById(String competitionId, String locationId);
+    void addFileById(String competitionId, String fileId);
 }

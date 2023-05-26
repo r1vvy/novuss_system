@@ -9,8 +9,10 @@ import com.novuss.restfulservice.in.util.converter.competitionCategory.UpdateCom
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionCategoryInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionCategoryInRequest;
 import com.novuss.restfulservice.in.dto.response.CompetitionCategoryResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +37,7 @@ public class CompetitionCategoryController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                              @RequestBody CreateCompetitionCategoryInRequest request) {
+                                                              @Valid @RequestBody CreateCompetitionCategoryInRequest request) {
         log.info("Received create competitionCategory request: {}", request);
 
         var competitionCategory = CreateCompetitionCategoryInRequestToDomainConverter.convert(request);
@@ -55,7 +57,7 @@ public class CompetitionCategoryController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                            @PathVariable("id") String id) {
+                                                           @UUID @PathVariable("id") String id) {
         log.info("Received get competition category by id request: {}", id);
         var club = getCompetitionCategoryByIdUseCase.findById(id);
         var response = CompetitionCategoryDomainToResponseConverter.convert(club);
@@ -80,8 +82,8 @@ public class CompetitionCategoryController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionCategoryResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                               @PathVariable("id") String id,
-                                               @RequestBody UpdateCompetitionCategoryInRequest request) {
+                                                              @UUID @PathVariable("id") String id,
+                                                              @Valid @RequestBody UpdateCompetitionCategoryInRequest request) {
         log.info("Received update competition categories request: {}", request);
         var competitionCategory = UpdateCompetitionCategoryInRequestToDomainConverter.convert(request);
         var updatedCompetitionCategory = updateCompetitionCategoryByIdUseCase.updateById(competitionCategory, id);
@@ -94,7 +96,7 @@ public class CompetitionCategoryController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete competition category request: {}", id);
         deleteCompetitionCategoryByIdUseCase.deleteById(id);
     }

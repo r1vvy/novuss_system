@@ -9,6 +9,7 @@ import com.novuss.restfulservice.in.util.converter.file.FileDomainToResponseConv
 import com.novuss.restfulservice.in.util.converter.file.MultipartFileToFileDomainConverter;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +46,7 @@ public class FileController {
         var response = FileDomainToResponseConverter.convert(savedFile);
         var location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("?id={id}")
+                .path("/{id}")
                 .buildAndExpand(response.id())
                 .toUri();
 
@@ -55,7 +56,7 @@ public class FileController {
 
     @GetMapping(value = "/download/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
-    public ResponseEntity<Resource> download(@PathVariable("id") String id) {
+    public ResponseEntity<Resource> download(@UUID @PathVariable("id") String id) {
         var file = findFileByIdUseCase.findById(id);
 
         var resource = new ByteArrayResource(file.content());

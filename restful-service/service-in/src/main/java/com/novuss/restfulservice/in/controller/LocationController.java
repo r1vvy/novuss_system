@@ -2,15 +2,17 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.location.*;
 import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
+import com.novuss.restfulservice.in.dto.request.UpdateLocationInRequest;
+import com.novuss.restfulservice.in.dto.response.LocationResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.location.CreateLocationInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.location.LocationDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.location.UpdateLocationInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateLocationInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateLocationInRequest;
-import com.novuss.restfulservice.in.dto.response.LocationResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -36,7 +38,7 @@ public class LocationController {
     @PostMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LocationResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @RequestBody CreateLocationInRequest request) {
+                                                   @Valid @RequestBody CreateLocationInRequest request) {
         log.info("Received create location request: {}", request);
 
         var locationDomain = CreateLocationInRequestToDomainConverter.convert(request);
@@ -55,7 +57,7 @@ public class LocationController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LocationResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @PathVariable("id") String id) {
+                                                @UUID @PathVariable("id") String id) {
         log.info("Received get location by id request: {}", id);
         var location = getLocationByIdUseCase.getLocationById(id);
         var response = LocationDomainToResponseConverter.convert(location);
@@ -63,7 +65,7 @@ public class LocationController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<LocationResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all locations request");
@@ -78,8 +80,8 @@ public class LocationController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LocationResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                      @PathVariable("id") String id,
-                                                      @RequestBody UpdateLocationInRequest request) {
+                                                   @UUID @PathVariable("id") String id,
+                                                   @Valid  @RequestBody UpdateLocationInRequest request) {
         log.info("Received update location request: {}", request);
         var location = UpdateLocationInRequestToDomainConverter.convert(request);
         var updatedLocation = updateLocationByIdUseCase.updateLocationById(location, id);
@@ -103,7 +105,7 @@ public class LocationController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete location request: {}", id);
         deleteLocationByIdUseCase.deleteLocationById(id);
     }

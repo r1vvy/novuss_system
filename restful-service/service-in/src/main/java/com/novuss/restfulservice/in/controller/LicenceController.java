@@ -9,8 +9,10 @@ import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.licence.CreateLicenceInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.licence.LicenceDomainToLicenceResponseConverter;
 import com.novuss.restfulservice.in.util.converter.licence.UpdateLicenceInRequestToDomainConverter;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,7 +37,7 @@ public class LicenceController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @RequestBody CreateLicenceInRequest request) {
+                                                 @Valid @RequestBody CreateLicenceInRequest request) {
         log.info("Received create licence request: {}", request);
 
         var licence = CreateLicenceInRequestToDomainConverter.convert(request);
@@ -54,7 +56,7 @@ public class LicenceController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @PathVariable("id") String id) {
+                                               @UUID @PathVariable("id") String id) {
         log.info("Received get licence by id request: {}", id);
         var licence = findLicenceByIdUseCase.getById(id);
         var response = LicenceDomainToLicenceResponseConverter.convert(licence);
@@ -62,7 +64,7 @@ public class LicenceController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<LicenceResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all licences request");
@@ -77,8 +79,8 @@ public class LicenceController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<LicenceResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                   @PathVariable("id") String id,
-                                                   @RequestBody UpdateLicenceInRequest request) {
+                                                  @UUID @PathVariable("id") String id,
+                                                  @Valid @RequestBody UpdateLicenceInRequest request) {
         log.info("Received update licence request: {}", request);
         var licence = UpdateLicenceInRequestToDomainConverter.convert(request);
         var updatedLicence = updateLicenceByIdUseCase.updateLicenceById(licence, id);
@@ -91,7 +93,7 @@ public class LicenceController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete licence request: {}", id);
         deleteLicenceByIdUseCase.deleteLicenceById(id);
     }

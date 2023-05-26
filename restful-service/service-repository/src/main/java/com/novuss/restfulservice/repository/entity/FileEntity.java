@@ -36,6 +36,10 @@ public class FileEntity {
     @Column(name = "size", columnDefinition = "BIGINT")
     private Long size;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "competition_id")
+    private CompetitionEntity competitionEntity;
+
     @Column(name = "created_at", columnDefinition = "DATETIME",updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @Basic(fetch = FetchType.EAGER)

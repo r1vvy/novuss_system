@@ -34,7 +34,6 @@ public class SaveFileAdapter implements SaveFilePort {
         try {
             var filePath = Paths.get(fileLocation);
             Files.write(filePath, fileDomain.content(), StandardOpenOption.CREATE_NEW);
-
         } catch (IOException e) {
             log.error("Error saving fileDomain: {}", e.getMessage());
             throw new RuntimeException("Error saving fileDomain: " + e.getMessage());

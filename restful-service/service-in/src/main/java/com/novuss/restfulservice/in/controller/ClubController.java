@@ -13,6 +13,7 @@ import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -59,7 +60,7 @@ public class ClubController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> getById(@RequestHeader("Authorization") String authorizationHeader,
-                                                @PathVariable("id") String id) {
+                                                @UUID  @PathVariable("id") String id) {
         log.info("Received get club by id request: {}", id);
         var club = getClubByIdUseCase.findById(id);
         var response = ClubDomainToClubResponseConverter.convert(club);
@@ -87,7 +88,7 @@ public class ClubController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @PathVariable("id") String id,
+                                               @UUID @PathVariable("id") String id,
                                                   @RequestBody UpdateClubInRequest request) {
         log.info("Received update club request: {}", request);
         var club = UpdateClubInRequestToDomainConverter.convert(request);
@@ -97,22 +98,23 @@ public class ClubController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}/location")
+    @PutMapping("/{id}/location/{locationId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> updateLocation(@RequestHeader("Authorization") String authorizationHeader,
                                                   @PathVariable("id") String clubId,
-                                                  @RequestParam(value = "id", required = false) String locationId) {
+                                                  @PathVariable(value = "locationId", required = false) String locationId) {
         log.info("Received update club location request: {}", locationId);
         var updatedClub = updateClubLocationByIdUseCase.updateClubLocationById(clubId, locationId);
         var response = ClubDomainToClubResponseConverter.convert(updatedClub);
 
         return ResponseEntity.ok(response);
     }
-    @PutMapping("/{id}/contact-person")
+    @PutMapping("/{id}/contact-person/{contactPersonId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<ClubResponse> updateContactPerson(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @PathVariable("id") String clubId,
-                                                  @RequestParam(value = "id") String personId) {
+                                                            @UUID @PathVariable("id") String clubId,
+                                                            @PathVariable(value = "contactPersonId") String personId)
+    {
         log.info("Received update club contact person request: {}", personId);
         var updatedClub = updateClubContactPersonByIdUseCase.updateClubContactPersonById(clubId, personId);
         var response = ClubDomainToClubResponseConverter.convert(updatedClub);
@@ -124,7 +126,7 @@ public class ClubController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete club request: {}", id);
         deleteClubByIdUseCase.deleteById(id);
     }

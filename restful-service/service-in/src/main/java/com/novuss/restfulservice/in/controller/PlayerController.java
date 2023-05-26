@@ -9,10 +9,12 @@ import com.novuss.restfulservice.in.util.converter.player.UpdatePlayerInRequestT
 import com.novuss.restfulservice.in.dto.request.CreatePlayerInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdatePlayerInRequest;
 import com.novuss.restfulservice.in.dto.response.PlayerResponse;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -41,7 +43,7 @@ public class PlayerController {
     @PostMapping
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @RequestBody CreatePlayerInRequest request) {
+                                                 @Valid @RequestBody CreatePlayerInRequest request) {
         log.info("Received create player request: {}", request);
 
         var player = CreatePlayerInRequestToDomainConverter.convert(request);
@@ -62,7 +64,7 @@ public class PlayerController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                               @PathVariable("id") String id) {
+                                              @UUID  @PathVariable("id") String id) {
         log.info("Received get player by id request: {}", id);
         var player = findPlayerByIdUseCase.getById(id);
         var response = PlayerDomainToPlayerResponseConverter.convert(player);
@@ -91,8 +93,8 @@ public class PlayerController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                  @PathVariable("id") String id,
-                                                  @RequestBody UpdatePlayerInRequest request) {
+                                                 @UUID @PathVariable("id") String id,
+                                                  @Valid @RequestBody UpdatePlayerInRequest request) {
         log.info("Received update player request: {}", request);
         var player = UpdatePlayerInRequestToDomainConverter.convert(request);
         var updatedPlayer = updatePlayerByIdUseCase.updatePlayerById(player, id);
@@ -101,11 +103,11 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("{id}/licence")
+    @PutMapping("{id}/licence/{licenceId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateLicence(@RequestHeader("Authorization") String authorizationHeader,
-                                                @PathVariable("id") String playerId,
-                                                @RequestParam(value = "id", required = false) String licenceId) {
+                                                        @UUID @PathVariable("id") String playerId,
+                                                        @UUID @PathVariable(value = "licenceId", required = false) String licenceId) {
         log.info("Received update licence for player request: {}", playerId);
         var updatedPlayer = updatePlayerLicenceByIdUseCase.updatePlayerLicenceById(playerId, licenceId);
         var response = PlayerDomainToPlayerResponseConverter.convert(updatedPlayer);
@@ -113,11 +115,11 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("{id}/club")
+    @PutMapping("{id}/club/{clubId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateClub(@RequestHeader("Authorization") String authorizationHeader,
-                                                         @PathVariable("id") String playerId,
-                                                         @RequestParam(value = "id", required = false) String clubId) {
+                                                     @UUID @PathVariable("id") String playerId,
+                                                     @UUID @PathVariable(value = "clubId", required = false) String clubId) {
         log.info("Received update club for player request: {}", playerId);
         var updatedPlayer = updatePlayerClubByIdUseCase.updatePlayerClubById(playerId, clubId);
         var response = PlayerDomainToPlayerResponseConverter.convert(updatedPlayer);
@@ -125,11 +127,11 @@ public class PlayerController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("{id}/sports-class")
+    @PutMapping("{id}/sports-class/{sportsClassId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PlayerResponse> updateSportsClass(@RequestHeader("Authorization") String authorizationHeader,
-                                                      @PathVariable("id") String playerId,
-                                                      @RequestParam(value = "id", required = false) String sportsClassId) {
+                                                            @UUID @PathVariable("id") String playerId,
+                                                            @UUID @PathVariable(value = "sportsClassId", required = false) String sportsClassId) {
         log.info("Received update sports class for player request: {}", playerId);
         var updatedPlayer = updatePlayerSportsClassByIdUseCase.updatePlayerSportsClassById(playerId, sportsClassId);
         var response = PlayerDomainToPlayerResponseConverter.convert(updatedPlayer);
@@ -141,7 +143,7 @@ public class PlayerController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete player request: {}", id);
         deletePlayerByIdUseCase.deleteById(id);
     }

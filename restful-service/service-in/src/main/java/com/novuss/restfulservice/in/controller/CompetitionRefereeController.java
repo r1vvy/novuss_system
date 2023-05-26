@@ -2,15 +2,17 @@ package com.novuss.restfulservice.in.controller;
 
 import com.novuss.restfulservice.core.port.in.competitionReferee.*;
 import com.novuss.restfulservice.domain.UserRole;
+import com.novuss.restfulservice.in.dto.request.CreateCompetitionRefereeInRequest;
+import com.novuss.restfulservice.in.dto.request.UpdateCompetitionRefereeInRequest;
+import com.novuss.restfulservice.in.dto.response.CompetitionRefereeResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competitionReferee.CompetitionRefereeDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competitionReferee.CreateCompetitionRefereeInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competitionReferee.UpdateCompetitionRefereeInRequestToDomainConverter;
-import com.novuss.restfulservice.in.dto.request.CreateCompetitionRefereeInRequest;
-import com.novuss.restfulservice.in.dto.request.UpdateCompetitionRefereeInRequest;
-import com.novuss.restfulservice.in.dto.response.CompetitionRefereeResponse;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,9 +36,9 @@ public class CompetitionRefereeController {
     @PostMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                             @PathVariable("competitionId") String competitionId,
-                                                             @PathVariable("id") String refereeId,
-                                                             @RequestBody CreateCompetitionRefereeInRequest request) {
+                                                             @UUID  @PathVariable("competitionId") String competitionId,
+                                                             @UUID  @PathVariable("id") String refereeId,
+                                                             @Valid @RequestBody CreateCompetitionRefereeInRequest request) {
         log.info("Received create competitionReferee request: {}", request);
 
         var competitionReferee = CreateCompetitionRefereeInRequestToDomainConverter.convert(request);
@@ -56,8 +58,8 @@ public class CompetitionRefereeController {
     @GetMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                                         @PathVariable("competitionId") String competitionId,
-                                                         @PathVariable("refereeId") String refereeId) {
+                                                          @UUID @PathVariable("competitionId") String competitionId,
+                                                          @UUID @PathVariable("refereeId") String refereeId) {
         log.info("Received get competition referee by id request: {}", refereeId);
         var competitionReferee = getCompetitionRefereeByIdUseCase.findById(competitionId, refereeId);
         var response = CompetitionRefereeDomainToResponseConverter.convert(competitionReferee);
@@ -65,10 +67,10 @@ public class CompetitionRefereeController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<List<CompetitionRefereeResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader,
-                                                                   @PathVariable("competitionId") String competitionId) {
+                                                                   @UUID @PathVariable("competitionId") String competitionId) {
         log.info("Received get all competition referees by competition id request");
         var competitionReferees = findAllCompetitionRefereesByCompetitionIdUseCase.findAllByCompetitionId(competitionId);
         var response = competitionReferees.stream()
@@ -81,9 +83,9 @@ public class CompetitionRefereeController {
     @PutMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                             @PathVariable("competitionId") String competitionId,
-                                                             @PathVariable("id") String refereeId,
-                                                             @RequestBody UpdateCompetitionRefereeInRequest request) {
+                                                             @UUID @PathVariable("competitionId") String competitionId,
+                                                             @UUID  @PathVariable("id") String refereeId,
+                                                             @Valid @RequestBody UpdateCompetitionRefereeInRequest request) {
         log.info("Received update competitionReferee request: {}", request);
 
         var competitionReferee = UpdateCompetitionRefereeInRequestToDomainConverter.convert(request);
@@ -96,8 +98,8 @@ public class CompetitionRefereeController {
     @DeleteMapping("/{refereeId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<Void> delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @PathVariable("competitionId") String competitionId,
-                                       @PathVariable("refereeId") String refereeId) {
+                                       @UUID @PathVariable("competitionId") String competitionId,
+                                       @UUID @PathVariable("refereeId") String refereeId) {
         log.info("Received delete competitionReferee request: {}", refereeId);
 
         deleteCompetitionRefereeByIdUseCase.delete(competitionId, refereeId);

@@ -9,10 +9,12 @@ import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.person.CreatePersonInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.person.PersonDomainToPersonResponseConverter;
 import com.novuss.restfulservice.in.util.converter.person.UpdatePersonInRequestToDomainConverter;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -31,14 +33,14 @@ import static com.novuss.restfulservice.in.util.PagingUtils.*;
 public class PersonController {
     private final SavePersonUseCase savePersonUseCase;
     private final GetPersonByIdUseCase getPersonByIdUseCase;
-    private final GetAllPeopleUseCase getAllPeople;
+    private final GetAllPeopleUseCase getAllPeopleUseCase;
     private final UpdatePersonByIdUseCase updatePersonByIdUseCase;
     private final DeletePersonByIdUseCase deletePersonByIdUseCase;
 
     @PostMapping
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @RequestBody CreatePersonInRequest request) {
+                                                 @Valid @RequestBody CreatePersonInRequest request) {
         log.info("Received create person request: {}", request);
 
         var person = CreatePersonInRequestToDomainConverter.convert(request);
@@ -58,7 +60,7 @@ public class PersonController {
     @GetMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> get(@RequestHeader("Authorization") String authorizationHeader,
-                                              @PathVariable("id") String id) {
+                                             @UUID @PathVariable("id") String id) {
         log.info("Received get person by id request: {}", id);
         var person = getPersonByIdUseCase.getById(id);
         var response = PersonDomainToPersonResponseConverter.convert(person);
@@ -78,7 +80,7 @@ public class PersonController {
         var pageable = PageRequest.of(page, size);
 
         log.info("Received get all people by page request: {}", pageable);
-        var people = getAllPeople.getAllByPage(pageable);
+        var people = getAllPeopleUseCase.getAllByPage(pageable);
 
         return ResponseEntity.ok(people.map(PersonDomainToPersonResponseConverter::convert)
         );
@@ -87,8 +89,8 @@ public class PersonController {
     @PutMapping("/{id}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<PersonResponse> update(@RequestHeader("Authorization") String authorizationHeader,
-                                                 @PathVariable("id") String id,
-                                                 @RequestBody UpdatePersonInRequest request) {
+                                                 @UUID @PathVariable("id") String id,
+                                                 @Valid @RequestBody UpdatePersonInRequest request) {
         log.info("Received update person request: {}", request);
         log.info("Update person wth id: {}", id);
         var person = UpdatePersonInRequestToDomainConverter.convert(request);
@@ -102,7 +104,7 @@ public class PersonController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public void delete(@RequestHeader("Authorization") String authorizationHeader,
-                                       @PathVariable("id") String id) {
+                       @UUID @PathVariable("id") String id) {
         log.info("Received delete person request: {}", id);
         deletePersonByIdUseCase.deleteById(id);
     }
