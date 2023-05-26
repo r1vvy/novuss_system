@@ -50,7 +50,6 @@ const LoginPage = ({ errorMessage }) => {
                     <LoginForm />
                 </Paper>
             </Box>
-            <Footer />
         </LoadingLinearWrapper>
     );
 };

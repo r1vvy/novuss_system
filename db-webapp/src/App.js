@@ -47,7 +47,6 @@ function App() {
                                 </Route>
                             </Route>
 
-
                         </Route>
                     </Routes>
                     <Footer />

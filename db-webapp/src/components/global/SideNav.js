@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
-import {Dashboard, ExitToApp, Home, Menu as MenuIcon} from '@mui/icons-material';
-import {Divider, IconButton} from '@mui/material';
+import {AssignmentInd, Dashboard, ExitToApp, Home, Menu as MenuIcon} from '@mui/icons-material';
+import { Divider, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import GroupIcon from '@mui/icons-material/Group';
-import useLogout from "../../hooks/useLogout";
+import { ROLES } from '../../app/roles';
+import AuthService from "../../services/AuthService";
+import WcIcon from '@mui/icons-material/Wc';
+import SportsIcon from '@mui/icons-material/Sports';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 const CustomMenuItem = ({ icon, name, selected, onClick, path }) => {
     const theme = useTheme();
@@ -32,7 +36,8 @@ const CustomMenuItem = ({ icon, name, selected, onClick, path }) => {
 const SideBar = () => {
     const { collapseSidebar } = useProSidebar();
 
-    const [selectedItem, setSelectedItem] = useState('dashboard'); // Set the initially selected item here
+    const [selectedItem, setSelectedItem] = useState('dashboard');
+    const userRoles = AuthService.getUserRoles();
 
     const handleCollapse = () => {
         collapseSidebar();
@@ -40,6 +45,73 @@ const SideBar = () => {
 
     const handleItemClick = (item) => {
         setSelectedItem(item);
+    };
+
+    const renderMenuItems = () => {
+        const menuItems = [
+            {
+                icon: <Dashboard />,
+                name: "Vadības panelis",
+                id: "dashboard",
+                path: "/dash"
+            },
+            {
+                icon: <EmojiEventsIcon />,
+                name: "Sacensības",
+                id: "competitions",
+                path: "competitions"
+            },
+            {
+                icon: <GroupIcon />,
+                name: "Lietotāji",
+                id: "users",
+                path: "users",
+                allowedRoles: [ROLES.Admin, ROLES.SuperAdmin]
+            },
+            {
+                icon: <WcIcon />,
+                name: "Spēlētāji",
+                id: "players",
+                path: "players",
+                allowedRoles: [ROLES.SuperAdmin, ROLES.Admin, ROLES.EventManager, ROLES.User]
+            },
+            {
+                icon: <SportsIcon />,
+                name: "Tiesneši",
+                id: "referees",
+                path: "referees",
+                allowedRoles: [ROLES.SuperAdmin, ROLES.Admin, ROLES.EventManager, ROLES.User],
+            },
+            {
+                icon: <AssignmentInd />,
+                name: "Personu dati",
+                id: "people",
+                path: "people",
+                allowedRoles: [ROLES.Admin, ROLES.SuperAdmin]
+            },
+            {
+                icon: <ExitToApp />,
+                name: "Izrakstīties",
+                id: "logout",
+                path: "/logout"
+            },
+        ];
+
+        const allowedMenuItems = menuItems.filter(item =>
+            item.allowedRoles ? item.allowedRoles.some(role => userRoles.includes(role)) : true
+        );
+
+        return allowedMenuItems.map(item => (
+            <div key={item.id}>
+                <CustomMenuItem
+                    icon={item.icon}
+                    name={item.name}
+                    selected={selectedItem === item.id}
+                    onClick={() => handleItemClick(item.id)}
+                    path={item.path}
+                />
+            </div>
+        ))
     };
 
     return (
@@ -50,28 +122,7 @@ const SideBar = () => {
                 </IconButton>
             </Box>
             <Menu iconShape="square">
-                <CustomMenuItem
-                    icon={<Dashboard />}
-                    name="Vadības panelis"
-                    selected={selectedItem === 'dashboard'}
-                    onClick={() => handleItemClick('dashboard')}
-                    path="/dash"
-                />
-                <CustomMenuItem
-                    icon={<GroupIcon />}
-                    name="Lietotāji"
-                    selected={selectedItem === 'users'}
-                    onClick={() => handleItemClick('users')}
-                    path="/dash/users"
-                />
-                <Divider />
-                <CustomMenuItem
-                    icon={<ExitToApp />}
-                    name="Izrakstīties"
-                    selected={selectedItem === 'logout'}
-                    onClick={() => handleItemClick('logout')}
-                    path="/logout"
-                />
+                {renderMenuItems()}
             </Menu>
         </Sidebar>
     );

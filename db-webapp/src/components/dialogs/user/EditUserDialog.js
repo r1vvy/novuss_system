@@ -30,7 +30,7 @@ const EditUserDialog = ({ isOpen, user, onSave, onCancel }) => {
 
     return (
         <Dialog open={isOpen} onClose={handleClose}>
-            <DialogTitle>Edit User</DialogTitle>
+            <DialogTitle>Rediģēt lietotāju</DialogTitle>
             <form onSubmit={handleSave}>
                 <DialogContent>
                         <Box marginBottom={2} marginTop={2}>

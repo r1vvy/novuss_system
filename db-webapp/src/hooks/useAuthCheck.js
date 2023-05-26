@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import authService from '../services/AuthService';
+import { Typography } from '@mui/material';
 
 const useAuthCheck = () => {
     const navigate = useNavigate();
@@ -34,9 +35,13 @@ const useAuthCheck = () => {
         if (isAuthenticated) {
             setRefreshTimer(); // Set the initial refresh timer
         }
-    }, [location, authService.isAuthenticated()]); // Include authService.isAuthenticated() as a dependency
+    }, [location]); // Remove authService.isAuthenticated() as a dependency
 
-    return errorMessage;
+    return (
+        <Typography variant="body2" color="error" align="center" gutterBottom>
+            {errorMessage}
+        </Typography>
+    );
 };
 
 export default useAuthCheck;

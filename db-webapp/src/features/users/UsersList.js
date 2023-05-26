@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import UserService from "../../services/UserService";
 import DataTable from "../../components/DataTable";
 import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
-import EditUserDialog from "../../components/dialogs/EditUserDialog";
+import EditUserDialog from "../../components/dialogs/user/EditUserDialog";
 import { toast } from "react-toastify";
 import { IconButton } from "@mui/material";
 import { Delete, Edit } from "@mui/icons-material";
