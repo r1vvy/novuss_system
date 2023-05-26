@@ -1,19 +1,16 @@
 package com.novuss.authservice.core.service;
 
-import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCase;
+import com.novuss.authservice.core.port.in.user.AuthenticateUserByUsernameUseCase;
 import com.novuss.authservice.core.port.in.token.JwtUseCase;
-import com.novuss.authservice.core.port.out.FindUserByUsernamePort;
 import com.novuss.authservice.domain.User;
 import com.novuss.authservice.domain.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor

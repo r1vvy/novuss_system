@@ -1,4 +1,4 @@
-package com.novuss.authservice.core.port.in.token;
+package com.novuss.authservice.core.port.in.user;
 
 
 public interface AuthenticateUserByUsernameUseCase {

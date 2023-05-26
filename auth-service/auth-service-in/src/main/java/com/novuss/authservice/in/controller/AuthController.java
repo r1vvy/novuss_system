@@ -2,27 +2,21 @@ package com.novuss.authservice.in.controller;
 
 import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
 import com.novuss.authservice.core.port.in.token.ExtendTokenExpiryUseCase;
-import com.novuss.authservice.core.port.in.token.AuthenticateUserByUsernameUseCase;
-import com.novuss.authservice.in.util.converter.TokenInStringToAuthenticationResponseConverter;
+import com.novuss.authservice.core.port.in.user.AuthenticateUserByUsernameUseCase;
 import com.novuss.authservice.in.dto.request.AuthenticationRequest;
 import com.novuss.authservice.in.dto.request.AuthorizationRequest;
+import com.novuss.authservice.in.dto.request.RefreshTokenRequest;
 import com.novuss.authservice.in.dto.response.AuthResponse;
-import jakarta.servlet.http.Cookie;
+import com.novuss.authservice.in.util.converter.TokenInStringToAuthenticationResponseConverter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import static com.novuss.authservice.core.config.TokenConfig.TOKEN_EXPIRY_IN_SECONDS;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,7 +41,7 @@ public class AuthController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void authorize(
             @Valid
-            @NotBlank
+            @Pattern(regexp = "\\S+", message = "Token is required")
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid
             @RequestBody AuthorizationRequest request) {
@@ -60,12 +54,11 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             @RequestBody
-            @Pattern(regexp = "\\S+", message = "Token is required")
-            String token
+            RefreshTokenRequest request
     ) {
         log.info("Recieved refresh request");
-        
-        var newToken = extendTokenExpiryUseCase.extendTokenExpiry(token);
+
+        var newToken = extendTokenExpiryUseCase.extendTokenExpiry(request.token());
         log.info("Extended token expiry");
 
         var response = TokenInStringToAuthenticationResponseConverter.convert(newToken);
