@@ -53,7 +53,7 @@ subprojects {
 
 sonarqube {
     properties {
-        property "sonar.projectKey", "novuss_system_auth"
+        property "sonar.projectKey", "novuss_system_rest"
         property "sonar.organization", "r1vvy"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.sourceEncoding", "UTF-8"
