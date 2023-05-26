@@ -51,7 +51,7 @@ subprojects {
 }
 sonar {
     properties {
-        property "sonar.projectKey", "r1vvy_novuss_system.auth-service"
+        property "sonar.projectKey", "r1vvy_novuss_system"
         property "sonar.organization", "r1vvy"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.sourceEncoding", "UTF-8"
