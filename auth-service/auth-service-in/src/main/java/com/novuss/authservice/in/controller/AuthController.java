@@ -9,7 +9,6 @@ import com.novuss.authservice.in.dto.request.RefreshTokenRequest;
 import com.novuss.authservice.in.dto.response.AuthResponse;
 import com.novuss.authservice.in.util.converter.TokenInStringToAuthenticationResponseConverter;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,8 +39,6 @@ public class AuthController {
     @PostMapping("/authorize")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public void authorize(
-            @Valid
-            @Pattern(regexp = "\\S+", message = "Token is required")
             @RequestHeader("Authorization") String authorizationHeader,
             @Valid
             @RequestBody AuthorizationRequest request) {
