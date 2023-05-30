@@ -33,9 +33,9 @@ const useAuthCheck = () => {
     useEffect(() => {
         const isAuthenticated = authService.isAuthenticated();
         if (isAuthenticated) {
-            setRefreshTimer(); // Set the initial refresh timer
+            setRefreshTimer()
         }
-    }, [location]); // Remove authService.isAuthenticated() as a dependency
+    }, [location]);
 
     return (
         <Typography variant="body2" color="error" align="center" gutterBottom>

@@ -53,7 +53,7 @@ class AuthControllerTest {
     }
 
     @Test
-    protected void refresh_InvalidToken_ReturnsBadRequest() throws Exception {
+    protected void refresh_NoToken_ReturnsBadRequest() throws Exception {
 
         mockMvc.perform(post("/api/v1/auth/refresh")
                         .contentType(MediaType.APPLICATION_JSON)

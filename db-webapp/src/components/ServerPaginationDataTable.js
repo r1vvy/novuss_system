@@ -1,7 +1,15 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 
-const ServerPaginationDataTable = ({ data, columns, sortableColumns, totalCount, page, onPageChange, onPageSizeChange }) => {
+const ServerPaginationDataTable = ({
+                                       data,
+                                       columns,
+                                       sortableColumns,
+                                       totalCount,
+                                       page,
+                                       onPageChange,
+                                       onPageSizeChange
+                                   }) => {
     const [localeText, setLocaleText] = useState(null);
 
     useEffect(() => {
@@ -10,8 +18,12 @@ const ServerPaginationDataTable = ({ data, columns, sortableColumns, totalCount,
         });
     }, []);
 
-    const handlePageChange = (newPage) => {
-        onPageChange(newPage);
+    const handlePageChange = (params) => {
+        onPageChange(params.page);
+    };
+
+    const handlePageSizeChange = (params) => {
+        onPageSizeChange(params.pageSize);
     };
 
     const dataColumns = columns.map((column) => {
@@ -26,7 +38,7 @@ const ServerPaginationDataTable = ({ data, columns, sortableColumns, totalCount,
             filterable: !isIDField && !isActionsField,
             disableColumnMenu: isIDField || isActionsField,
             disableColumnSelector: isIDField || isActionsField,
-            disableColumnResize: isIDField || isActionsField,
+            disableColumnResize: isIDField || isActionsField
         };
     });
 
@@ -40,13 +52,13 @@ const ServerPaginationDataTable = ({ data, columns, sortableColumns, totalCount,
                 disableColumnSelector
                 disableColumnResize={false}
                 columnVisibilityModel={{
-                    id: false,
+                    id: false
                 }}
                 GridColDef={{
-                    resizable: true,
+                    resizable: true
                 }}
                 slots={{
-                    toolbar: GridToolbar,
+                    toolbar: GridToolbar
                 }}
                 localeText={localeText}
                 autoHeight
@@ -56,7 +68,7 @@ const ServerPaginationDataTable = ({ data, columns, sortableColumns, totalCount,
                 paginationMode="server"
                 page={page}
                 onPageChange={handlePageChange}
-                onPageSizeChange={(newPageSize) => onPageSizeChange(newPageSize)}
+                onPageSizeChange={handlePageSizeChange}
             />
         </div>
     );

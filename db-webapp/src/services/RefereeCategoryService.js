@@ -2,21 +2,21 @@ import axios from 'axios';
 import {AUTH_API_DOMAIN, MAX_PAGE_SIZE, REST_API_DOMAIN} from '../app/api/apiConfig';
 import Cookies from 'js-cookie';
 
-const personAPI = axios.create({
+const refereeCategoryAPI = axios.create({
     baseURL: REST_API_DOMAIN,
 });
 
-personAPI.interceptors.request.use((config) => {
+refereeCategoryAPI.interceptors.request.use((config) => {
     const authToken = Cookies.get('authToken');
     config.headers.Authorization = `Bearer ${authToken}`;
 
     return config;
 });
 
-const PeopleService = {
-    createPerson: async (personData) => {
+const RefereeCategoryService = {
+    createCategory: async (data) => {
         try {
-            const response = await personAPI.post('/people', personData);
+            const response = await refereeCategoryAPI.post('/referees/categories', data);
 
             return response.data;
         } catch (error) {
@@ -24,9 +24,9 @@ const PeopleService = {
         }
     },
 
-    getPerson: async (personId) => {
+    getCategory: async (categoryId) => {
         try {
-            const response = await personAPI.get(`/people/${personId}`);
+            const response = await refereeCategoryAPI.get(`/referees/categories/${categoryId}`);
 
             return response.data;
         } catch (error) {
@@ -34,9 +34,9 @@ const PeopleService = {
         }
     },
 
-    updatePerson: async (personData) => {
+    updateCategory: async (data) => {
         try {
-            const response = await personAPI.put(`/people/${personData.id}`, personData);
+            const response = await refereeCategoryAPI.put(`/referees/categories/${data.id}`, data);
 
             return response.data;
         } catch (error) {
@@ -44,24 +44,17 @@ const PeopleService = {
         }
     },
 
-    deletePerson: async (personId) => {
+    deleteCategory: async (categoryId) => {
         try {
-            await personAPI.delete(`/people/${personId}`);
+            await refereeCategoryAPI.delete(`/referees/categories/${categoryId}`);
         } catch (error) {
             throw new Error('Failed to delete person');
         }
     },
 
-    getAllPeople: async (page, size) => {
+    getAllCategories: async () => {
         try {
-            const limitedSize = Math.min(size, MAX_PAGE_SIZE);
-
-            const response = await personAPI.get('/people', {
-                params: {
-                    page: page,
-                    size: size
-                }
-            });
+            const response = await refereeCategoryAPI.get('/referees/categories');
 
             return response.data;
         } catch (error) {
@@ -70,4 +63,4 @@ const PeopleService = {
     },
 
 };
-export default PeopleService;
+export default RefereeCategoryService;

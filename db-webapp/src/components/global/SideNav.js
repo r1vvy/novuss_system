@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Sidebar, Menu, MenuItem, SubMenu, useProSidebar } from 'react-pro-sidebar';
-import {AssignmentInd, Dashboard, ExitToApp, Home, Menu as MenuIcon} from '@mui/icons-material';
+import {AssignmentInd, Dashboard, ExitToApp, FolderShared, Home, Menu as MenuIcon} from '@mui/icons-material';
 import { Divider, IconButton } from '@mui/material';
 import { Box } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
@@ -73,6 +73,13 @@ const SideBar = () => {
                 name: "Spēlētāji",
                 id: "players",
                 path: "players",
+                allowedRoles: [ROLES.SuperAdmin, ROLES.Admin, ROLES.EventManager, ROLES.User]
+            },
+            {
+                icon: <FolderShared />,
+                name: "Klubi",
+                id: "clubs",
+                path: "clubs",
                 allowedRoles: [ROLES.SuperAdmin, ROLES.Admin, ROLES.EventManager, ROLES.User]
             },
             {

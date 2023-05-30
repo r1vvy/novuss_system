@@ -38,7 +38,9 @@ class AuthService {
     refreshAuthToken = async () => {
         try {
             const token = Cookies.get('authToken');
-            const response = await axios.post(`${this.api.defaults.baseURL}/auth/refresh`, token);
+            const response = await axios.post(`${this.api.defaults.baseURL}/auth/refresh`,
+                { token: token }
+            );
 
             const newAuthToken = response.data.token;
             const decodedToken = jwtDecode(newAuthToken);

@@ -18,7 +18,6 @@ const UsersList = ({ users }) => {
     }, [users]);
 
     const columns = [
-        { field: 'id', headerName: 'ID' },
         { field: 'username', headerName: 'Lietotājvārds' },
         { field: 'email', headerName: 'E-pasts' },
         { field: 'roles', headerName: 'Lomas' },
