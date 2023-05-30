@@ -37,12 +37,12 @@ public class CompetitionPlayerController {
     @PostMapping("/{playerId}")
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionPlayerResponse> create(@RequestHeader("Authorization") String authorizationHeader,
-                                                            @UUID  @PathVariable("competitionId") String competitionId,
-                                                            @UUID  @PathVariable("playerId") String playerId,
+                                                            @UUID @PathVariable("competitionId") String competitionId,
+                                                            @UUID @PathVariable("playerId") String playerId,
                                                             @Valid @RequestBody CreateCompetitionPlayerInRequest request) {
         log.info("Received create competition_player request: {}", request);
 
-        var competitionPlayer = CreateCompetitionPlayerInRequestToDomainConverter.convert(request);
+        var competitionPlayer = CreateCompetitionPlayerInRequestToDomainConverter.convert(playerId, request);
         var createdCompetitionPlayer = saveCompetitionPlayerUseCase.save(competitionId, competitionPlayer);
         var response = CompetitionPlayerDomainToResponseConverter.convert(createdCompetitionPlayer);
 

@@ -39,9 +39,6 @@
             <column name="title" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="image" type="VARCHAR(1024)">
-                <constraints nullable="false"/>
-            </column>
             <column name="registration_start" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>

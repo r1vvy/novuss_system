@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class SaveCompetitionRefereeService implements SaveCompetitionRefereeUseCase {
     private final SaveCompetitionRefereePort saveCompetitionRefereePort;
     @Override
-    public CompetitionReferee save(String competitionId, String refereeId, CompetitionReferee competitionReferee) {
-        return saveCompetitionRefereePort.save(competitionId, refereeId, competitionReferee);
+    public CompetitionReferee save(CompetitionReferee competitionReferee) {
+        return saveCompetitionRefereePort.save(competitionReferee);
     }
 }

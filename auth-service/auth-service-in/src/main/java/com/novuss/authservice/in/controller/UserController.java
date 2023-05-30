@@ -1,9 +1,7 @@
 package com.novuss.authservice.in.controller;
 
 import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
-import com.novuss.authservice.core.port.in.token.ExtendTokenExpiryUseCase;
 import com.novuss.authservice.core.port.in.user.*;
-import com.novuss.authservice.core.service.AuthorizeRequestByTokenService;
 import com.novuss.authservice.domain.UserRole;
 import com.novuss.authservice.in.dto.request.CreateUserInRequest;
 import com.novuss.authservice.in.dto.request.UpdateUserInRequest;
@@ -86,7 +84,7 @@ public class UserController {
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<GetUserInResponse>> getAll(@RequestHeader("Authorization") String authorizationHeader) {
         log.info("Received get all users request");
         authorizeRequestByTokenUseCase.authorizeByRequiredAuthorities(

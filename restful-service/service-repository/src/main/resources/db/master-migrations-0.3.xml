@@ -52,12 +52,8 @@
             <column name="address" type="VARCHAR(1000)">
                 <constraints nullable="false"/>
             </column>
-            <column name="latitude" type="DECIMAL(7,4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="longitude" type="DECIMAL(7,4)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="latitude" type="DECIMAL(7,4)"/>
+            <column name="longitude" type="DECIMAL(7,4)"/>
             <column name="created_at" type="DATETIME(6)">
                 <constraints nullable="false"/>
             </column>

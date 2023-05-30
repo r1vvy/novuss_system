@@ -96,11 +96,12 @@ public class RefereeController {
 
         return ResponseEntity.ok(response);
     }
-    @PutMapping("{id}/category")
+    @PutMapping("{id}/category/{refereeCategoryId}")
     @RequiresAuthority({UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<RefereeResponse> updateRefereeCategory(@RequestHeader(value = "Authorization", required = false) String authorizationHeader,
                                                                  @UUID @PathVariable("id") String id,
-                                                                 @UUID @RequestParam(value = "id", required = false) String refereeCategoryId) {
+                                                                 @UUID @PathVariable(value = "refereeCategoryId", required = false) String refereeCategoryId)
+    {
         log.info("Received update referee category for referee request: {}", id);
         var updatedReferee = updateRefereeCategoryForRefereeUseCase.updateRefereeCategoryForReferee(id, refereeCategoryId);
         var response = RefereeDomainToRefereeInResponseConverter.convert(updatedReferee);

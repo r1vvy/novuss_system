@@ -12,6 +12,8 @@ public class CompetitionPlayerEntityToDomainConverter {
                 .competitionId(entity.getId().getCompetitionEntityId())
                 .placement(entity.getPlacement())
                 .ratingChange(entity.getRatingChange())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 }

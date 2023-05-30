@@ -1,10 +1,8 @@
 package com.novuss.restfulservice.in.dto.response;
 
-import com.novuss.restfulservice.domain.Location;
 import lombok.Builder;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 @Builder(toBuilder = true)
 public record CompetitionResponse(
@@ -18,7 +16,7 @@ public record CompetitionResponse(
         Instant createdAt,
         Instant updatedAt,
         CompetitionCategoryResponse category,
-        Location location,
+        LocationResponse location,
         PersonResponse contactPerson
 ) {
 }

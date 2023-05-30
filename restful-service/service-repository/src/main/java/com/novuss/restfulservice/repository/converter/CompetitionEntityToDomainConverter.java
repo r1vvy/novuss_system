@@ -10,7 +10,6 @@ public class CompetitionEntityToDomainConverter {
         var builder = Competition.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
-                .image(entity.getImage())
                 .competitionStart(entity.getCompetitionStart())
                 .competitionEnd(entity.getCompetitionEnd())
                 .registrationStart(entity.getRegistrationStart())

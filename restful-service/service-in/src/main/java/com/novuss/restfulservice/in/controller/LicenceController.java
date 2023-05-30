@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/licences")
+@RequestMapping("/api/v1/players/licences")
 @AllArgsConstructor
 @Slf4j
 @Validated

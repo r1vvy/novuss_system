@@ -13,7 +13,7 @@ public class RefereeCategoryDomainToRefereeCategoryDtoConverter {
                 .title(category.title())
                 .createdAt(category.createdAt())
                 .updatedAt(category.updatedAt())
-                .referees("/api/v1/referees/categories?id=" + category.id())
+                .referees("/api/v1/referees/categories/" + category.id())
                 .build();
     }
 }

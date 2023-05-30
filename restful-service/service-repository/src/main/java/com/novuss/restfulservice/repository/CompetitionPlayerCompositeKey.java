@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.util.UUID;
@@ -17,7 +19,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CompetitionPlayerCompositeKey implements Serializable {
     @Column(name = "player_id", columnDefinition = "char(36)")
-    UUID playerEntityId;
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private UUID playerEntityId;
     @Column(name = "competition_id", columnDefinition = "char(36)")
-    UUID competitionEntityId;
+    @JdbcTypeCode(SqlTypes.CHAR)
+    private UUID competitionEntityId;
 }

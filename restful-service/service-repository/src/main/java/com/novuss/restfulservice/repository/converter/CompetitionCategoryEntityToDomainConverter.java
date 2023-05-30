@@ -11,6 +11,7 @@ public class CompetitionCategoryEntityToDomainConverter {
         return CompetitionCategory.builder()
                 .id(entity.getId())
                 .title(entity.getTitle())
+                .tagColor(entity.getTagColor())
                 .build();
     }
 }

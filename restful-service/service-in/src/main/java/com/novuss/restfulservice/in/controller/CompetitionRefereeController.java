@@ -37,12 +37,12 @@ public class CompetitionRefereeController {
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> create(@RequestHeader("Authorization") String authorizationHeader,
                                                              @UUID  @PathVariable("competitionId") String competitionId,
-                                                             @UUID  @PathVariable("id") String refereeId,
+                                                             @UUID  @PathVariable("refereeId") String refereeId,
                                                              @Valid @RequestBody CreateCompetitionRefereeInRequest request) {
         log.info("Received create competition_referee request: {}", request);
 
-        var competitionReferee = CreateCompetitionRefereeInRequestToDomainConverter.convert(request);
-        var createdCompetitionReferee = saveCompetitionRefereeUseCase.save(competitionId, refereeId, competitionReferee);
+        var competitionReferee = CreateCompetitionRefereeInRequestToDomainConverter.convert(competitionId, refereeId, request);
+        var createdCompetitionReferee = saveCompetitionRefereeUseCase.save(competitionReferee);
         var response = CompetitionRefereeDomainToResponseConverter.convert(createdCompetitionReferee);
 
         var location = ServletUriComponentsBuilder
@@ -84,7 +84,7 @@ public class CompetitionRefereeController {
     @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
     public ResponseEntity<CompetitionRefereeResponse> update(@RequestHeader("Authorization") String authorizationHeader,
                                                              @UUID @PathVariable("competitionId") String competitionId,
-                                                             @UUID  @PathVariable("id") String refereeId,
+                                                             @UUID  @PathVariable("refereeId") String refereeId,
                                                              @Valid @RequestBody UpdateCompetitionRefereeInRequest request) {
         log.info("Received update competition_referee request: {}", request);
 

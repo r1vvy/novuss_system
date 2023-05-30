@@ -5,10 +5,12 @@ import com.novuss.restfulservice.domain.UserRole;
 import com.novuss.restfulservice.in.dto.request.CreateCompetitionInRequest;
 import com.novuss.restfulservice.in.dto.request.UpdateCompetitionInRequest;
 import com.novuss.restfulservice.in.dto.response.CompetitionResponse;
+import com.novuss.restfulservice.in.dto.response.FileResponse;
 import com.novuss.restfulservice.in.util.RequiresAuthority;
 import com.novuss.restfulservice.in.util.converter.competition.CompetitionDomainToResponseConverter;
 import com.novuss.restfulservice.in.util.converter.competition.CreateCompetitionInRequestToDomainConverter;
 import com.novuss.restfulservice.in.util.converter.competition.UpdateCompetitionInRequestToDomainConverter;
+import com.novuss.restfulservice.in.util.converter.file.FileDomainToResponseConverter;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+
 import static com.novuss.restfulservice.in.util.PagingUtils.*;
 
 @RestController
@@ -33,6 +37,7 @@ import static com.novuss.restfulservice.in.util.PagingUtils.*;
 public class CompetitionController {
     private final SaveCompetitionUseCase saveCompetitionUseCase;
     private final FindCompetitionByIdUseCase getCompetitionByIdUseCase;
+    private final GetCompetitionFilesByCompIdUseCase getCompetitionFilesByCompIdUseCase;
     private final FindAllCompetitionsUseCase findAllCompetitionsUseCase;
     private final UpdateCompetitionByIdUseCase updateCompetitionByIdUseCase;
     private final DeleteCompetitionByIdUseCase deleteCompetitionByIdUseCase;
@@ -84,6 +89,20 @@ public class CompetitionController {
         var response = competitions.map(CompetitionDomainToResponseConverter::convert);
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}/files")
+    @RequiresAuthority({UserRole.EVENT_MANAGER, UserRole.ADMIN, UserRole.SUPER_ADMIN})
+    public ResponseEntity<List<FileResponse>> getAllFiles(@RequestHeader("Authorization") String authorizationHeader,
+                                                          @UUID @PathVariable("id") String id) {
+        log.info("Received get all files for competition {} request", id);
+        var files = getCompetitionFilesByCompIdUseCase.getCompetitionFilesByCompId(id);
+        var response = files.stream()
+                .map(FileDomainToResponseConverter::convert)
+                .toList();
+
+        return ResponseEntity.ok(response);
+
     }
 
     @PutMapping("/{id}")

@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -24,18 +22,18 @@ public class SaveCompetitionRefereeAdapter implements SaveCompetitionRefereePort
     private final RefereeJpaRepository refereeJpaRepository;
     private final CompetitionJpaRepository competitionJpaRepository;
     @Override
-    public CompetitionReferee save(String competitionId, String refereeId, CompetitionReferee competitionReferee) {
-        var competitionUUID = UUID.fromString(competitionId);
-        var refereeUUID = UUID.fromString(refereeId);
+    public CompetitionReferee save(CompetitionReferee competitionReferee) {
+        var competitionUUID = competitionReferee.competitionId();
+        var refereeUUID = competitionReferee.refereeId();
 
-        var refereeEntity = refereeJpaRepository.findById(refereeUUID)
+        refereeJpaRepository.findById(refereeUUID)
                 .orElseThrow(
                         () -> {
                             log.warn("Referee with id {} not found", refereeUUID);
                             return new EntityNotFoundException("Referee not found");
                         }
                 );
-        var competitionEntity = competitionJpaRepository.findById(competitionUUID)
+        competitionJpaRepository.findById(competitionUUID)
                 .orElseThrow(
                         () -> {
                             log.warn("Competition with id {} not found", competitionUUID);

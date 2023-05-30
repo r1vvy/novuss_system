@@ -31,11 +31,9 @@ public class CompetitionEntity {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "contact_person_id")
     private PersonEntity contactPersonEntity;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "location_id")
     private LocationEntity locationEntity;
-    @Column(name = "image")
-    private String image;
     @Column(name = "registration_start", columnDefinition = "DATETIME")
     private Instant registrationStart;
     @Column(name = "registration_end", columnDefinition = "DATETIME")

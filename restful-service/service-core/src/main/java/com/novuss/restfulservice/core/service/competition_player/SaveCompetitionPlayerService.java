@@ -17,7 +17,7 @@ public class SaveCompetitionPlayerService implements SaveCompetitionPlayerUseCas
     @Override
     public CompetitionPlayer save(String competitionId, CompetitionPlayer competitionPlayer) {
         var ratingChange = competitionPlayer.ratingChange();
-        if (ratingChange != null || ratingChange != 0) {
+        if (ratingChange != null && ratingChange != 0) {
             var updatedPlayer = updatePlayerByIdPort.updatePlayerRating(ratingChange, competitionPlayer.playerId().toString());
             competitionPlayer.toBuilder()
                     .ratingAfter(updatedPlayer.rating())
