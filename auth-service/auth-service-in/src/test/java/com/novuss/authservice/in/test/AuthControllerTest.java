@@ -1,9 +1,10 @@
-package com.novuss.authservice.in.controller;
+package com.novuss.authservice.in.test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novuss.authservice.core.port.in.token.AuthorizeRequestByTokenUseCase;
 import com.novuss.authservice.domain.UserRole;
+import com.novuss.authservice.in.controller.AuthController;
 import com.novuss.authservice.in.dto.request.AuthorizationRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
