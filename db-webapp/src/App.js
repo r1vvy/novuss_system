@@ -16,7 +16,6 @@ import LogoutPage from "./components/pages/LogoutPage";
 import Footer from "./components/global/Footer";
 import useAuthCheck from "./hooks/useAuthCheck";
 import PeopleListPage from "./components/pages/people/PeopleListPage";
-import ClubListPage from "./components/pages/club/ClubListPage";
 
 function App() {
     const errorMessage = useAuthCheck();
@@ -43,9 +42,6 @@ function App() {
                                     </Route>
                                     <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
                                         <Route path="people" element={<PeopleListPage />} />
-                                    </Route>
-                                    <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
-                                        <Route path="clubs" element={<ClubListPage />} />
                                     </Route>
 
                                 </Route>
