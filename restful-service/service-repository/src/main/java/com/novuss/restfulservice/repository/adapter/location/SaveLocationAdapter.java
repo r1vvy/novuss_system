@@ -1,13 +1,13 @@
 package com.novuss.restfulservice.repository.adapter.location;
 
+import com.novuss.restfulservice.core.exception.EntityExistsException;
 import com.novuss.restfulservice.core.port.out.location.SaveLocationPort;
 import com.novuss.restfulservice.domain.Location;
 import com.novuss.restfulservice.repository.converter.LocationDomainToEntityConverter;
 import com.novuss.restfulservice.repository.converter.LocationEntityToDomainConverter;
-import com.novuss.restfulservice.repository.converter.PersonDomainToEntityConverter;
+import com.novuss.restfulservice.repository.entity.PersonEntity;
 import com.novuss.restfulservice.repository.repository.jpa.LocationJpaRepository;
 import com.novuss.restfulservice.repository.repository.jpa.PersonJpaRepository;
-import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -30,18 +30,23 @@ public class SaveLocationAdapter implements SaveLocationPort {
                         }
                 );
         var contactPerson = location.contactPerson();
-        var contactPersonEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
-                contactPerson.firstName(),
-                contactPerson.lastName(),
-                contactPerson.phoneNumber()
-        ).orElseThrow(
-                () -> new EntityExistsException("Person not found with firstName = " + contactPerson.firstName() +
-                        " lastName = " + contactPerson.lastName() +
-                        " phoneNumber = " + contactPerson.phoneNumber())
-        );
+        PersonEntity contactPersonEntity = null;
+
 
         var locationEntity = LocationDomainToEntityConverter.convert(location);
-        locationEntity.setPersonEntity(contactPersonEntity);
+
+        if(contactPerson != null) {
+            contactPersonEntity = personJpaRepository.findByFirstNameAndLastNameAndPhoneNumber(
+                    contactPerson.firstName(),
+                    contactPerson.lastName(),
+                    contactPerson.phoneNumber()
+            ).orElseThrow(
+                    () -> new EntityExistsException("Person not found with firstName = " + contactPerson.firstName() +
+                            " lastName = " + contactPerson.lastName() +
+                            " phoneNumber = " + contactPerson.phoneNumber())
+            );
+            locationEntity.setPersonEntity(contactPersonEntity);
+        }
 
         var updatedEntity = locationJpaRepository.save(locationEntity);
         log.info("Location saved with id = {}", updatedEntity.getId());
