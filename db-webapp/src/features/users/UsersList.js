@@ -39,18 +39,18 @@ const UsersList = ({ users }) => {
         },
     ];
 
-    const sortableColumns = ['username', 'email']; // Specify the sortable columns
+    const sortableColumns = ['username', 'email'];
 
     const handleDeleteUser = (userData) => {
         setSelectedUser(userData);
         setIsDeleteDialogOpen(true);
-        setIsEditDialogOpen(false); // Close the edit dialog if it's open
+        setIsEditDialogOpen(false);
     };
 
     const handleEditUser = (userData) => {
         setSelectedUser(userData.row);
         setIsEditDialogOpen(true);
-        setIsDeleteDialogOpen(false); // Close the delete dialog if it's open
+        setIsDeleteDialogOpen(false);
     };
 
     const handleConfirmDelete = () => {

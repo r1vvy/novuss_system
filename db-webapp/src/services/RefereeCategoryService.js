@@ -20,7 +20,7 @@ const RefereeCategoryService = {
 
             return response.data;
         } catch (error) {
-            throw new Error('Failed to create person');
+            throw new Error('Failed to save referee category');
         }
     },
 
@@ -30,7 +30,7 @@ const RefereeCategoryService = {
 
             return response.data;
         } catch (error) {
-            throw new Error('Failed to get person');
+            throw new Error('Failed to get referee category');
         }
     },
 
@@ -40,7 +40,7 @@ const RefereeCategoryService = {
 
             return response.data;
         } catch (error) {
-            throw new Error('Failed to update person');
+            throw new Error('Failed to update referee category');
         }
     },
 
@@ -48,7 +48,7 @@ const RefereeCategoryService = {
         try {
             await refereeCategoryAPI.delete(`/referees/categories/${categoryId}`);
         } catch (error) {
-            throw new Error('Failed to delete person');
+            throw new Error('Failed to delete referee category');
         }
     },
 
@@ -58,7 +58,7 @@ const RefereeCategoryService = {
 
             return response.data;
         } catch (error) {
-            throw new Error('Failed to get all people');
+            throw new Error('Failed to get all referee categories');
         }
     },
 

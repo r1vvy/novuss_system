@@ -28,14 +28,14 @@ const ClubsList = () => {
     };
 
     const columns = [
-        { field: 'title', headerName: 'Title' },
-        { field: 'contactEmail', headerName: 'Contact Email' },
-        { field: 'telephone', headerName: 'Telephone' },
-        { field: 'location.title', headerName: 'Location Title' },
-        { field: 'location.city', headerName: 'City' },
+        { field: 'title', headerName: 'Nosaukums' },
+        { field: 'contactEmail', headerName: 'E-pasts' },
+        { field: 'telephone', headerName: 'Tel. nr.' },
+        { field: 'location.title', headerName: 'Adrese' },
+        { field: 'location.city', headerName: 'Pilsēta' },
         {
             field: 'actions',
-            headerName: 'Actions',
+            headerName: 'Darbības',
             sortable: false,
             renderCell: (rowData) => (
                 <>
@@ -70,10 +70,10 @@ const ClubsList = () => {
             ClubService.deleteClub(selectedClub.id)
                 .then(() => {
                     setClubList((prevClubs) => prevClubs.filter((club) => club.id !== selectedClub.id));
-                    toast.success('Club successfully deleted!');
+                    toast.success('Klubs veiksmīgi izdzēsts!');
                 })
                 .catch((error) => {
-                    toast.error('Failed to delete club!');
+                    toast.error('Neizdevās dzēst klubu!');
                 });
         }
 
@@ -87,11 +87,11 @@ const ClubsList = () => {
                     setClubList((prevClubs) =>
                         prevClubs.map((club) => (club.id === updatedClub.id ? updatedClub : club))
                     );
-                    toast.success('Club data successfully updated!');
+                    toast.success('Kluba dati veiksmīgi atjaunināti!');
                     setIsEditDialogOpen(false);
                 })
                 .catch((error) => {
-                    toast.error('Failed to update club data!');
+                    toast.error('Neizdevās atjaunināt kluba datus!');
                 });
         }
     };
@@ -110,8 +110,8 @@ const ClubsList = () => {
 
             <ConfirmationDialog
                 open={isDeleteDialogOpen}
-                title="Delete Club"
-                message="Are you sure you want to delete this club?"
+                title="Dzēst klubu"
+                message="Vai esat pārliecināts, ka vēlaties dzēst šo klubu?"
                 onConfirm={handleConfirmDelete}
                 onCancel={() => setIsDeleteDialogOpen(false)}
             />

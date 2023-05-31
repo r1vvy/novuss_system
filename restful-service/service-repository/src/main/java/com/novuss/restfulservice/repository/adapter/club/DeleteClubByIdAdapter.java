@@ -23,7 +23,7 @@ public class DeleteClubByIdAdapter implements DeleteClubByIdPort {
                 .orElseThrow(
                         () -> {
                             log.error("Club with id {} not found", id);
-                            return new EntityNotFoundException("Club with id " + id + " not found");
+                            return new  EntityNotFoundException("Club with id " + id + " not found");
                         }
                 );
 

@@ -53,7 +53,7 @@ const UserAPI = {
 
     getAllUsers: async () => {
         try {
-            const response = await userAPI.get('/users/all');
+            const response = await userAPI.get('/users');
             return response.data;
         } catch (error) {
             throw new Error('Failed to get all users');

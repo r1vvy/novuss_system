@@ -19,13 +19,26 @@ const ClubsListPage = () => {
     const fetchClubs = async () => {
         try {
             const response = await ClubService.getAllClubsByPage(page, pageSize);
-            const { data, totalCount: total } = response;
-            setClubs(data);
-            setTotalCount(total);
+            const data = response.content;
+
+            const mappedData = data.map((club) => ({
+                id: club.id,
+                title: club.title,
+                email: club.location.contactPerson.email,
+                phoneNumber: club.location.contactPerson.phoneNumber,
+                address: club.location.address,
+                city: club.location.city,
+            }));
+
+            setClubs(mappedData);
+            setTotalCount(response.totalElements);
+
+            console.log(mappedData)
         } catch (error) {
-            toast.error("Neizdevās ielādēt klubu datus")
+            toast.error('Failed to load club data');
         }
     };
+
 
     const handlePageChange = (newPage) => {
         setPage(newPage);
@@ -41,7 +54,6 @@ const ClubsListPage = () => {
     };
 
     const handleCreateClub = (newClub) => {
-        // Logic to create a new club
         setIsAddClubDialogOpen(false);
     };
 
@@ -55,7 +67,7 @@ const ClubsListPage = () => {
                 onClick={handleAddClub}
                 style={{ marginBottom: '10px' }}
             >
-                Add Club
+                Pievienot klubu
             </Button>
 
             <ClubsList
